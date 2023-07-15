@@ -49,4 +49,7 @@ public class CarModel {
     @Column(name = "trunk")
     private String trunk;
 
+    @Column(name = "availability")
+    private Boolean availability;
+
 }
