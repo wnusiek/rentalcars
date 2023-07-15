@@ -23,19 +23,19 @@ public class ReservationModel {
     private Long id;
 
     @Column(name = "car_id")
-    private String car_id;
+    private String carId;
 
     @Column(name = "date_to")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date date_to;
+    public Date dateTo;
 
     @Column(name = "date_from")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date date_from;
+    public Date dateFrom;
 
     @Column(name = "price")
     public BigDecimal price;
 
     @Column(name = "reception_venue")
-    public String reception_venue;
+    public String receptionVenue;
 }
