@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class AvilabilityModel {
+public class AvailabilityModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
