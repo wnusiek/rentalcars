@@ -29,7 +29,7 @@ public class CarModel {
     private BigDecimal price;
 
     @Column(name = "bail")
-    private String bail;
+    private BigDecimal bail;
 
     @Column(name = "body")
     private String body;
