@@ -15,7 +15,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
 
     public void addReservation(ReservationModel reservation){
-        reservationRepository.save(reservation)
+        reservationRepository.save(reservation);
     }
 
     public List<ReservationModel> getReservationList(){
