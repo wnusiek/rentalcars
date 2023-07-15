@@ -1,8 +1,6 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public void postAddCustomer(CustomerModel customer){
+    public void postAddCustomer(CustomerModel customer) {
         customerRepository.save(customer);
     }
 
@@ -23,7 +21,7 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public CustomerModel findById(Long id){
+    public CustomerModel findById(Long id) {
         return customerRepository.findById(id).orElse(null);
     }
 

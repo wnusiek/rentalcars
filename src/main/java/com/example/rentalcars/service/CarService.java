@@ -2,7 +2,6 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ public class CarService {
 
     private final CarRepository carRepository;
 
-    public void postAddCar(CarModel car){
+    public void postAddCar(CarModel car) {
         carRepository.save(car);
     }
 
@@ -22,7 +21,7 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public CarModel findById(Long id){
+    public CarModel findById(Long id) {
         return carRepository.findById(id).orElse(null);
     }
 
