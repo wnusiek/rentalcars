@@ -27,14 +27,13 @@ public class ReturnRestController {
         returnService.addReturn(returnModel);
     }
 
-//    @GetMapping("/editReturn/{id}")
-//    public void edit(@PathVariable("id") Long id, Model model){
-//        ReturnModel returnModel = returnService.findById(id);
-//        model.addAttribute("returnModel", returnModel);
-//    }
-
     @PostMapping("/editReturn/{id}")
     public void edit(ReturnModel returnModel) {
         returnService.updateReturn(returnModel);
+    }
+
+    @PostMapping("removeReturn/{id}")
+    public void removeReturn(@PathVariable("id") Long id){
+        returnService.deleteReturn(id);
     }
 }
