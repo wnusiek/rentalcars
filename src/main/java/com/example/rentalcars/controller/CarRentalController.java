@@ -1,5 +1,5 @@
 package com.example.rentalcars.controller;
-import com.example.rentalcars.model.DepartmentModel;
+import com.example.rentalcars.model.CarRentalModel;
 import com.example.rentalcars.service.CarRentalService;
 import com.example.rentalcars.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +15,7 @@ import java.util.List;
 public class CarRentalController {
     private final CarRentalService carRentalService;
     @GetMapping
-    public List<DepartmentModel> get(){
+    public List<CarRentalModel> get(){
         return carRentalService.getCarRentalModelList();
-
     }
 }

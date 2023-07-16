@@ -16,7 +16,7 @@ public class CarRentalService {
     public void postAddCarRental(CarRentalModel carRentalModel) {
         carRentalRepository.save(carRentalModel);
     }
-    public List<CarRentalModel> getCarRentalModelList(CarRentalModel carRentalModel) {
+    public List<CarRentalModel> getCarRentalModelList() {
         return carRentalRepository.findAll();
     }
 
