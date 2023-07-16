@@ -18,12 +18,12 @@ public class RentalController {
 
     private final RentalService rentalService;
 
-    @GetMapping("/rental")
-    public String getRentalList(Model model) {
-        List<RentalModel> list = rentalService.getRentalList();
-        model.addAttribute("rentalModel", list);
-        return "rental/rental";
-    }
+//    @GetMapping("/rental")
+//    public String getRentalList(Model model) {
+//        List<RentalModel> list = rentalService.getRentalList();
+//        model.addAttribute("rentalModel", list);
+//        return "rental/rental";
+//    }
 
     @GetMapping("/addRental")
     public String getAddRental(){
