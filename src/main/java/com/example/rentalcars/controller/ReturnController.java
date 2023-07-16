@@ -18,12 +18,12 @@ public class ReturnController {
 
     private final ReturnService returnService;
 
-    @GetMapping("/return")
-    public String getReturn(Model model){
-        List<ReturnModel> returnModelList = returnService.getReturnModelList();
-        model.addAttribute("returnModel", returnModelList);
-        return "return/return";
-    }
+//    @GetMapping("/return")
+//    public String getReturn(Model model){
+//        List<ReturnModel> returnModelList = returnService.getReturnModelList();
+//        model.addAttribute("returnModel", returnModelList);
+//        return "return/return";
+//    }
 
     @GetMapping("/addReturn")
     public String getAddReturn(){
