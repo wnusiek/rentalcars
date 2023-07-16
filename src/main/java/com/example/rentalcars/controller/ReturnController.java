@@ -25,33 +25,33 @@ public class ReturnController {
 //        return "return/return";
 //    }
 
-    @GetMapping("/addReturn")
-    public String getAddReturn(){
-        return "return/return";
-    }
-
-    @PostMapping("/addReturn")
-    public RedirectView postAddReturn(ReturnModel returnModel){
-        returnService.addReturn(returnModel);
-        return new RedirectView("/return");
-    }
-
-    @GetMapping("/editReturn/{id}")
-    public String getEditReturn(@PathVariable("id") Long id, Model model){
-        ReturnModel returnModel = returnService.findById(id);
-        model.addAttribute("returnModel", returnModel);
-        return "return/return";
-    }
-
-    @PostMapping("/editReturn/{id}")
-    public RedirectView postEditReturn(ReturnModel returnModel){
-        returnService.updateReturn(returnModel);
-        return new RedirectView("/return");
-    }
-
-    @PostMapping("/removeReturn/{id}")
-    public RedirectView removeReturn(@PathVariable("id")Long id){
-        returnService.deleteReturn(id);
-        return new RedirectView("/return");
-    }
+//    @GetMapping("/addReturn")
+//    public String getAddReturn(){
+//        return "return/return";
+//    }
+//
+//    @PostMapping("/addReturn")
+//    public RedirectView postAddReturn(ReturnModel returnModel){
+//        returnService.addReturn(returnModel);
+//        return new RedirectView("/return");
+//    }
+//
+//    @GetMapping("/editReturn/{id}")
+//    public String getEditReturn(@PathVariable("id") Long id, Model model){
+//        ReturnModel returnModel = returnService.findById(id);
+//        model.addAttribute("returnModel", returnModel);
+//        return "return/return";
+//    }
+//
+//    @PostMapping("/editReturn/{id}")
+//    public RedirectView postEditReturn(ReturnModel returnModel){
+//        returnService.updateReturn(returnModel);
+//        return new RedirectView("/return");
+//    }
+//
+//    @PostMapping("/removeReturn/{id}")
+//    public RedirectView removeReturn(@PathVariable("id")Long id){
+//        returnService.deleteReturn(id);
+//        return new RedirectView("/return");
+//    }
 }
