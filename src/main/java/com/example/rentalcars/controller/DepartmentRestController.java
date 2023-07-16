@@ -12,10 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/test")
-public class Departament2Controller {
+public class DepartmentRestController {
     private final DepartmentService departmentService;
+
     @GetMapping
-    public List<DepartmentModel> get(){
+    public List<DepartmentModel> get() {
         return departmentService.getDepartmentList();
 
     }
