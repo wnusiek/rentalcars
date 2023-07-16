@@ -21,17 +21,17 @@ public class ReturnModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne
-    @Column
-    private EmployeeModel employee;
+
+//    @Column
+//    private EmployeeModel employee;
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfReturn;
 
-    @OneToOne
-    @Column
-    private ReservationModel reservation;
+
+//    @Column
+//    private ReservationModel reservation;
 
     @Column
     private String comments;
