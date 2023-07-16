@@ -26,9 +26,5 @@ public class EmployeeModel {
     @Column
     public String position;
 
-    @ManyToOne
-    @Column
-    public DepartmentModel branch;
-    
 
 }
