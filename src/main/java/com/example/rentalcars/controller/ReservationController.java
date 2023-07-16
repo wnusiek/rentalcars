@@ -18,12 +18,12 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @GetMapping("/reservation")
-    public String getReservation(Model model){
-        List<ReservationModel> reservationList = reservationService.getReservationList();
-        model.addAttribute("reservationModel",reservationList);
-        return "reservation/reservation";
-    }
+//    @GetMapping("/reservation")
+//    public String getReservation(Model model){
+//        List<ReservationModel> reservationList = reservationService.getReservationList();
+//        model.addAttribute("reservationModel",reservationList);
+//        return "reservation/reservation";
+//    }
 
     @GetMapping("/addReservation")
     public String addReservation(){

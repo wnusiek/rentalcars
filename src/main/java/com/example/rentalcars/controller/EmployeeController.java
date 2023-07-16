@@ -18,12 +18,12 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("/employee")
-    public String getEmployeeList(Model model){
-        List<EmployeeModel> list = employeeService.getEmployeeList();
-        model.addAttribute("employeeModel", list);
-        return "employee/employee";
-    }
+//    @GetMapping("/employee")
+//    public String getEmployeeList(Model model){
+//        List<EmployeeModel> list = employeeService.getEmployeeList();
+//        model.addAttribute("employeeModel", list);
+//        return "employee/employee";
+//    }
 
     @GetMapping("/addEmployee")
     public String getAddEmployee(){

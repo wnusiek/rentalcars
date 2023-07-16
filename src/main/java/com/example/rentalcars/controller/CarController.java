@@ -13,17 +13,17 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/car")
+//@RequestMapping("/car")
 public class CarController {
 
     private final CarService carService;
 
 
-    @GetMapping
-    public List<CarModel> getCarList() {
-//        List<CarModel> list = carService.getCarList();
-//        model.addAttribute("carModel", list);
-        return carService.getCarList();
+//    @GetMapping
+//    public List<CarModel> getCarList() {
+////        List<CarModel> list = carService.getCarList();
+////        model.addAttribute("carModel", list);
+//        return carService.getCarList();
     }
 //
 //    @GetMapping("/addCar")
@@ -55,4 +55,4 @@ public class CarController {
 //        carService.removeCar(id);
 //        return new RedirectView("/car");
 //    }
-}
+//}
