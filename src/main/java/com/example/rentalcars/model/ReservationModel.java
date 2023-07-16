@@ -23,7 +23,7 @@ public class ReservationModel {
     private Long id;
 
     @Column(name = "car_id")
-    private String carId;
+    private Long carId;
 
     @Column(name = "date_to")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
