@@ -43,7 +43,7 @@ public class DepartmentController {
         return "department/editDepartment";
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/editDepartment/{id}")
     public RedirectView postEditDepartment(DepartmentModel department){
         departmentService.updateDepartment(department);
         return new RedirectView("/department");

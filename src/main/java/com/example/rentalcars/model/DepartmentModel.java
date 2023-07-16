@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class DepartmentModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,10 +24,12 @@ public class DepartmentModel {
     private String city;
 
     //lista pracowników placówki
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<EmployeeModel> employees = new HashSet<>();
+//
+//    //lista aktualnie dostępnych aut
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+//    private Set<CarModel> cars = new HashSet<>();
 
-    //lista aktualnie dostępnych aut
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
-    private Set<CarModel> cars = new HashSet<>();
+
 }
