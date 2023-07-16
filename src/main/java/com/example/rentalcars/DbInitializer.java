@@ -18,6 +18,6 @@ public class DbInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.ONE, "500", "Sedan", "automatyczna", 5, 4, "benzyna", "aaa", true));
+        carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.ONE, BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "benzyna", "aaa", true));
     }
 }
