@@ -18,12 +18,12 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("/department")
-    public String getDepartmentList(Model model) {
-        List<DepartmentModel> list = departmentService.getDepartmentList();
-        model.addAttribute("departmentModel", list);
-        return "department/department";
-    }
+//    @GetMapping("/department")
+//    public String getDepartmentList(Model model) {
+//        List<DepartmentModel> list = departmentService.getDepartmentList();
+//        model.addAttribute("departmentModel", list);
+//        return "department/department";
+//    }
 
     @GetMapping("/addDepartment")
     public String getAddDepartment(){
