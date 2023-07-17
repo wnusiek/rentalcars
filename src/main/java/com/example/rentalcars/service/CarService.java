@@ -32,4 +32,9 @@ public class CarService {
     public void removeCar(Long id) {
         carRepository.deleteById(id);
     }
+
+
+    public List<CarModel> getAvailableCars(){
+        return getCarList().stream().filter(car -> car.getAvailability().equals(true)).toList();
+    }
 }
