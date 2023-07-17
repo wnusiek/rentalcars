@@ -39,7 +39,7 @@ public class CarRentalModel {
     @Column(name = "car_rental_logotype")
     private String carRentalLogotype;
 
-    @OneToMany
-    private List <DepartmentModel> departmentModels = new ArrayList<>();
+/*    @OneToMany
+    private List <DepartmentModel> departmentModels = new ArrayList<>();*/
 
 }

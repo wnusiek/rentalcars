@@ -25,7 +25,7 @@ public class DepartmentController {
 //        return "department/department";
 //    }
 
-    @GetMapping("/addDepartment")
+   /* @GetMapping("/addDepartment")
     public String getAddDepartment(){
         return "department/addDepartment";
     }
@@ -53,5 +53,5 @@ public class DepartmentController {
     public RedirectView removeDepartment(@PathVariable("id") Long id) {
         departmentService.removeDepartment(id);
         return new RedirectView("/department");
-    }
+    }*/
 }

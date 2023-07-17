@@ -19,13 +19,16 @@ public class DbInitializer implements ApplicationRunner {
     private final RentalRepository rentalRepository;
     private final ReservationRepository reservationRepository;
 
-    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository) {
+    private final CarRentalRepository carRentalRepository;
+
+    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, CarRentalRepository carRentalRepository) {
         this.carRepository = carRepository;
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.returnRepository = returnRepository;
         this.rentalRepository = rentalRepository;
         this.reservationRepository = reservationRepository;
+        this.carRentalRepository = carRentalRepository;
     }
 
     @Override
@@ -37,6 +40,7 @@ public class DbInitializer implements ApplicationRunner {
         returnRepository.save(new ReturnModel(1l, new Date(2023, 07, 16), "bez uszkodzeń"));
         rentalRepository.save(new RentalModel(1l));
         reservationRepository.save(new ReservationModel(1l, 1l, new Date(2023, 07, 20), new Date(2023, 07, 17), BigDecimal.valueOf(100), "Kraków"));
+        carRentalRepository.save(new CarRentalModel(1l, "SDACarRental", "SDACarRentalDomain", "SDACarRentalAddress", "SDACarRentalOwner", "SDACarRentalLogotype"));
 
     }
 }

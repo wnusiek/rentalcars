@@ -25,7 +25,7 @@ public class RentalController {
 //        return "rental/rental";
 //    }
 
-    @GetMapping("/addRental")
+    /*@GetMapping("/addRental")
     public String getAddRental(){
         return "rental/addRental";
     }
@@ -53,5 +53,5 @@ public class RentalController {
     public RedirectView removeRental(@PathVariable("id") Long id) {
         rentalService.removeRental(id);
         return new RedirectView("/rental");
-    }
+    }*/
 }
