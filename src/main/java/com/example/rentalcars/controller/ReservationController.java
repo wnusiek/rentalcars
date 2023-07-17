@@ -25,34 +25,34 @@ public class ReservationController {
 //        return "reservation/reservation";
 //    }
 
-    @GetMapping("/addReservation")
-    public String addReservation(){
-        return "reservation/reservation";
-    }
-
-    @PostMapping("/addReservation")
-        public RedirectView addReservation(ReservationModel reservation){
-            reservationService.addReservation(reservation);
-            return new RedirectView("/reservation");
-    }
-
-    @GetMapping("/editReservation/{id}")
-    public String getEditReservation(@PathVariable("id") Long id, Model model) {
-        ReservationModel reservation = reservationService.findbyId(id);
-        model.addAttribute("reservationModel", reservation);
-        return "reservation/reservation";
-    }
-
-    @PostMapping("/editReservation/{id}")
-    public RedirectView editReservation(ReservationModel editReservation){
-        reservationService.editReservation(editReservation);
-        return new RedirectView("/reservation");
-    }
-
-    @PostMapping("/delReservation/{id}")
-    public RedirectView deleteReservation(@PathVariable("id")Long id){
-        reservationService.removeReservation(id);
-        return new RedirectView("/reservation");
-    }
+//    @GetMapping("/addReservation")
+//    public String addReservation(){
+//        return "reservation/reservation";
+//    }
+//
+//    @PostMapping("/addReservation")
+//        public RedirectView addReservation(ReservationModel reservation){
+//            reservationService.addReservation(reservation);
+//            return new RedirectView("/reservation");
+//    }
+//
+//    @GetMapping("/editReservation/{id}")
+//    public String getEditReservation(@PathVariable("id") Long id, Model model) {
+//        ReservationModel reservation = reservationService.findbyId(id);
+//        model.addAttribute("reservationModel", reservation);
+//        return "reservation/reservation";
+//    }
+//
+//    @PostMapping("/editReservation/{id}")
+//    public RedirectView editReservation(ReservationModel editReservation){
+//        reservationService.editReservation(editReservation);
+//        return new RedirectView("/reservation");
+//    }
+//
+//    @PostMapping("/delReservation/{id}")
+//    public RedirectView deleteReservation(@PathVariable("id")Long id){
+//        reservationService.removeReservation(id);
+//        return new RedirectView("/reservation");
+//    }
 
 }
