@@ -12,12 +12,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/car")
+//@RequestMapping("/car")
 public class CarRestController {
 
     private final CarService carService;
 
-    @GetMapping
+    @GetMapping("/car")
     public List<CarModel> get(){
         return carService.getCarList();
     }
