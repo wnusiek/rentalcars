@@ -4,21 +4,36 @@ import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.EmployeeRepository;
 import com.example.rentalcars.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/empolyee")
+//@RequestMapping("/employee")
 public class EmployeeRestController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping
-    public List<EmployeeModel> get(){
+    @GetMapping("employees")
+    public List<EmployeeModel> get() {
         return employeeService.getEmployeeList();
     }
+
+    @PostMapping("/addEmployee")
+    public void add(EmployeeModel employee) {
+        employeeService.postAddEmployee(employee);
+    }
+
+    @PostMapping("/editEmployee/{id}")
+    public void edit(EmployeeModel employee) {
+        employeeService.updateEmployee(employee);
+    }
+
+    @PostMapping("/removeEmployee/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        employeeService.removeEmployee(id);
+    }
+
 }
+

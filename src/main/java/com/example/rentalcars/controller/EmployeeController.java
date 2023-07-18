@@ -24,36 +24,36 @@ public class EmployeeController {
 //        model.addAttribute("employeeModel", list);
 //        return "employee/employee";
 //    }
-
-    @GetMapping("/addEmployee")
-    public String getAddEmployee(){
-        return "employee/addEmployee";
-    }
-
-    @PostMapping("/addEmployee")
-        public RedirectView postAddEmployee(EmployeeModel employee){
-        employeeService.postAddEmployee(employee);
-        return new RedirectView("/employee");
-    }
-
-    @GetMapping("/editEmployee/{id}")
-    public String getEditEmployee(@PathVariable("id") Long id, Model model){
-        EmployeeModel employee = employeeService.findById(id);
-        model.addAttribute("employeeModel", employee);
-        return "employee/editEmployee";
-    }
-
-    @PostMapping("/editEmployee/{id}")
-    public RedirectView postEditEmployee(EmployeeModel employee){
-        employeeService.updateEmployee(employee);
-        return new RedirectView("/employee");
-    }
-
-    @PostMapping("/removeEmployee/{id}")
-    public RedirectView postRemoveEmployee(@PathVariable("id") Long id){
-        employeeService.removeEmployee(id);
-        return new RedirectView("/employee");
-    }
+//
+//    @GetMapping("/addEmployee")
+//    public String getAddEmployee(){
+//        return "employee/addEmployee";
+//    }
+//
+//    @PostMapping("/addEmployee")
+//        public RedirectView postAddEmployee(EmployeeModel employee){
+//        employeeService.postAddEmployee(employee);
+//        return new RedirectView("/employee");
+//    }
+//
+//    @GetMapping("/editEmployee/{id}")
+//    public String getEditEmployee(@PathVariable("id") Long id, Model model){
+//        EmployeeModel employee = employeeService.findById(id);
+//        model.addAttribute("employeeModel", employee);
+//        return "employee/editEmployee";
+//    }
+//
+//    @PostMapping("/editEmployee/{id}")
+//    public RedirectView postEditEmployee(EmployeeModel employee){
+//        employeeService.updateEmployee(employee);
+//        return new RedirectView("/employee");
+//    }
+//
+//    @PostMapping("/removeEmployee/{id}")
+//    public RedirectView postRemoveEmployee(@PathVariable("id") Long id){
+//        employeeService.removeEmployee(id);
+//        return new RedirectView("/employee");
+//    }
 
 
 }
