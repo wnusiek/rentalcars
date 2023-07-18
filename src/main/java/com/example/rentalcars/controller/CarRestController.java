@@ -26,4 +26,9 @@ public class CarRestController {
     public void add(CarModel car){
         carService.postAddCar(car);
     }
+
+    @GetMapping("/availableCars")
+    public List<CarModel> getAvailableCars(){
+        return carService.getAvailableCars();
+    }
 }
