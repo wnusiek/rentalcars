@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +39,9 @@ public class CarService {
 
 
     public List<CarModel> getAvailableCars(){
-        return getCarList().stream().filter(car -> car.getAvailability().equals(true)).toList();
+        return getCarList().stream()
+                .filter(car -> car.getAvailability() != null)
+                .filter(car -> car.getAvailability() == true)
+                .toList();
     }
 }
