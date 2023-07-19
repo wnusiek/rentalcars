@@ -53,6 +53,13 @@ public class CarService {
                 .toList();
     }
 
+    public List<CarModel> getCarsByFuelType(String fuelType) {
+        return getCarList().stream()
+                .filter(car -> car.getFuelType() != null)
+                .filter(car -> car.getFuelType().equals(fuelType))
+                .toList();
+    }
+  
     public List<CarModel> getCarsByPriceAscending() {
         return getCarList().stream().sorted((car1, car2) -> car1.getPrice().compareTo(car2.getPrice())).toList();
     }
