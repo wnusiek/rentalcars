@@ -5,6 +5,7 @@ import com.example.rentalcars.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -50,5 +51,9 @@ public class CarService {
                 .filter(car -> car.getGearbox() != null)
                 .filter(car -> car.getGearbox().equals(gearbox))
                 .toList();
+    }
+
+    public List<CarModel> getCarsByPriceAscending() {
+        return getCarList().stream().sorted((car1, car2) -> car1.getPrice().compareTo(car2.getPrice())).toList();
     }
 }
