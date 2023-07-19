@@ -44,4 +44,11 @@ public class CarService {
                 .filter(car -> car.getAvailability() == true)
                 .toList();
     }
+
+    public List<CarModel> getCarsByGearbox(String gearbox) {
+        return getCarList().stream()
+                .filter(car -> car.getGearbox() != null)
+                .filter(car -> car.getGearbox().equals(gearbox))
+                .toList();
+    }
 }

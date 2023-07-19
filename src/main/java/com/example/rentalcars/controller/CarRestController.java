@@ -38,4 +38,10 @@ public class CarRestController {
     public List<CarModel> getAvailableCars(){
         return carService.getAvailableCars();
     }
+
+    @GetMapping("/carsByGearbox")
+    public List<CarModel> getCarsByGearbox(String gearbox){
+        return carService.getCarsByGearbox(gearbox);
+    }
+
 }
