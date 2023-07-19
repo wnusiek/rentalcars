@@ -21,18 +21,18 @@ public class RentalModel {
     private Long id;
 
 //    @OneToOne
-//    @Column(name = "employee")
-//    private EmployeeModel employee;
-//
-//    @Column(name = "date_from")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    private Date dateFrom;
-//
+    @Column(name = "employee_id")
+    private Long employeeId;
+
+    @Column(name = "date_of_rental")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateOfRental;
+
 //    @OneToOne
-//    @Column(name = "reservation")
-//    private ReservationModel reservation;
-//
-//    @Column(name = "comments")
-//    private String comments;
+    @Column(name = "reservation_id")
+    private Long reservationId;
+
+    @Column(name = "comments")
+    private String comments;
 
 }
