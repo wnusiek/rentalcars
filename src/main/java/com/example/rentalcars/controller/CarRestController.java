@@ -1,11 +1,13 @@
 package com.example.rentalcars.controller;
 
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -70,5 +72,6 @@ public class CarRestController {
     public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax){
         return carService.getCarsByPriceRange(priceMin,priceMax);
     }
+
 
 }

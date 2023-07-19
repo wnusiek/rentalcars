@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -34,9 +35,13 @@ public class DbInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.ONE, BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "benzyna", "aaa", true));
+        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.ONE, BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "benzyna", "aaa", true));
+        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.ONE, BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "olej", "aaa", true));
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa"));
-        departmentRepository.save((new DepartmentModel(1l, "lublin", Set.of(employee1))));
+        var employee2 = employeeRepository.save(new EmployeeModel(2l, "jan", "nowak", "saaaa"));
+        departmentRepository.save((new DepartmentModel(1l, "lublin", Set.of(employee1), List.of(car1))));
+        departmentRepository.save((new DepartmentModel(2l, "kraków", Set.of(employee2), List.of(car2))));
+
         returnRepository.save(new ReturnModel(1l, 2l, new Date(2023, 07, 16),3l, "bez uszkodzeń"));
         rentalRepository.save(new RentalModel(1l, 1l, new Date(2023, 07, 16),1l, "blablabla"));
         reservationRepository.save(new ReservationModel(1l, 1l, new Date(2023, 07, 20), new Date(2023, 07, 17), BigDecimal.valueOf(100), "Kraków", 2L));

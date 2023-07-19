@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
@@ -32,5 +34,11 @@ public class DepartmentService {
 
     public void removeDepartment(Long id) {
         departmentRepository.deleteById(id);
+    }
+
+    public List<CarModel> getAvailableCarsByDepartment(String city) {
+        return getDepartmentList().stream()
+                .filter(department -> department.getCity().equals(city))
+                .findFirst().get().getCars();
     }
 }

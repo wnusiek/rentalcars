@@ -1,5 +1,6 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,8 @@ public class DepartmentRestController {
         departmentService.removeDepartment(id);
     }
 
-
+    @GetMapping("/availableCarsByDepartment")
+    public List<CarModel> getAvailableCarsByDepartment(String city){
+        return departmentService.getAvailableCarsByDepartment(city);
+    }
 }

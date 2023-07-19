@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -26,10 +28,10 @@ public class DepartmentModel {
     //lista pracowników placówki
     @OneToMany(cascade = CascadeType.ALL)
     private Set<EmployeeModel> employees = new HashSet<>();
-//
+
 //    //lista aktualnie dostępnych aut
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
-//    private Set<CarModel> cars = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CarModel> cars = new ArrayList<>();
 
 
 }

@@ -2,14 +2,12 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
+import com.example.rentalcars.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
