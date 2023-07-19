@@ -44,6 +44,11 @@ public class CarRestController {
         return carService.getCarsByGearbox(gearbox);
     }
 
+    @GetMapping("/carsByMark")
+    public List<CarModel> getCarsByMark(String mark){
+        return carService.getCarsByMark(mark);
+    }
+  
     @GetMapping("carsByFuelType")
     public List<CarModel> getCarsByFuelType(String fuelType){
         return carService.getCarsByFuelType(fuelType);
@@ -53,4 +58,5 @@ public class CarRestController {
     public List<CarModel> getCarsByGearbox(){
         return carService.getCarsByPriceAscending();
     }
+
 }

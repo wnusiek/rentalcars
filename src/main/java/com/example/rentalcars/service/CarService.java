@@ -45,11 +45,18 @@ public class CarService {
                 .filter(car -> car.getAvailability() == true)
                 .toList();
     }
-
+  
     public List<CarModel> getCarsByGearbox(String gearbox) {
         return getCarList().stream()
                 .filter(car -> car.getGearbox() != null)
                 .filter(car -> car.getGearbox().equals(gearbox))
+                .toList();
+    }
+  
+    public List<CarModel> getCarsByMark(String mark) {
+        return getCarList().stream()
+                .filter(car -> car.getMark() != null)
+                .filter(car -> car.getMark().equals(mark))
                 .toList();
     }
 
@@ -63,4 +70,5 @@ public class CarService {
     public List<CarModel> getCarsByPriceAscending() {
         return getCarList().stream().sorted((car1, car2) -> car1.getPrice().compareTo(car2.getPrice())).toList();
     }
+
 }
