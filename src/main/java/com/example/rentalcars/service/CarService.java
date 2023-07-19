@@ -5,6 +5,7 @@ import com.example.rentalcars.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -75,6 +76,10 @@ public class CarService {
 
     public List<CarModel> getCarsByPriceDescending(){
         return getCarList().stream().sorted(Comparator.comparing(CarModel::getPrice).reversed()).toList();
+    }
+
+    public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax){
+        return getCarList().stream().filter(car-> car.getPrice().compareTo(priceMin) >= 0 && car.getPrice().compareTo(priceMax) <= 0).toList();
     }
 
 }
