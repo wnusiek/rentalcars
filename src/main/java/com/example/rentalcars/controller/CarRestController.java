@@ -59,4 +59,10 @@ public class CarRestController {
         return carService.getCarsByPriceAscending();
     }
 
+
+    @GetMapping("/sortCarsByPriceDescending")
+    public List<CarModel> getCarsByPriceDescending(){
+        return carService.getCarsByPriceDescending();
+    }
+
 }
