@@ -22,16 +22,16 @@ public class ReturnModel {
     Long id;
 
 
-//    @Column
-//    private EmployeeModel employee;
+    @Column
+    private Long employeeId;
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfReturn;
 
 
-//    @Column
-//    private ReservationModel reservation;
+    @Column
+    private Long reservationId;
 
     @Column
     private String comments;
