@@ -44,4 +44,11 @@ public class CarService {
                 .filter(car -> car.getAvailability() == true)
                 .toList();
     }
+
+    public List<CarModel> getCarsByMark(String mark) {
+        return getCarList().stream()
+                .filter(car -> car.getMark() != null)
+                .filter(car -> car.getMark().equals(mark))
+                .toList();
+    }
 }
