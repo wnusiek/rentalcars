@@ -3,10 +3,7 @@ package com.example.rentalcars.controller;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.service.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,16 @@ public class CarRestController {
     @PostMapping("/addCar")
     public void add(CarModel car){
         carService.postAddCar(car);
+    }
+
+    @PostMapping("/editCar/{id}")
+    public void edit(CarModel car){
+        carService.updateCar(car);
+    }
+
+    @PostMapping("/removeCar/{id}")
+    public void remove(@PathVariable("id")Long id){
+        carService.removeCar(id);
     }
 
     @GetMapping("/availableCars")
