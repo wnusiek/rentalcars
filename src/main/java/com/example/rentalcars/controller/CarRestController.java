@@ -39,8 +39,14 @@ public class CarRestController {
         return carService.getAvailableCars();
     }
 
+    @GetMapping("/carsByGearbox")
+    public List<CarModel> getCarsByGearbox(String gearbox){
+        return carService.getCarsByGearbox(gearbox);
+    }
+
     @GetMapping("/carsByMark")
     public List<CarModel> getCarsByMark(String mark){
         return carService.getCarsByMark(mark);
     }
+  
 }
