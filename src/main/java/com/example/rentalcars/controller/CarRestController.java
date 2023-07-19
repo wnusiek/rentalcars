@@ -5,6 +5,7 @@ import com.example.rentalcars.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -63,6 +64,11 @@ public class CarRestController {
     @GetMapping("/sortCarsByPriceDescending")
     public List<CarModel> getCarsByPriceDescending(){
         return carService.getCarsByPriceDescending();
+    }
+
+    @GetMapping("/sortCarsByPriceRange")
+    public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax){
+        return carService.getCarsByPriceRange(priceMin,priceMax);
     }
 
 }
