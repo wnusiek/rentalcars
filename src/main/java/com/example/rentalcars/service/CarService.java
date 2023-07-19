@@ -51,4 +51,11 @@ public class CarService {
                 .filter(car -> car.getGearbox().equals(gearbox))
                 .toList();
     }
+
+    public List<CarModel> getCarsByFuelType(String fuelType) {
+        return getCarList().stream()
+                .filter(car -> car.getFuelType() != null)
+                .filter(car -> car.getFuelType().equals(fuelType))
+                .toList();
+    }
 }
