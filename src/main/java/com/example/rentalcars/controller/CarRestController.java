@@ -44,4 +44,8 @@ public class CarRestController {
         return carService.getCarsByGearbox(gearbox);
     }
 
+    @GetMapping("/sortCarsByPriceAscending")
+    public List<CarModel> getCarsByGearbox(){
+        return carService.getCarsByPriceAscending();
+    }
 }
