@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
@@ -38,4 +39,7 @@ public class ReservationModel {
 
     @Column(name = "reception_venue")
     public String receptionVenue;
+
+    @Column(name = "customer_id")
+    public Long customerId;
 }
