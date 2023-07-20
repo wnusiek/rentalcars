@@ -2,12 +2,12 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
-import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
@@ -32,5 +32,11 @@ public class DepartmentService {
 
     public void removeDepartment(Long id) {
         departmentRepository.deleteById(id);
+    }
+
+    public List<CarModel> getAvailableCarsByDepartment(String city) {
+        return getDepartmentList().stream()
+                .filter(department -> department.getCity().equals(city))
+                .findFirst().get().getCars();
     }
 }
