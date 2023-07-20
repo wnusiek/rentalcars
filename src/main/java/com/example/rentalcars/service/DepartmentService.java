@@ -2,13 +2,11 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
-import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
