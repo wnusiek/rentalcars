@@ -1,4 +1,4 @@
-package com.example.rentalcars.controller;
+package com.example.rentalcars.controllers_old;
 
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.service.DepartmentService;
