@@ -39,20 +39,20 @@ public class CarService {
     }
 
 
-    public List<CarModel> getAvailableCars(){
+    public List<CarModel> getAvailableCars() {
         return getCarList().stream()
                 .filter(car -> car.getAvailability() != null)
                 .filter(car -> car.getAvailability() == true)
                 .toList();
     }
-  
+
     public List<CarModel> getCarsByGearbox(String gearbox) {
         return getCarList().stream()
                 .filter(car -> car.getGearbox() != null)
                 .filter(car -> car.getGearbox().equals(gearbox))
                 .toList();
     }
-  
+
     public List<CarModel> getCarsByMark(String mark) {
         return getCarList().stream()
                 .filter(car -> car.getMark() != null)
@@ -66,18 +66,39 @@ public class CarService {
                 .filter(car -> car.getFuelType().equals(fuelType))
                 .toList();
     }
-  
+
     public List<CarModel> getCarsByPriceAscending() {
         return getCarList().stream().sorted((car1, car2) -> car1.getPrice().compareTo(car2.getPrice())).toList();
     }
 
 
-    public List<CarModel> getCarsByPriceDescending(){
+    public List<CarModel> getCarsByPriceDescending() {
         return getCarList().stream().sorted(Comparator.comparing(CarModel::getPrice).reversed()).toList();
     }
 
-    public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax){
-        return getCarList().stream().filter(car-> car.getPrice().compareTo(priceMin) >= 0 && car.getPrice().compareTo(priceMax) <= 0).toList();
+    public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax) {
+        return getCarList().stream().filter(car -> car.getPrice().compareTo(priceMin) >= 0 && car.getPrice().compareTo(priceMax) <= 0).toList();
+    }
+
+    public List<CarModel> getCarsByBodyType (String bodyType) {
+        return getCarList().stream()
+                .filter(car -> car.getBody() != null)
+                .filter(car -> car.getBody().equals(bodyType))
+                .toList();
+    }
+
+    public List<CarModel> getCarsCheaperThan (BigDecimal upperPriceBorder) {
+        return getCarList().stream()
+                .filter(car -> car.getPrice() != null)
+                .filter(car -> car.getPrice().compareTo(upperPriceBorder) < 0)
+                .collect(toList());
+    }
+
+    public List<CarModel> getCarsMoreExpensiveThan (BigDecimal lowerPriceBorder) {
+        return getCarList().stream()
+                .filter(car -> car.getPrice() != null)
+                .filter(car -> car.getPrice().compareTo(lowerPriceBorder) >= 0)
+                .collect(toList());
     }
 
 }

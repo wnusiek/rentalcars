@@ -51,12 +51,12 @@ public class CarRestController {
     public List<CarModel> getCarsByMark(String mark){
         return carService.getCarsByMark(mark);
     }
-  
+
     @GetMapping("carsByFuelType")
     public List<CarModel> getCarsByFuelType(String fuelType){
         return carService.getCarsByFuelType(fuelType);
     }
-      
+
     @GetMapping("/sortCarsByPriceAscending")
     public List<CarModel> getCarsByGearbox(){
         return carService.getCarsByPriceAscending();
@@ -71,6 +71,21 @@ public class CarRestController {
     @GetMapping("/sortCarsByPriceRange")
     public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax){
         return carService.getCarsByPriceRange(priceMin,priceMax);
+    }
+
+    @GetMapping("/sortCarByBodyType")
+    public List<CarModel> getCarsByBodyType (String bodyType) {
+        return carService.getCarsByBodyType(bodyType);
+    }
+
+    @GetMapping("/sortCarByUpperPriceBorder")
+    public List<CarModel> getCarsCheaperThan (BigDecimal upperPriceBorder) {
+        return carService.getCarsCheaperThan(upperPriceBorder);
+    }
+
+    @GetMapping("/sortCarByLowerPriceBorder")
+    public List<CarModel> getCarsMoreExpensiveThan (BigDecimal lowerPriceBorder) {
+        return carService.getCarsMoreExpensiveThan(lowerPriceBorder);
     }
 
 
