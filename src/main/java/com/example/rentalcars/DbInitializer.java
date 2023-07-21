@@ -2,11 +2,16 @@ package com.example.rentalcars;
 
 import com.example.rentalcars.model.*;
 import com.example.rentalcars.repository.*;
+import com.example.rentalcars.service.CarService;
+import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -35,8 +40,8 @@ public class DbInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", "automatyczna", 5, 4, "benzyna", "aaa", true));
-        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "olej", "aaa", true));
+        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", "automatyczna", 5, 4, "benzyna", "aaa", true,"Red",128000, 2004));
+        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "olej", "aaa", true,"Black",45000, 2019));
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa"));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "jan", "nowak", "saaaa"));
         departmentRepository.save((new DepartmentModel(1l, "lublin", Set.of(employee1), List.of(car1))));

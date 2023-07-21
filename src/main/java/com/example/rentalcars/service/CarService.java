@@ -4,9 +4,11 @@ import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -100,5 +102,56 @@ public class CarService {
                 .filter(car -> car.getPrice().compareTo(lowerPriceBorder) >= 0)
                 .collect(toList());
     }
+
+    public List<CarModel> getCarsWithHigherMileageThan(Integer mileage){
+        return getCarList().stream()
+                .filter(car -> car.getMileage() != null)
+                .filter(car -> car.getMileage().compareTo(mileage) >= 0)
+                .toList();
+    }
+
+    public List<CarModel> getCarsWithLowerMileageThan(Integer mileage){
+        return getCarList().stream()
+                .filter(car -> car.getMileage() != null)
+                .filter(car -> car.getMileage().compareTo(mileage) <= 0)
+                .toList();
+    }
+
+    public List<CarModel> getCarsWithinGivenMileage(Integer maxMileage, Integer minMileage){
+        return getCarList().stream()
+                .filter(car -> car.getMileage() != null)
+                .filter(car -> car.getMileage().compareTo(minMileage) <= 0 && car.getMileage().compareTo(maxMileage) >= 0)
+                .toList();
+    }
+
+    public List<CarModel> getCarsByColor(String color){
+        return getCarList().stream()
+                .filter(car -> car.getColor() != null)
+                .filter(car -> car.getColor().equals(color))
+                .toList();
+    }
+
+    public List<CarModel> getCarsByProductionDate(Integer productionDate){
+        return getCarList().stream()
+                .filter(car -> car.getProductionDate() != null)
+                .filter(car -> car.getProductionDate().equals(productionDate))
+                .toList();
+    }
+
+    public List<CarModel> getCarsNewerThan(Integer productionDate){
+        return getCarList().stream()
+                .filter(car ->car.getProductionDate() != null)
+                .filter(car -> car.getProductionDate().compareTo(productionDate)>=0)
+                .toList();
+    }
+
+    public List<CarModel> getCarsOlderThan(Integer productionDate){
+        return getCarList().stream()
+                .filter(car ->car.getProductionDate() != null)
+                .filter(car -> car.getProductionDate().compareTo(productionDate)<=0)
+                .toList();
+    }
+
+
 
 }
