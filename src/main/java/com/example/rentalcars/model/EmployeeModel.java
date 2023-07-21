@@ -17,14 +17,15 @@ public class EmployeeModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
+    @Column(name = "name")
     public String name;
 
-    @Column
+    @Column(name = "surname")
     public String surname;
 
-    @Column
+    @Column(name = "position")
     public String position;
 
-
+    @Column(name = "department_id")
+    public Long departmentId;
 }
