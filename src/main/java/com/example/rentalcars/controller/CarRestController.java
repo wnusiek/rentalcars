@@ -3,6 +3,7 @@ package com.example.rentalcars.controller;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.service.CarService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,6 +87,41 @@ public class CarRestController {
     @GetMapping("/sortCarByLowerPriceBorder")
     public List<CarModel> getCarsMoreExpensiveThan (BigDecimal lowerPriceBorder) {
         return carService.getCarsMoreExpensiveThan(lowerPriceBorder);
+    }
+
+    @GetMapping("/getCarsWithHigherMileageThan")
+    public List<CarModel> getCarsWithHigherMileageThan (Integer mileage){
+        return carService.getCarsWithHigherMileageThan(mileage);
+    }
+
+    @GetMapping("/getCarsWithLowerMileageThan")
+    public List<CarModel> getCarsWithLowerMileageThan(Integer mileage){
+        return carService.getCarsWithLowerMileageThan(mileage);
+    }
+
+    @GetMapping("getCarsWithinGivenMileage")
+    public List<CarModel> getCarsWithinGivenMileage(Integer minMileage, Integer maxMileage){
+        return carService.getCarsWithinGivenMileage(minMileage, maxMileage);
+    }
+
+    @GetMapping("getCarsByColor")
+    public List<CarModel> getCarsByColor(String color){
+        return carService.getCarsByColor(color);
+    }
+
+    @GetMapping("getCarsByProductionDate")
+    public List<CarModel>getCarsByProductionDate(Integer productionDate){
+        return carService.getCarsByProductionDate(productionDate);
+    }
+
+    @GetMapping("/getCarsNewerThan")
+    public  List<CarModel> getCarsNewerThan (Integer productionDate){
+        return carService.getCarsNewerThan(productionDate);
+    }
+
+    @GetMapping("/getCarsOlderThan")
+    public List<CarModel> getCarsOlderThan(Integer productionDate){
+        return carService.getCarsOlderThan(productionDate);
     }
 
 

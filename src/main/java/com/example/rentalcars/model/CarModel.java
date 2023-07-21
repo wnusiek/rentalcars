@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,5 +55,15 @@ public class CarModel {
 
     @Column(name = "availability")
     private Boolean availability;
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "mileage")
+    private Integer mileage;
+
+    @Column(name = "production_date")
+    private Integer productionDate;
+
 
 }
