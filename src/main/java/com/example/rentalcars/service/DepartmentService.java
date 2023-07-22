@@ -2,7 +2,9 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
+import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.DepartmentRepository;
+import com.example.rentalcars.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
+
+    private final EmployeeRepository employeeRepository;
 
     private final DepartmentRepository departmentRepository;
 
@@ -39,4 +43,6 @@ public class DepartmentService {
                 .filter(department -> department.getCity().equals(city))
                 .findFirst().get().getCars();
     }
+
+
 }

@@ -25,6 +25,9 @@ public class DepartmentModel {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "address")
+    private String address;
+
     //lista pracowników placówki
     @OneToMany(cascade = CascadeType.ALL)
     private Set<EmployeeModel> employees = new HashSet<>();
@@ -34,4 +37,9 @@ public class DepartmentModel {
     private List<CarModel> cars = new ArrayList<>();
 
 
+    public DepartmentModel(Long id, String city) {
+        this.id = id;
+        this.city = city;
+
+    }
 }
