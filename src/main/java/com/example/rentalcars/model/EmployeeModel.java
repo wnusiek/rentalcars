@@ -26,6 +26,6 @@ public class EmployeeModel {
     @Column(name = "position")
     public String position;
 
-    @Column(name = "department_id")
-    public Long departmentId;
+    @ManyToOne
+    public DepartmentModel departmentId;
 }
