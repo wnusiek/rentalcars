@@ -23,8 +23,8 @@ public class ReservationModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "car_id")
-    private Long carId;
+    @ManyToOne
+    private CarModel carModel;
 
     @Column(name = "date_to")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
