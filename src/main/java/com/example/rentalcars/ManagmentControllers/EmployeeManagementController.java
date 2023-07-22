@@ -1,4 +1,4 @@
-package com.example.rentalcars.controller;
+package com.example.rentalcars.ManagmentControllers;
 
 import com.example.rentalcars.repository.DepartmentRepository;
 import com.example.rentalcars.repository.EmployeeRepository;

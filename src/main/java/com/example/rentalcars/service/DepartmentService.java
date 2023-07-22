@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.DTO.DepartmentDTO;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
@@ -24,8 +25,8 @@ public class DepartmentService {
         departmentRepository.save(department);
     }
 
-    public List<DepartmentModel> getDepartmentList() {
-        return departmentRepository.findAll();
+    public List<DepartmentDTO> getDepartmentList() {
+        return departmentRepository.findAll().stream().map(i -> new DepartmentDTO(i.getCity())).toList();
     }
 
     public DepartmentModel findById(Long id) {
@@ -40,11 +41,11 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
-    public List<CarModel> getAvailableCarsByDepartment(String city) {
-        return getDepartmentList().stream()
-                .filter(department -> department.getCity().equals(city))
-                .findFirst().get().getCars();
-    }
+//    public List<CarModel> getAvailableCarsByDepartment(String city) {
+//        return getDepartmentList().stream()
+//                .filter(department -> department.getCity().equals(city))
+//                .findFirst().get().getCars();
+//    }
 
     public Set<EmployeeModel> getDepartmentEmployees(Long department_id){
         return departmentRepository.findAll().stream()

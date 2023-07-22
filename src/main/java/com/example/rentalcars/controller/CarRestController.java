@@ -18,7 +18,7 @@ public class CarRestController {
 
     private final CarService carService;
 
-    @GetMapping("/car")
+    @GetMapping("/cars")
     public List<CarModel> get(){
         return carService.getCarList();
     }

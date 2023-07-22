@@ -1,5 +1,6 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.DTO.DepartmentDTO;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
@@ -14,10 +15,11 @@ import java.util.Set;
 @RestController
 //@RequestMapping("/department")
 public class DepartmentRestController {
+
     private final DepartmentService departmentService;
 
-    @GetMapping("department")
-    public List<DepartmentModel> get() {
+    @GetMapping("departments")
+    public List<DepartmentDTO> get() {
         return departmentService.getDepartmentList();
 
     }
@@ -36,10 +38,10 @@ public class DepartmentRestController {
         departmentService.removeDepartment(id);
     }
 
-    @GetMapping("/availableCarsByDepartment")
-    public List<CarModel> getAvailableCarsByDepartment(String city){
-        return departmentService.getAvailableCarsByDepartment(city);
-    }
+//    @GetMapping("/availableCarsByDepartment")
+//    public List<CarModel> getAvailableCarsByDepartment(String city){
+//        return departmentService.getAvailableCarsByDepartment(city);
+//    }
 
     @GetMapping("/getDepartmentEmployees/{id}")
     public Set<EmployeeModel> getDepartmentEmployees(@PathVariable("id") Long id){

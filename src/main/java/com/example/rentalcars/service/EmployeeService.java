@@ -1,6 +1,6 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.controller.EmployeeDto;
+import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
