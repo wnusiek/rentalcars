@@ -2,11 +2,13 @@ package com.example.rentalcars.controller;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
+import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,5 +39,10 @@ public class DepartmentRestController {
     @GetMapping("/availableCarsByDepartment")
     public List<CarModel> getAvailableCarsByDepartment(String city){
         return departmentService.getAvailableCarsByDepartment(city);
+    }
+
+    @GetMapping("/getDepartmentEmployees/{id}")
+    public Set<EmployeeModel> getDepartmentEmployees(@PathVariable("id") Long id){
+        return departmentService.getDepartmentEmployees(id);
     }
 }

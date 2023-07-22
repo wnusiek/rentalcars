@@ -27,5 +27,5 @@ public class EmployeeModel {
     public String position;
 
     @ManyToOne
-    public DepartmentModel departmentId;
+    public DepartmentModel department;
 }

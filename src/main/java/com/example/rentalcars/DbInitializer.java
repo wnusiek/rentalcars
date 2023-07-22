@@ -46,7 +46,6 @@ public class DbInitializer implements ApplicationRunner {
         var dep1 = departmentRepository.save((new DepartmentModel(1l, "lublin")));
         var dep2 =departmentRepository.save((new DepartmentModel(2l, "kraków" )));
 
-
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa", dep1));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "jan", "nowak", "saaaa", dep2));
 
