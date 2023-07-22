@@ -23,9 +23,7 @@ public class EmployeeManagementController {
             var e = employee.get();
             var d = department.get();
             d.getEmployees().add(e);
-            e.setDepartment(d);
             departmentRepository.save(d);
-            employeeRepository.save(e);
         }
     }
 }

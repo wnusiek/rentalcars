@@ -30,11 +30,11 @@ public class DepartmentModel {
     private String address;
 
     //lista pracowników placówki
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<EmployeeModel> employees = new HashSet<>();
 
 //    //lista aktualnie dostępnych aut
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CarModel> cars = new ArrayList<>();
 
 

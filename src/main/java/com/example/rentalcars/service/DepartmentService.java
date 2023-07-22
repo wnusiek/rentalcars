@@ -47,7 +47,10 @@ public class DepartmentService {
     }
 
     public Set<EmployeeModel> getDepartmentEmployees(Long department_id){
-        return employeeRepository.findAll().stream().filter(employee -> employee.getDepartment().getId().equals(department_id)).collect(Collectors.toSet());
+        return departmentRepository.findAll().stream()
+                .filter(department -> department.getId() != null && department.getId().equals(department_id))
+                .map(DepartmentModel::getEmployees)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
-
 }

@@ -42,11 +42,11 @@ public class DbInitializer implements ApplicationRunner {
         var dep1 = departmentRepository.save((new DepartmentModel(1l, "lublin")));
         var dep2 = departmentRepository.save((new DepartmentModel(2l, "kraków" )));
 
-        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", "automatyczna", 5, 4, "benzyna", "aaa", true,"Red",128000, 2004, dep1));
-        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "olej", "aaa", true,"Black",45000, 2019, dep2));
+        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", "automatyczna", 5, 4, "benzyna", "aaa", true,"Red",128000, 2004));
+        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "olej", "aaa", true,"Black",45000, 2019));
 
-        var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa", dep1));
-        var employee2 = employeeRepository.save(new EmployeeModel(2l, "jan", "nowak", "saaaa", dep2));
+        var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa"));
+        var employee2 = employeeRepository.save(new EmployeeModel(2l, "jan", "nowak", "saaaa"));
 
         returnRepository.save(new ReturnModel(1l, 2l, new Date(2023, 07, 16),3l, "bez uszkodzeń"));
         rentalRepository.save(new RentalModel(1l, 1l, new Date(2023, 07, 16),1l, "blablabla"));
