@@ -65,5 +65,6 @@ public class CarModel {
     @Column(name = "production_date")
     private Integer productionDate;
 
-
+    @ManyToOne
+    public DepartmentModel department;
 }

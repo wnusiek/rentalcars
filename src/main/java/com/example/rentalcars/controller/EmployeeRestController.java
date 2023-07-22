@@ -16,7 +16,7 @@ public class EmployeeRestController {
     private final EmployeeService employeeService;
 
     @GetMapping("employees")
-    public List<EmployeeModel> get() {
+    public List<EmployeeDto> get() {
         return employeeService.getEmployeeList();
     }
 

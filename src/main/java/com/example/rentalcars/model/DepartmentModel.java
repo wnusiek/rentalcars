@@ -22,6 +22,7 @@ public class DepartmentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name = "city")
     private String city;
 
@@ -29,11 +30,11 @@ public class DepartmentModel {
     private String address;
 
     //lista pracowników placówki
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
     private Set<EmployeeModel> employees = new HashSet<>();
 
 //    //lista aktualnie dostępnych aut
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
     private List<CarModel> cars = new ArrayList<>();
 
 
