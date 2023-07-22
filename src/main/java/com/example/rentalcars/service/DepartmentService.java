@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +46,8 @@ public class DepartmentService {
                 .findFirst().get().getCars();
     }
 
+    public Set<EmployeeModel> getDepartmentEmployees(Long department_id){
+        return employeeRepository.findAll().stream().filter(employee -> employee.getDepartment().getId().equals(department_id)).collect(Collectors.toSet());
+    }
 
 }
