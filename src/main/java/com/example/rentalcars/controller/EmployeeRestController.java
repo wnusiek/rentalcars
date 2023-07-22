@@ -1,7 +1,7 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.EmployeeModel;
-import com.example.rentalcars.repository.EmployeeRepository;
 import com.example.rentalcars.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

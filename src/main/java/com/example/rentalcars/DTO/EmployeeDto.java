@@ -1,4 +1,4 @@
-package com.example.rentalcars.controller;
+package com.example.rentalcars.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
