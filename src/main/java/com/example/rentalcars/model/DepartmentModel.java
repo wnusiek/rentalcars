@@ -31,10 +31,12 @@ public class DepartmentModel {
 
     //lista pracowników placówki
     @OneToMany(cascade = CascadeType.ALL)
+    @Column
     private Set<EmployeeModel> employees = new HashSet<>();
 
 //    //lista aktualnie dostępnych aut
     @OneToMany(cascade = CascadeType.ALL)
+    @Column
     private List<CarModel> cars = new ArrayList<>();
 
 
