@@ -49,7 +49,7 @@ public class DbInitializer implements ApplicationRunner {
 
         returnRepository.save(new ReturnModel(1l, 2l, new Date(2023, 07, 16),3l, "bez uszkodzeń"));
         rentalRepository.save(new RentalModel(1l, 1l, new Date(2023, 07, 16),1l, "blablabla"));
-        reservationRepository.save(new ReservationModel(1l, 1l, new Date(2023, 07, 20), new Date(2023, 07, 17), BigDecimal.valueOf(100), "Kraków", 2L));
+        reservationRepository.save(new ReservationModel(1l, car1, new Date(2023, 07, 20), new Date(2023, 07, 17), BigDecimal.valueOf(100), "Kraków", 2L));
         carRentalRepository.save(new CarRentalModel(1l, "SDACarRental", "SDACarRentalDomain", "SDACarRentalAddress", "SDACarRentalOwner", "SDACarRentalLogotype"));
 
     }
