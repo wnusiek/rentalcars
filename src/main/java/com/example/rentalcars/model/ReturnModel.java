@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class ReturnModel {
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateOfReturn;
+    private LocalDate dateOfReturn;
 
 
     @Column
