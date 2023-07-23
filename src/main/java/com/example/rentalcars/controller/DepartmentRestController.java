@@ -38,11 +38,7 @@ public class DepartmentRestController {
     public void remove (@PathVariable("id") Long id) {
         departmentService.removeDepartment(id);
     }
-
-//    @GetMapping("/availableCarsByDepartment")
-//    public List<CarModel> getAvailableCarsByDepartment(String city){
-//        return departmentService.getAvailableCarsByDepartment(city);
-//    }
+    
 
     @GetMapping("/getDepartmentEmployees/{id}")
     public Set<EmployeeModel> getDepartmentEmployees(@PathVariable("id") Long id){
