@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class RentalModel {
 
     @Column(name = "date_of_rental")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateOfRental;
+    private LocalDate dateOfRental;
 
 //    @OneToOne
     @Column(name = "reservation_id")

@@ -1,10 +1,12 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,6 +34,14 @@ public class ReservationRestController {
     @PostMapping("/removeReservation/{id}")
     public void removeReservation(@PathVariable("id") Long id) {
         reservationService.removeReservation(id);
+    }
+
+    @GetMapping ("/getCarStatusByDateRange/{id}")
+    public CarStatus getCarStatusByDateRange (@PathVariable("id") Long id, LocalDate dateFrom, LocalDate dateTo) {
+        if (reservationService.getCarAvailabilityByDateRange(id, dateFrom, dateTo)) {
+            return CarStatus.AVAILABLE;
+        }
+        return CarStatus.UNAVAILABLE;
     }
 }
 

@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Date;
 
@@ -28,11 +29,11 @@ public class ReservationModel {
 
     @Column(name = "date_to")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date dateTo;
+    public LocalDate dateTo;
 
     @Column(name = "date_from")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date dateFrom;
+    public LocalDate dateFrom;
 
     @Column(name = "price")
     public BigDecimal price;

@@ -1,18 +1,22 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.ReservationModel;
+import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.StyledEditorKit;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final CarRepository carRepository;
 
     public void addReservation(ReservationModel reservation){
         reservationRepository.save(reservation);
@@ -30,7 +34,23 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public ReservationModel findbyId(Long id){
+    public ReservationModel findById(Long id){
         return reservationRepository.findById(id).orElse(null);
+    }
+
+    private List<ReservationModel> getReservationListByCarId (Long carId) {
+        return reservationRepository.findAll().stream()
+                .filter(r -> r.getCarModel().getId().equals(carId))
+                .collect(Collectors.toList());
+    }
+
+    public Boolean getCarAvailabilityByDateRange (Long carId, LocalDate dateFrom, LocalDate dateTo) {
+        var reservationList = getReservationListByCarId(carId);
+        for (ReservationModel r:reservationList) {
+            if (dateFrom.isAfter(r.getDateTo()) || dateTo.isBefore(r.getDateFrom())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
