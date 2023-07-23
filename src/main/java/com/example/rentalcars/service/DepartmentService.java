@@ -1,9 +1,11 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.DTO.CarDTO;
 import com.example.rentalcars.DTO.DepartmentDTO;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
+import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
 import com.example.rentalcars.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,14 @@ public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
 
+    private final CarRepository carRepository;
+
     public void postAddDepartment(DepartmentModel department) {
         departmentRepository.save(department);
     }
 
     public List<DepartmentDTO> getDepartmentList() {
-        return departmentRepository.findAll().stream().map(i -> new DepartmentDTO(i.getCity())).toList();
+        return departmentRepository.findAll().stream().map(i -> new DepartmentDTO(i.getId(), i.getCity(),i.getCars())).toList();
     }
 
     public DepartmentModel findById(Long id) {
@@ -41,17 +45,22 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
-//    public List<CarModel> getAvailableCarsByDepartment(String city) {
-//        return getDepartmentList().stream()
-//                .filter(department -> department.getCity().equals(city))
-//                .findFirst().get().getCars();
-//    }
 
-    public Set<EmployeeModel> getDepartmentEmployees(Long department_id){
+    public Set<EmployeeModel> getDepartmentEmployees(Long departmentId){
         return departmentRepository.findAll().stream()
-                .filter(department -> department.getId() != null && department.getId().equals(department_id))
+                .filter(department -> department.getId() != null && department.getId().equals(departmentId))
                 .map(DepartmentModel::getEmployees)
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet());
     }
+
+    public List<CarModel> getAllCarsByDepartment(Long departmentId) {
+        return departmentRepository.findAll().stream()
+                .filter(department -> department.getId() != null && department.getId().equals(departmentId))
+                .map(DepartmentModel::getCars)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
+    }
+
 }

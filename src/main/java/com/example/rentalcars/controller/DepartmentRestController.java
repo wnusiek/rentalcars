@@ -4,6 +4,7 @@ import com.example.rentalcars.DTO.DepartmentDTO;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
+import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,10 @@ public class DepartmentRestController {
     @GetMapping("/getDepartmentEmployees/{id}")
     public Set<EmployeeModel> getDepartmentEmployees(@PathVariable("id") Long id){
         return departmentService.getDepartmentEmployees(id);
+    }
+
+    @GetMapping("/getAllCarsByDepartment/{id}")
+    public List<CarModel> getAllCarsByDepartment(@PathVariable("id") Long departmentId){
+        return departmentService.getAllCarsByDepartment(departmentId);
     }
 }
