@@ -1,5 +1,9 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.enums.BodyType;
+import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.FuelType;
+import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.service.CarService;
@@ -43,8 +47,13 @@ public class CarRestController {
         return carService.getAvailableCars();
     }
 
+    @PostMapping("/setCarStatus/{id}/{carStatus}")
+    public void setCarStatus(@PathVariable Long id, @PathVariable CarStatus carStatus){
+        carService.setCarStatus(id, carStatus);
+    }
+
     @GetMapping("/carsByGearbox")
-    public List<CarModel> getCarsByGearbox(String gearbox){
+    public List<CarModel> getCarsByGearbox(GearboxType gearbox){
         return carService.getCarsByGearbox(gearbox);
     }
 
@@ -54,7 +63,7 @@ public class CarRestController {
     }
 
     @GetMapping("carsByFuelType")
-    public List<CarModel> getCarsByFuelType(String fuelType){
+    public List<CarModel> getCarsByFuelType(FuelType fuelType){
         return carService.getCarsByFuelType(fuelType);
     }
 
@@ -74,7 +83,7 @@ public class CarRestController {
     }
 
     @GetMapping("/sortCarByBodyType")
-    public List<CarModel> getCarsByBodyType (String bodyType) {
+    public List<CarModel> getCarsByBodyType (BodyType bodyType) {
         return carService.getCarsByBodyType(bodyType);
     }
 

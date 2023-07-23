@@ -1,5 +1,9 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.enums.BodyType;
+import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.FuelType;
+import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
@@ -44,11 +48,20 @@ public class CarService {
     public List<CarModel> getAvailableCars() {
         return getCarList().stream()
                 .filter(car -> car.getAvailability() != null)
-                .filter(car -> car.getAvailability() == true)
+                .filter(car -> car.getAvailability().equals(CarStatus.AVAILABLE))
                 .toList();
     }
 
-    public List<CarModel> getCarsByGearbox(String gearbox) {
+    public void setCarStatus(Long id, CarStatus carStatus) {
+        var car = carRepository.findById(id);
+        if (car.isPresent()){
+            var c = car.get();
+            c.setAvailability(carStatus);
+            carRepository.save(c);
+        }
+    }
+
+    public List<CarModel> getCarsByGearbox(GearboxType gearbox) {
         return getCarList().stream()
                 .filter(car -> car.getGearbox() != null)
                 .filter(car -> car.getGearbox().equals(gearbox))
@@ -62,7 +75,7 @@ public class CarService {
                 .toList();
     }
 
-    public List<CarModel> getCarsByFuelType(String fuelType) {
+    public List<CarModel> getCarsByFuelType(FuelType fuelType) {
         return getCarList().stream()
                 .filter(car -> car.getFuelType() != null)
                 .filter(car -> car.getFuelType().equals(fuelType))
@@ -70,7 +83,7 @@ public class CarService {
     }
 
     public List<CarModel> getCarsByPriceAscending() {
-        return getCarList().stream().sorted((car1, car2) -> car1.getPrice().compareTo(car2.getPrice())).toList();
+        return getCarList().stream().sorted(Comparator.comparing(CarModel::getPrice)).toList();
     }
 
 
@@ -82,7 +95,7 @@ public class CarService {
         return getCarList().stream().filter(car -> car.getPrice().compareTo(priceMin) >= 0 && car.getPrice().compareTo(priceMax) <= 0).toList();
     }
 
-    public List<CarModel> getCarsByBodyType (String bodyType) {
+    public List<CarModel> getCarsByBodyType (BodyType bodyType) {
         return getCarList().stream()
                 .filter(car -> car.getBody() != null)
                 .filter(car -> car.getBody().equals(bodyType))
