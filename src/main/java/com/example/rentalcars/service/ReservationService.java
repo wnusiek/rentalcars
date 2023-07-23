@@ -1,5 +1,7 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.DTO.CarDTO;
+import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.ReservationRepository;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.StyledEditorKit;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,4 +56,17 @@ public class ReservationService {
         }
         return false;
     }
+
+    public List<CarModel> getAvailableCarsByDateRange (LocalDate dateFrom, LocalDate dateTo) {
+        List<CarModel> availableCarList = new ArrayList<>();
+        List<CarModel> cars = carRepository.findAll();
+
+        for (CarModel c: cars) {
+            if (getCarAvailabilityByDateRange(c.getId(), dateFrom, dateTo)){
+                availableCarList.add(c);
+            }
+        }
+        return availableCarList;
+    }
+
 }

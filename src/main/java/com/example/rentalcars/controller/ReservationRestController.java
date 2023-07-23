@@ -1,6 +1,7 @@
 package com.example.rentalcars.controller;
 
 import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,11 @@ public class ReservationRestController {
         }
         return CarStatus.UNAVAILABLE;
     }
+
+    @GetMapping ("/getAvailableCarsByDateRange")
+    public List<CarModel> getAvailableCarsByDateRange (LocalDate dateFrom, LocalDate dateTo) {
+        return reservationService.getAvailableCarsByDateRange(dateFrom, dateTo);
+    }
+
 }
 
