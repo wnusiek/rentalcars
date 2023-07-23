@@ -27,13 +27,13 @@ public class ReservationModel {
     @ManyToOne
     private CarModel carModel;
 
-    @Column(name = "date_to")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public LocalDate dateTo;
-
     @Column(name = "date_from")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate dateFrom;
+
+    @Column(name = "date_to")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public LocalDate dateTo;
 
     @Column(name = "price")
     public BigDecimal price;
