@@ -1,5 +1,8 @@
 package com.example.rentalcars;
 
+import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.FuelType;
+import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.*;
 import com.example.rentalcars.repository.*;
 import com.example.rentalcars.service.CarService;
@@ -42,8 +45,8 @@ public class DbInitializer implements ApplicationRunner {
         var dep1 = departmentRepository.save((new DepartmentModel(1l, "lublin")));
         var dep2 = departmentRepository.save((new DepartmentModel(2l, "kraków" )));
 
-        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", "automatyczna", 5, 4, "benzyna", "aaa", true,"Red",128000, 2004));
-        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", "automatyczna", 5, 4, "olej", "aaa", true,"Black",45000, 2019));
+        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE,"Red",128000, 2004));
+        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE,"Black",45000, 2019));
 
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa"));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "karol", "nowak", "saaaa"));

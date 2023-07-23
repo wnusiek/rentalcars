@@ -1,5 +1,8 @@
 package com.example.rentalcars.model;
 
+import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.FuelType;
+import com.example.rentalcars.enums.GearboxType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +42,7 @@ public class CarModel {
     private String body;
 
     @Column(name = "gearbox")
-    private String gearbox;
+    private GearboxType gearbox;
 
     @Column(name = "number_of_seats")
     private Integer numberOfSeats;
@@ -48,13 +51,13 @@ public class CarModel {
     private Integer numberOfDoors;
 
     @Column(name = "fuel_type")
-    private String fuelType;
+    private FuelType fuelType;
 
     @Column(name = "trunk")
     private String trunk;
 
     @Column(name = "availability")
-    private Boolean availability;
+    private CarStatus availability;
 
     @Column(name = "color")
     private String color;
