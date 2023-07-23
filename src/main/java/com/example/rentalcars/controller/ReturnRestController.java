@@ -1,18 +1,17 @@
 package com.example.rentalcars.controller;
 
-import com.example.rentalcars.model.DepartmentModel;
-import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.service.ReturnService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-//@RequestMapping("/return")
 public class ReturnRestController {
 
     private final ReturnService returnService;
@@ -33,7 +32,7 @@ public class ReturnRestController {
     }
 
     @PostMapping("removeReturn/{id}")
-    public void removeReturn(@PathVariable("id") Long id){
+    public void removeReturn(@PathVariable("id") Long id) {
         returnService.deleteReturn(id);
     }
 }

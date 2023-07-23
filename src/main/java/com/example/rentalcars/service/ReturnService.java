@@ -13,23 +13,23 @@ public class ReturnService {
 
     private final ReturnRepository returnRepository;
 
-    public void addReturn(ReturnModel returnModel){
+    public void addReturn(ReturnModel returnModel) {
         returnRepository.save(returnModel);
     }
 
-    public List<ReturnModel> getReturnModelList(){
+    public List<ReturnModel> getReturnModelList() {
         return returnRepository.findAll();
     }
 
-    public void updateReturn(ReturnModel returnModel){
+    public void updateReturn(ReturnModel returnModel) {
         returnRepository.save(returnModel);
     }
 
-    public void deleteReturn(Long id){
+    public void deleteReturn(Long id) {
         returnRepository.deleteById(id);
     }
 
-    public ReturnModel findById(Long id){
+    public ReturnModel findById(Long id) {
         return returnRepository.findById(id).orElse(null);
     }
 

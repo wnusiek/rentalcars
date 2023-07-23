@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class CustomerModel {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,14 +40,6 @@ public class CustomerModel {
 
     @Column(name = "zip_code")
     private String zipCode;
-
-
-
-
-
-
-
-
 
 
 }

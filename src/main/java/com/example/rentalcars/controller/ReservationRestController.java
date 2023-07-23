@@ -5,14 +5,16 @@ import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-//@RequestMapping("/reservation")
 public class ReservationRestController {
 
     private final ReservationService reservationService;
@@ -37,16 +39,16 @@ public class ReservationRestController {
         reservationService.removeReservation(id);
     }
 
-    @GetMapping ("/getCarStatusByDateRange/{id}")
-    public CarStatus getCarStatusByDateRange (@PathVariable("id") Long id, LocalDate dateFrom, LocalDate dateTo) {
+    @GetMapping("/getCarStatusByDateRange/{id}")
+    public CarStatus getCarStatusByDateRange(@PathVariable("id") Long id, LocalDate dateFrom, LocalDate dateTo) {
         if (reservationService.getCarAvailabilityByDateRange(id, dateFrom, dateTo)) {
             return CarStatus.AVAILABLE;
         }
         return CarStatus.UNAVAILABLE;
     }
 
-    @GetMapping ("/getAvailableCarsByDateRange")
-    public List<CarModel> getAvailableCarsByDateRange (LocalDate dateFrom, LocalDate dateTo) {
+    @GetMapping("/getAvailableCarsByDateRange")
+    public List<CarModel> getAvailableCarsByDateRange(LocalDate dateFrom, LocalDate dateTo) {
         return reservationService.getAvailableCarsByDateRange(dateFrom, dateTo);
     }
 

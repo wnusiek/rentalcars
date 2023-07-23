@@ -1,8 +1,6 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
-import com.example.rentalcars.repository.DepartmentRepository;
 import com.example.rentalcars.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

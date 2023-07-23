@@ -5,19 +5,12 @@ import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.*;
 import com.example.rentalcars.repository.*;
-import com.example.rentalcars.service.CarService;
-import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 @Component
 public class DbInitializer implements ApplicationRunner {
@@ -28,16 +21,16 @@ public class DbInitializer implements ApplicationRunner {
     private final RentalRepository rentalRepository;
     private final ReservationRepository reservationRepository;
 
-    private final CarRentalRepository carRentalRepository;
+    private final CompanyRepository companyRepository;
 
-    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, CarRentalRepository carRentalRepository) {
+    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, CompanyRepository companyRepository) {
         this.carRepository = carRepository;
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.returnRepository = returnRepository;
         this.rentalRepository = rentalRepository;
         this.reservationRepository = reservationRepository;
-        this.carRentalRepository = carRentalRepository;
+        this.companyRepository = companyRepository;
     }
 
     @Override
@@ -59,7 +52,7 @@ public class DbInitializer implements ApplicationRunner {
         reservationRepository.save(new ReservationModel(2l, car2, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 8, 25), BigDecimal.valueOf(100), "Kraków", 2L));
         reservationRepository.save(new ReservationModel(3l, car3, LocalDate.of(2023, 6, 20), LocalDate.of(2023, 6, 25), BigDecimal.valueOf(100), "Kraków", 2L));
         reservationRepository.save(new ReservationModel(4l, car4, LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), BigDecimal.valueOf(100), "Kraków", 2L));
-        carRentalRepository.save(new CarRentalModel(1l, "SDACarRental", "SDACarRentalDomain", "SDACarRentalAddress", "SDACarRentalOwner", "SDACarRentalLogotype"));
+        companyRepository.save(new CompanyModel(1l, "SDACarRental", "SDACarRentalDomain", "SDACarRentalAddress", "SDACarRentalOwner", "SDACarRentalLogotype"));
 
     }
 }

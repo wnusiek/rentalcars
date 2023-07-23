@@ -19,7 +19,7 @@ public class EmployeeService {
     }
 
     public List<EmployeeDto> getEmployeeList() {
-        return employeeRepository.findAll().stream().map(i-> new EmployeeDto(i.getName())).toList();
+        return employeeRepository.findAll().stream().map(i -> new EmployeeDto(i.getName())).toList();
     }
 
     public EmployeeModel findById(Long id) {
