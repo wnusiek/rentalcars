@@ -4,13 +4,15 @@ import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping("/employee")
 public class EmployeeRestController {
 
     private final EmployeeService employeeService;

@@ -1,7 +1,5 @@
 package com.example.rentalcars.model;
 
-import com.example.rentalcars.service.DepartmentService;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,16 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-public class CarRentalModel {
+public class CompanyModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +32,5 @@ public class CarRentalModel {
 
     @Column(name = "car_rental_logotype")
     private String carRentalLogotype;
-
-/*    @OneToMany
-    private List <DepartmentModel> departmentModels = new ArrayList<>();*/
 
 }

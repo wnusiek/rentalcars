@@ -1,6 +1,5 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.DTO.CarDTO;
 import com.example.rentalcars.DTO.DepartmentDTO;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
@@ -30,7 +29,7 @@ public class DepartmentService {
     }
 
     public List<DepartmentDTO> getDepartmentList() {
-        return departmentRepository.findAll().stream().map(i -> new DepartmentDTO(i.getId(), i.getCity(),i.getCars())).toList();
+        return departmentRepository.findAll().stream().map(i -> new DepartmentDTO(i.getId(), i.getCity(), i.getCars())).toList();
     }
 
     public DepartmentModel findById(Long id) {
@@ -46,7 +45,7 @@ public class DepartmentService {
     }
 
 
-    public Set<EmployeeModel> getDepartmentEmployees(Long departmentId){
+    public Set<EmployeeModel> getDepartmentEmployees(Long departmentId) {
         return departmentRepository.findAll().stream()
                 .filter(department -> department.getId() != null && department.getId().equals(departmentId))
                 .map(DepartmentModel::getEmployees)

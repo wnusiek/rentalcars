@@ -6,15 +6,12 @@ import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
-import com.example.rentalcars.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -54,7 +51,7 @@ public class CarService {
 
     public void setCarStatus(Long id, CarStatus carStatus) {
         var car = carRepository.findById(id);
-        if (car.isPresent()){
+        if (car.isPresent()) {
             var c = car.get();
             c.setAvailability(carStatus);
             carRepository.save(c);
@@ -95,76 +92,75 @@ public class CarService {
         return getCarList().stream().filter(car -> car.getPrice().compareTo(priceMin) >= 0 && car.getPrice().compareTo(priceMax) <= 0).toList();
     }
 
-    public List<CarModel> getCarsByBodyType (BodyType bodyType) {
+    public List<CarModel> getCarsByBodyType(BodyType bodyType) {
         return getCarList().stream()
                 .filter(car -> car.getBody() != null)
                 .filter(car -> car.getBody().equals(bodyType))
                 .toList();
     }
 
-    public List<CarModel> getCarsCheaperThan (BigDecimal upperPriceBorder) {
+    public List<CarModel> getCarsCheaperThan(BigDecimal upperPriceBorder) {
         return getCarList().stream()
                 .filter(car -> car.getPrice() != null)
                 .filter(car -> car.getPrice().compareTo(upperPriceBorder) < 0)
                 .collect(toList());
     }
 
-    public List<CarModel> getCarsMoreExpensiveThan (BigDecimal lowerPriceBorder) {
+    public List<CarModel> getCarsMoreExpensiveThan(BigDecimal lowerPriceBorder) {
         return getCarList().stream()
                 .filter(car -> car.getPrice() != null)
                 .filter(car -> car.getPrice().compareTo(lowerPriceBorder) >= 0)
                 .collect(toList());
     }
 
-    public List<CarModel> getCarsWithHigherMileageThan(Integer mileage){
+    public List<CarModel> getCarsWithHigherMileageThan(Integer mileage) {
         return getCarList().stream()
                 .filter(car -> car.getMileage() != null)
                 .filter(car -> car.getMileage().compareTo(mileage) >= 0)
                 .toList();
     }
 
-    public List<CarModel> getCarsWithLowerMileageThan(Integer mileage){
+    public List<CarModel> getCarsWithLowerMileageThan(Integer mileage) {
         return getCarList().stream()
                 .filter(car -> car.getMileage() != null)
                 .filter(car -> car.getMileage().compareTo(mileage) <= 0)
                 .toList();
     }
 
-    public List<CarModel> getCarsWithinGivenMileage(Integer maxMileage, Integer minMileage){
+    public List<CarModel> getCarsWithinGivenMileage(Integer maxMileage, Integer minMileage) {
         return getCarList().stream()
                 .filter(car -> car.getMileage() != null)
                 .filter(car -> car.getMileage().compareTo(minMileage) <= 0 && car.getMileage().compareTo(maxMileage) >= 0)
                 .toList();
     }
 
-    public List<CarModel> getCarsByColor(String color){
+    public List<CarModel> getCarsByColor(String color) {
         return getCarList().stream()
                 .filter(car -> car.getColor() != null)
                 .filter(car -> car.getColor().equals(color))
                 .toList();
     }
 
-    public List<CarModel> getCarsByProductionDate(Integer productionDate){
+    public List<CarModel> getCarsByProductionDate(Integer productionDate) {
         return getCarList().stream()
                 .filter(car -> car.getProductionDate() != null)
                 .filter(car -> car.getProductionDate().equals(productionDate))
                 .toList();
     }
 
-    public List<CarModel> getCarsNewerThan(Integer productionDate){
+    public List<CarModel> getCarsNewerThan(Integer productionDate) {
         return getCarList().stream()
-                .filter(car ->car.getProductionDate() != null)
-                .filter(car -> car.getProductionDate().compareTo(productionDate)>=0)
+                .filter(car -> car.getProductionDate() != null)
+                .filter(car -> car.getProductionDate().compareTo(productionDate) >= 0)
                 .toList();
     }
 
-    public List<CarModel> getCarsOlderThan(Integer productionDate){
+    public List<CarModel> getCarsOlderThan(Integer productionDate) {
         return getCarList().stream()
-                .filter(car ->car.getProductionDate() != null)
-                .filter(car -> car.getProductionDate().compareTo(productionDate)<=0)
+                .filter(car -> car.getProductionDate() != null)
+                .filter(car -> car.getProductionDate().compareTo(productionDate) <= 0)
                 .toList();
     }
-
 
 
 }

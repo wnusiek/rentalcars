@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +20,6 @@ public class RentalModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
     @Column(name = "employee_id")
     private Long employeeId;
 
@@ -29,7 +27,6 @@ public class RentalModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfRental;
 
-//    @OneToOne
     @Column(name = "reservation_id")
     private Long reservationId;
 

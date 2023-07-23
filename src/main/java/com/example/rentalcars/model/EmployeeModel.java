@@ -26,6 +26,4 @@ public class EmployeeModel {
     @Column(name = "position")
     public String position;
 
-//    @ManyToOne
-//    public DepartmentModel department;
 }

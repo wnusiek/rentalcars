@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Currency;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
