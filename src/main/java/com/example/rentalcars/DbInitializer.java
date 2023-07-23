@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 @Component
 public class DbInitializer implements ApplicationRunner {
+
     private final CarRepository carRepository;
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;

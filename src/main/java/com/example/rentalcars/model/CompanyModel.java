@@ -18,19 +18,19 @@ public class CompanyModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "car_rental_name")
-    private String carRentalName;
+    @Column(name = "company_name")
+    private String companyName;
 
-    @Column(name = "car_rental_domain_url")
-    private String carRentalDomainURL;
+    @Column(name = "company_domain_url")
+    private String companyDomainURL;
 
-    @Column(name = "car_rental_address")
-    private String carRentalAddress;
+    @Column(name = "company_address")
+    private String companyAddress;
 
-    @Column(name = "car_rental_owner")
-    private String carRentalOwner;
+    @Column(name = "company_owner")
+    private String companyOwner;
 
-    @Column(name = "car_rental_logotype")
-    private String carRentalLogotype;
+    @Column(name = "company_logotype")
+    private String companyLogotype;
 
 }

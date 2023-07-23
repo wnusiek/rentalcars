@@ -17,26 +17,13 @@ import java.util.List;
 public class CompanyRestController {
 
     private final CompanyService companyService;
-
-    @GetMapping("/carRental")
-    public List<CompanyModel> get() {
-        return companyService.getCarRentalModelList();
+    @GetMapping("/company")
+    public List<CompanyModel> getCompanyModelList() {
+        return companyService.getCompanyModelList();
     }
 
-    @PostMapping("/addCarRental")
-    public void add(CompanyModel companyModel) {
-        companyService.postAddCarRental(companyModel);
-    }
-
-    @PostMapping("/editCarRental/{id}")
+    @PostMapping("/editCompany")
     public void edit(CompanyModel companyModel) {
-        companyService.updateCarRental(companyModel);
+        companyService.updateCompany(companyModel);
     }
-
-    @PostMapping("removeCarRental/{id}")
-    public void removeCarRental(@PathVariable("id") Long id) {
-        companyService.removeCarRental(id);
-    }
-
-
 }

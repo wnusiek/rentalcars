@@ -13,24 +13,11 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-
-    public void postAddCarRental(CompanyModel companyModel) {
-        companyRepository.save(companyModel);
-    }
-
-    public List<CompanyModel> getCarRentalModelList() {
+    public List<CompanyModel> getCompanyModelList() {
         return companyRepository.findAll();
     }
 
-    public CompanyModel findById(Long id) {
-        return companyRepository.findById(id).orElse(null);
-    }
-
-    public void updateCarRental(CompanyModel companyModel) {
+    public void updateCompany(CompanyModel companyModel) {
         companyRepository.save(companyModel);
-    }
-
-    public void removeCarRental(Long id) {
-        companyRepository.deleteById(id);
     }
 }
