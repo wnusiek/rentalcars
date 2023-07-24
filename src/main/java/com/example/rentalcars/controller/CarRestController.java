@@ -1,10 +1,14 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.MenagementServices.CarsByDateService;
+import com.example.rentalcars.MenagementServices.CarsByMileageService;
+import com.example.rentalcars.MenagementServices.CarsBySpecificationService;
 import com.example.rentalcars.enums.BodyType;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.MenagementServices.CarsByPriceService;
 import com.example.rentalcars.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,14 @@ import java.util.List;
 public class CarRestController {
 
     private final CarService carService;
+
+    private final CarsByPriceService carsByPriceService;
+
+    private final CarsBySpecificationService carsBySpecificationService;
+
+    private final CarsByMileageService carsByMileageService;
+
+    private final CarsByDateService carsByDateService;
 
     @GetMapping("/cars")
     public List<CarModel> get() {
@@ -53,81 +65,81 @@ public class CarRestController {
 
     @GetMapping("/carsByGearbox")
     public List<CarModel> getCarsByGearbox(GearboxType gearbox) {
-        return carService.getCarsByGearbox(gearbox);
+        return carsBySpecificationService.getCarsByGearbox(gearbox);
     }
 
     @GetMapping("/carsByMark")
     public List<CarModel> getCarsByMark(String mark) {
-        return carService.getCarsByMark(mark);
+        return carsBySpecificationService.getCarsByMark(mark);
     }
 
     @GetMapping("carsByFuelType")
     public List<CarModel> getCarsByFuelType(FuelType fuelType) {
-        return carService.getCarsByFuelType(fuelType);
+        return carsBySpecificationService.getCarsByFuelType(fuelType);
     }
 
     @GetMapping("/sortCarsByPriceAscending")
     public List<CarModel> getCarsByPriceAscending() {
-        return carService.getCarsByPriceAscending();
+        return carsByPriceService.getCarsByPriceAscending();
     }
 
     @GetMapping("/sortCarsByPriceDescending")
     public List<CarModel> getCarsByPriceDescending() {
-        return carService.getCarsByPriceDescending();
+        return carsByPriceService.getCarsByPriceDescending();
     }
 
     @GetMapping("/sortCarsByPriceRange")
     public List<CarModel> getCarsByPriceRange(BigDecimal priceMin, BigDecimal priceMax) {
-        return carService.getCarsByPriceRange(priceMin, priceMax);
+        return carsByPriceService.getCarsByPriceRange(priceMin, priceMax);
     }
 
     @GetMapping("/getCarsByBodyType")
     public List<CarModel> getCarsByBodyType(BodyType bodyType) {
-        return carService.getCarsByBodyType(bodyType);
+        return carsBySpecificationService.getCarsByBodyType(bodyType);
     }
 
     @GetMapping("/sortCarByUpperPriceBorder")
     public List<CarModel> getCarsCheaperThan(BigDecimal upperPriceBorder) {
-        return carService.getCarsCheaperThan(upperPriceBorder);
+        return carsByPriceService.getCarsCheaperThan(upperPriceBorder);
     }
 
     @GetMapping("/sortCarByLowerPriceBorder")
     public List<CarModel> getCarsMoreExpensiveThan(BigDecimal lowerPriceBorder) {
-        return carService.getCarsMoreExpensiveThan(lowerPriceBorder);
+        return carsByPriceService.getCarsMoreExpensiveThan(lowerPriceBorder);
     }
 
     @GetMapping("/getCarsWithHigherMileageThan")
     public List<CarModel> getCarsWithHigherMileageThan(Integer mileage) {
-        return carService.getCarsWithHigherMileageThan(mileage);
+        return carsByMileageService.getCarsWithHigherMileageThan(mileage);
     }
 
     @GetMapping("/getCarsWithLowerMileageThan")
     public List<CarModel> getCarsWithLowerMileageThan(Integer mileage) {
-        return carService.getCarsWithLowerMileageThan(mileage);
+        return carsByMileageService.getCarsWithLowerMileageThan(mileage);
     }
 
     @GetMapping("getCarsWithinGivenMileage")
     public List<CarModel> getCarsWithinGivenMileage(Integer minMileage, Integer maxMileage) {
-        return carService.getCarsWithinGivenMileage(minMileage, maxMileage);
+        return carsByMileageService.getCarsWithinGivenMileage(minMileage, maxMileage);
     }
 
     @GetMapping("getCarsByColor")
     public List<CarModel> getCarsByColor(String color) {
-        return carService.getCarsByColor(color);
+        return carsBySpecificationService.getCarsByColor(color);
     }
 
     @GetMapping("getCarsByProductionDate")
     public List<CarModel> getCarsByProductionDate(Integer productionDate) {
-        return carService.getCarsByProductionDate(productionDate);
+        return carsByDateService.getCarsByProductionDate(productionDate);
     }
 
     @GetMapping("/getCarsNewerThan")
     public List<CarModel> getCarsNewerThan(Integer productionDate) {
-        return carService.getCarsNewerThan(productionDate);
+        return carsByDateService.getCarsNewerThan(productionDate);
     }
 
     @GetMapping("/getCarsOlderThan")
     public List<CarModel> getCarsOlderThan(Integer productionDate) {
-        return carService.getCarsOlderThan(productionDate);
+        return carsByDateService.getCarsOlderThan(productionDate);
     }
 }
