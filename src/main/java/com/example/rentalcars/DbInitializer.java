@@ -1,5 +1,6 @@
 package com.example.rentalcars;
 
+import com.example.rentalcars.enums.BodyType;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
@@ -39,10 +40,10 @@ public class DbInitializer implements ApplicationRunner {
         var dep1 = departmentRepository.save((new DepartmentModel(1l, "lublin")));
         var dep2 = departmentRepository.save((new DepartmentModel(2l, "kraków")));
 
-        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), "Hatchback", GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004));
-        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), "Sedan", GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
-        var car3 = carRepository.save(new CarModel(3l, "BMW", "E3śmieć", BigDecimal.valueOf(124), BigDecimal.valueOf(500), "Coupe", GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
-        var car4 = carRepository.save(new CarModel(4l, "AUDI", "80", BigDecimal.valueOf(123), BigDecimal.valueOf(500), "Sedan", GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
+        var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004));
+        var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
+        var car3 = carRepository.save(new CarModel(3l, "BMW", "E3śmieć", BigDecimal.valueOf(124), BigDecimal.valueOf(500), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
+        var car4 = carRepository.save(new CarModel(4l, "AUDI", "80", BigDecimal.valueOf(123), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
 
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa"));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "karol", "nowak", "saaaa"));

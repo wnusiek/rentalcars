@@ -81,7 +81,7 @@ public class CarRestController {
         return carService.getCarsByPriceRange(priceMin, priceMax);
     }
 
-    @GetMapping("/sortCarByBodyType")
+    @GetMapping("/getCarsByBodyType")
     public List<CarModel> getCarsByBodyType(BodyType bodyType) {
         return carService.getCarsByBodyType(bodyType);
     }

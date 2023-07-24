@@ -1,5 +1,6 @@
 package com.example.rentalcars.model;
 
+import com.example.rentalcars.enums.BodyType;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
@@ -35,7 +36,7 @@ public class CarModel {
     private BigDecimal bail;
 
     @Column(name = "body")
-    private String body;
+    private BodyType body;
 
     @Column(name = "gearbox")
     private GearboxType gearbox;
