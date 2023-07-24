@@ -41,6 +41,6 @@ public class ReservationModel {
     @Column(name = "return_venue")
     public String returnVenue;
 
-    @Column(name = "customer_id")
-    public Long customerId;
+    @ManyToOne
+    public CustomerModel customerModel;
 }
