@@ -31,4 +31,14 @@ public class CarManagementController {
 
     }
 
+    @PostMapping("/setMileageByCarId/{carId}")
+    public void setMileageByCarId(@PathVariable Long carId, Integer mileage){
+        var car = carRepository.findById(carId);
+        if (car.isPresent()){
+            var c = car.get();
+            c.setMileage(mileage);
+            carRepository.save(c);
+        }
+    }
+
 }
