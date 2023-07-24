@@ -38,6 +38,9 @@ public class ReservationModel {
     @Column(name = "reception_venue")
     public String receptionVenue;
 
+    @Column(name = "return_venue")
+    public String returnVenue;
+
     @Column(name = "customer_id")
     public Long customerId;
 }
