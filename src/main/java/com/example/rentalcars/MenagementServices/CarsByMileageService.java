@@ -1,6 +1,6 @@
 package com.example.rentalcars.MenagementServices;
 
-import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.service.CarService;
 import lombok.RequiredArgsConstructor;
@@ -16,21 +16,21 @@ public class CarsByMileageService {
 
     private final CarService carService;
 
-    public List<CarModel> getCarsWithHigherMileageThan(Integer mileage) {
+    public List<CarDto> getCarsWithHigherMileageThan(Integer mileage) {
         return carService.getCarList().stream()
                 .filter(car -> car.getMileage() != null)
                 .filter(car -> car.getMileage().compareTo(mileage) >= 0)
                 .toList();
     }
 
-    public List<CarModel> getCarsWithLowerMileageThan(Integer mileage) {
+    public List<CarDto> getCarsWithLowerMileageThan(Integer mileage) {
         return carService.getCarList().stream()
                 .filter(car -> car.getMileage() != null)
                 .filter(car -> car.getMileage().compareTo(mileage) <= 0)
                 .toList();
     }
 
-    public List<CarModel> getCarsWithinGivenMileage(Integer maxMileage, Integer minMileage) {
+    public List<CarDto> getCarsWithinGivenMileage(Integer maxMileage, Integer minMileage) {
         return carService.getCarList().stream()
                 .filter(car -> car.getMileage() != null)
                 .filter(car -> car.getMileage().compareTo(minMileage) <= 0 && car.getMileage().compareTo(maxMileage) >= 0)

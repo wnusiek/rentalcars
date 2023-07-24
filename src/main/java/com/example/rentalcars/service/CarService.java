@@ -1,19 +1,13 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.enums.BodyType;
+import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.enums.CarStatus;
-import com.example.rentalcars.enums.FuelType;
-import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +15,14 @@ public class CarService {
 
     private final CarRepository carRepository;
 
+
+
     public void postAddCar(CarModel car) {
         carRepository.save(car);
     }
 
-    public List<CarModel> getCarList() {
-        return carRepository.findAll();
+    public List<CarDto> getCarList() {
+        return carRepository.findAll().stream().map(i -> new CarDto(i.getMark(),i.getModel(),i.getAvailability(), i.getMileage(), i.getProductionDate(),i.getPrice(),i.getBody(), i.getColor(),i.getFuelType(),i.getGearbox())).toList();
     }
 
     public CarModel findById(Long id) {
@@ -42,7 +38,7 @@ public class CarService {
     }
 
 
-    public List<CarModel> getAvailableCars() {
+    public List<CarDto> getAvailableCars() {
         return getCarList().stream()
                 .filter(car -> car.getAvailability() != null)
                 .filter(car -> car.getAvailability().equals(CarStatus.AVAILABLE))
