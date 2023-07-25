@@ -18,12 +18,12 @@ public class EmployeeModel {
     Long id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "surname")
-    public String surname;
+    private String surname;
 
     @Column(name = "position")
-    public String position;
+    private String position;
 
 }

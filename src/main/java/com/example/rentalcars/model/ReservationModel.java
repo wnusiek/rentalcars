@@ -1,5 +1,7 @@
 package com.example.rentalcars.model;
 
+import com.example.rentalcars.DTO.ReservationDto;
+import com.example.rentalcars.service.ReservationService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,21 +28,22 @@ public class ReservationModel {
 
     @Column(name = "date_from")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public LocalDate dateFrom;
+    private LocalDate dateFrom;
 
     @Column(name = "date_to")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public LocalDate dateTo;
+    private LocalDate dateTo;
 
     @Column(name = "price")
-    public BigDecimal price;
+    private BigDecimal price;
 
     @Column(name = "reception_venue")
-    public String receptionVenue;
+    private String receptionVenue;
 
     @Column(name = "return_venue")
-    public String returnVenue;
+    private String returnVenue;
 
     @ManyToOne
-    public CustomerModel customer;
+    private CustomerModel customer;
+
 }

@@ -1,5 +1,7 @@
 package com.example.rentalcars.controller;
 
+import com.example.rentalcars.DTO.CarDto;
+import com.example.rentalcars.DTO.ReservationDto;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
@@ -20,7 +22,7 @@ public class ReservationRestController {
     private final ReservationService reservationService;
 
     @GetMapping("/reservation")
-    public List<ReservationModel> get() {
+    public List<ReservationDto> get() {
         return reservationService.getReservationList();
     }
 
