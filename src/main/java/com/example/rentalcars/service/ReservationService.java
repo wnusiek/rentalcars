@@ -1,9 +1,7 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.DTO.ReservationDto;
 import com.example.rentalcars.model.CarModel;
-import com.example.rentalcars.model.RentalCostCalculator;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.ReservationRepository;
@@ -26,6 +24,7 @@ public class ReservationService {
 
 
     public void addReservation(ReservationModel reservation) {
+        reservation.setPrice(calculateRentalCost(reservation));
         reservationRepository.save(reservation);
     }
 
@@ -71,6 +70,26 @@ public class ReservationService {
             }
         }
         return availableCarList;
+    }
+
+    public  BigDecimal calculateRentalCost(ReservationModel reservation) {
+//        BigDecimal dailyRentalPrice =  carRepository.findById(reservation.getCar().getId()).get().getPrice();
+        BigDecimal dailyRentalPrice = reservation.getCar().getPrice();
+        LocalDate startDate = reservation.getDateFrom();
+        LocalDate endDate = reservation.getDateTo();
+
+        // Upewniamy się, że data końcowa nie jest wcześniejsza niż data początkowa
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("Data końcowa nie może być wcześniejsza niż data początkowa.");
+        }
+
+        // Obliczamy różnicę między datami i zaokrąglamy w górę do pełnych dni
+        long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+
+        // Obliczamy koszt rezerwacji (cena za dzień * liczba dni)
+        BigDecimal totalCost = dailyRentalPrice.multiply(BigDecimal.valueOf(numberOfDays));
+
+        return totalCost;
     }
 
 
