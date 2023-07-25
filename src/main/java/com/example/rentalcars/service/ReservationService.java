@@ -24,8 +24,8 @@ public class ReservationService {
 
 
     public void addReservation(ReservationModel reservation) {
-        reservationRepository.save(reservation);
         reservation.setPrice(calculateRentalCost(reservation));
+        reservationRepository.save(reservation);
     }
 
     public List<ReservationDto> getReservationList() {
@@ -72,7 +72,8 @@ public class ReservationService {
         return availableCarList;
     }
 
-    public static BigDecimal calculateRentalCost(ReservationModel reservation) {
+    public  BigDecimal calculateRentalCost(ReservationModel reservation) {
+//        BigDecimal dailyRentalPrice =  carRepository.findById(reservation.getCar().getId()).get().getPrice();
         BigDecimal dailyRentalPrice = reservation.getCar().getPrice();
         LocalDate startDate = reservation.getDateFrom();
         LocalDate endDate = reservation.getDateTo();
