@@ -20,15 +20,15 @@ public class RentalModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "employee_id")
-    private Long employeeId;
+    @ManyToOne
+    private EmployeeModel employee;
 
     @Column(name = "date_of_rental")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfRental;
 
-    @Column(name = "reservation_id")
-    private Long reservationId;
+    @OneToOne
+    private ReservationModel reservation;
 
     @Column(name = "comments")
     private String comments;
