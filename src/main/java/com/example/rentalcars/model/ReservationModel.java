@@ -22,7 +22,7 @@ public class ReservationModel {
     private Long id;
 
     @ManyToOne
-    private CarModel carModel;
+    private CarModel car;
 
     @Column(name = "date_from")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -41,6 +41,6 @@ public class ReservationModel {
     @Column(name = "return_venue")
     public String returnVenue;
 
-    @Column(name = "customer_id")
-    public Long customerId;
+    @ManyToOne
+    public CustomerModel customer;
 }

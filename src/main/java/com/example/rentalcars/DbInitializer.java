@@ -22,16 +22,17 @@ public class DbInitializer implements ApplicationRunner {
     private final ReturnRepository returnRepository;
     private final RentalRepository rentalRepository;
     private final ReservationRepository reservationRepository;
-
+    private final CustomerRepository customerRepository;
     private final CompanyRepository companyRepository;
 
-    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, CompanyRepository companyRepository) {
+    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, CustomerRepository customerRepository, CompanyRepository companyRepository) {
         this.carRepository = carRepository;
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.returnRepository = returnRepository;
         this.rentalRepository = rentalRepository;
         this.reservationRepository = reservationRepository;
+        this.customerRepository = customerRepository;
         this.companyRepository = companyRepository;
     }
 
@@ -48,12 +49,14 @@ public class DbInitializer implements ApplicationRunner {
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", "saaaa"));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "karol", "nowak", "saaaa"));
 
+        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432"));
+
         returnRepository.save(new ReturnModel(1l, 2l, LocalDate.of(2023, 07, 16), 3l, "bez uszkodzeń"));
         rentalRepository.save(new RentalModel(1l, 1l, LocalDate.of(2023, 07, 16), 1l, "blablabla"));
-        reservationRepository.save(new ReservationModel(1l, car1, LocalDate.of(2023, 7, 20), LocalDate.of(2023, 7, 25), BigDecimal.valueOf(100), "Kraków", "Kraków", 2L));
-        reservationRepository.save(new ReservationModel(2l, car2, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 8, 25), BigDecimal.valueOf(100), "Kraków", "Katowice",2L));
-        reservationRepository.save(new ReservationModel(3l, car3, LocalDate.of(2023, 6, 20), LocalDate.of(2023, 6, 25), BigDecimal.valueOf(100), "Kraków", "Warszawa",2L));
-        reservationRepository.save(new ReservationModel(4l, car4, LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), BigDecimal.valueOf(100), "Katowice", "Katowice",2L));
+        reservationRepository.save(new ReservationModel(1l, car1, LocalDate.of(2023, 7, 20), LocalDate.of(2023, 7, 25), BigDecimal.valueOf(100), "Kraków", "Kraków", customer1));
+        reservationRepository.save(new ReservationModel(2l, car2, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 8, 25), BigDecimal.valueOf(100), "Kraków", "Katowice",customer1));
+        reservationRepository.save(new ReservationModel(3l, car3, LocalDate.of(2023, 6, 20), LocalDate.of(2023, 6, 25), BigDecimal.valueOf(100), "Kraków", "Warszawa",customer1));
+        reservationRepository.save(new ReservationModel(4l, car4, LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), BigDecimal.valueOf(100), "Katowice", "Katowice",customer1));
         companyRepository.save(new CompanyModel(1l, "SDACarRental", "SDACarRentalDomain", "SDACarRentalAddress", "SDACarRentalOwner", "SDACarRentalLogotype"));
 
     }

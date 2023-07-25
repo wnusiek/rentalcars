@@ -41,7 +41,7 @@ public class ReservationService {
 
     private List<ReservationModel> getReservationListByCarId(Long carId) {
         return reservationRepository.findAll().stream()
-                .filter(r -> r.getCarModel().getId().equals(carId))
+                .filter(r -> r.getCar().getId().equals(carId))
                 .collect(Collectors.toList());
     }
 
