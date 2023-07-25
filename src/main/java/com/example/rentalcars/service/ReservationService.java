@@ -1,13 +1,18 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.DTO.CarDto;
+import com.example.rentalcars.DTO.ReservationDto;
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.RentalCostCalculator;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,12 +24,13 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CarRepository carRepository;
 
+
     public void addReservation(ReservationModel reservation) {
         reservationRepository.save(reservation);
     }
 
-    public List<ReservationModel> getReservationList() {
-        return reservationRepository.findAll();
+    public List<ReservationDto> getReservationList() {
+        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
     }
 
     public void editReservation(ReservationModel editReservation) {
@@ -39,15 +45,15 @@ public class ReservationService {
         return reservationRepository.findById(id).orElse(null);
     }
 
-    private List<ReservationModel> getReservationListByCarId(Long carId) {
-        return reservationRepository.findAll().stream()
+    private List<ReservationDto> getReservationListByCarId(Long carId) {
+        return getReservationList().stream()
                 .filter(r -> r.getCar().getId().equals(carId))
                 .collect(Collectors.toList());
     }
 
     public Boolean getCarAvailabilityByDateRange(Long carId, LocalDate dateFrom, LocalDate dateTo) {
         var reservationList = getReservationListByCarId(carId);
-        for (ReservationModel r : reservationList) {
+        for (ReservationDto r : reservationList) {
             if (dateFrom.isAfter(r.getDateTo()) || dateTo.isBefore(r.getDateFrom())) {
                 return true;
             }
@@ -66,5 +72,6 @@ public class ReservationService {
         }
         return availableCarList;
     }
+
 
 }
