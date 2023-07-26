@@ -1,7 +1,7 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.DTO.ReservationDto;
+import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.ReservationService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
@@ -11,19 +11,19 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.Collections;
-
 @Route(value = "reservations", layout = MainLayout.class)
 @PageTitle("Rezerwacje")
 public class ReservationsView extends VerticalLayout {
 
     private final ReservationService reservationService;
+    private final EmployeeService employeeService;
     Grid<ReservationDto> grid = new Grid<>(ReservationDto.class);
     TextField filterText = new TextField();
     RentalForm form;
 
-    public ReservationsView(ReservationService reservationService) {
+    public ReservationsView(ReservationService reservationService, EmployeeService employeeService) {
         this.reservationService = reservationService;
+        this.employeeService = employeeService;
         addClassName("reservations-view");
         setSizeFull();
         configureGrid();
@@ -49,7 +49,7 @@ public class ReservationsView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new RentalForm();
+        form = new RentalForm(employeeService.getEmployeeList());
         form.setWidth("25em");
     }
 

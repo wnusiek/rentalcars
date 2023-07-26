@@ -1,7 +1,9 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.model.ReservationModel;
+import com.example.rentalcars.repository.EmployeeRepository;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -11,18 +13,19 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
-public class RentalForm extends FormLayout {
+import java.util.List;
 
-    ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
+public class RentalForm extends FormLayout {
+    ComboBox<EmployeeDto> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
     Button rent = new Button("Rent a car");
     Button cancel = new Button("Cancel reservation");
     DatePicker dateOfRental = new DatePicker("Date of rental");
     TextField comments = new TextField();
 
-    public RentalForm() {
+    public RentalForm(List<EmployeeDto> employees) {
         addClassName("rental-form");
-
+        employee.setItems(employees);
         add(
                 employee,
                 reservation,
