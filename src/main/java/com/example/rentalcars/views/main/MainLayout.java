@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.repository.CompanyRepository;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
@@ -7,25 +8,25 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-
-import javax.swing.text.html.ListView;
 
 public class MainLayout extends AppLayout {
 
-    public MainLayout() {
+    private final CompanyRepository companyRepository;
+
+    public MainLayout(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
         createHeader();
         createDrawer();
 
     }
     private void createHeader() {
-        H1 logo = new H1("Wypożyczalnia Gruz-rental");
-        logo.addClassNames("text-l", "m-m");
+        H1 companyName = new H1(companyRepository.findById(1l).get().getCompanyName());
+        companyName.addClassNames("text-l", "m-m");
 
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo);
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName);
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        header.expand(logo);
+        header.expand(companyName);
         header.setWidthFull();
         header.addClassNames("py-0", "px-m");
 
@@ -38,9 +39,13 @@ public class MainLayout extends AppLayout {
         RouterLink reservationsView = new RouterLink("Lista rezerwacji", ReservationsView.class);
         reservationsView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink companyView = new RouterLink("Konfiguracja", CompanyView.class);
+        companyView.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
                 mainView,
-                reservationsView
+                reservationsView,
+                companyView
         ));
 
     }
