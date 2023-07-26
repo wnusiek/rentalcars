@@ -41,9 +41,9 @@ public class ReservationsView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
-    private HorizontalLayout getToolbar() {
-        return null;
-    }
+//    private HorizontalLayout getToolbar() {
+//        return null;
+//    }
 
 
 }
