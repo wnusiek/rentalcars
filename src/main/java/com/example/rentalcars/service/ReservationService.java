@@ -22,7 +22,6 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CarRepository carRepository;
 
-
     public void addReservation(ReservationModel reservation) {
         reservation.setPrice(calculateRentalCost(reservation));
         reservationRepository.save(reservation);
