@@ -42,10 +42,18 @@ public class MainLayout extends AppLayout {
         RouterLink companyView = new RouterLink("Konfiguracja", CompanyView.class);
         companyView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink employeesView = new RouterLink("Lista pracowników", EmployeesView.class);
+        employeesView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink customersView = new RouterLink("Lista klientów", CustomerListView.class);
+        customersView.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
                 mainView,
                 reservationsView,
-                companyView
+                companyView,
+                employeesView,
+                customersView
         ));
 
     }

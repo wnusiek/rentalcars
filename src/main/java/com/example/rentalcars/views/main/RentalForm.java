@@ -16,14 +16,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import java.util.List;
 
 public class RentalForm extends FormLayout {
-    ComboBox<EmployeeDto> employee = new ComboBox<>("Employee");
+    ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
     Button rent = new Button("Rent a car");
     Button cancel = new Button("Cancel reservation");
     DatePicker dateOfRental = new DatePicker("Date of rental");
     TextField comments = new TextField();
 
-    public RentalForm(List<EmployeeDto> employees) {
+    public RentalForm(List<EmployeeModel> employees) {
         addClassName("rental-form");
         employee.setItems(employees);
         add(

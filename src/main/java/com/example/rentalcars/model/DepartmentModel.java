@@ -1,5 +1,6 @@
 package com.example.rentalcars.model;
 
+import com.example.rentalcars.DTO.EmployeeDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

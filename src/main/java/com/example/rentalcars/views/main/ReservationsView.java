@@ -1,6 +1,7 @@
 package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.DTO.ReservationDto;
+import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.ReservationService;
 import com.vaadin.flow.component.Component;
@@ -17,7 +18,7 @@ public class ReservationsView extends VerticalLayout {
 
     private final ReservationService reservationService;
     private final EmployeeService employeeService;
-    Grid<ReservationDto> grid = new Grid<>(ReservationDto.class);
+    Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
     TextField filterText = new TextField();
     RentalForm form;
 
@@ -29,10 +30,7 @@ public class ReservationsView extends VerticalLayout {
         configureGrid();
         configureForm();
         add(grid, getContent());
-//        add(getToolbar(), grid);
-
         updateReservationList();
-
     }
 
     private Component getContent(){
@@ -60,9 +58,6 @@ public class ReservationsView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
-//    private HorizontalLayout getToolbar() {
-//        return null;
-//    }
 
 
 }

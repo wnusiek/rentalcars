@@ -27,9 +27,13 @@ public class ReservationService {
         reservationRepository.save(reservation);
     }
 
-    public List<ReservationDto> getReservationList() {
-        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
+    public List<ReservationModel> getReservationList() {
+        return reservationRepository.findAll();
     }
+
+//    public List<ReservationDto> getReservationList() {
+//        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
+//    }
 
     public void editReservation(ReservationModel editReservation) {
         reservationRepository.save(editReservation);
@@ -43,7 +47,7 @@ public class ReservationService {
         return reservationRepository.findById(id).orElse(null);
     }
 
-    private List<ReservationDto> getReservationListByCarId(Long carId) {
+    private List<ReservationModel> getReservationListByCarId(Long carId) {
         return getReservationList().stream()
                 .filter(r -> r.getCar().getId().equals(carId))
                 .collect(Collectors.toList());
@@ -51,7 +55,7 @@ public class ReservationService {
 
     public Boolean getCarAvailabilityByDateRange(Long carId, LocalDate dateFrom, LocalDate dateTo) {
         var reservationList = getReservationListByCarId(carId);
-        for (ReservationDto r : reservationList) {
+        for (ReservationModel r : reservationList) {
             if (dateFrom.isAfter(r.getDateTo()) || dateTo.isBefore(r.getDateFrom())) {
                 return true;
             }
