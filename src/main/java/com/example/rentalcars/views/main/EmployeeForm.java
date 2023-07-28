@@ -1,6 +1,5 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.EmployeeModel;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -19,8 +18,8 @@ import com.vaadin.flow.shared.Registration;
 public class EmployeeForm extends FormLayout {
     Binder<EmployeeModel> binder = new BeanValidationBinder<>(EmployeeModel.class);
 
-    TextField name = new TextField("First name");
-    TextField surname = new TextField("Last name");
+    TextField firstName = new TextField("First name");
+    TextField lastName = new TextField("Last name");
     TextField position = new TextField("Position");
 
     Button save = new Button("Save");
@@ -32,8 +31,8 @@ public class EmployeeForm extends FormLayout {
         binder.bindInstanceFields(this);
         addClassName("employee-form");
         add(
-                name,
-                surname,
+                firstName,
+                lastName,
                 position,
                 createButtonLayout()
         );

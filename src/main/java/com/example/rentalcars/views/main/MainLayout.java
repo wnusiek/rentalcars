@@ -33,11 +33,11 @@ public class MainLayout extends AppLayout {
         addToNavbar(header);
     }
     private void createDrawer() {
-        RouterLink mainView = new RouterLink("Lista samochodów", MainView.class);
-        mainView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink carsView = new RouterLink("Lista samochodów", CarsView.class);
+        carsView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink reservationsView = new RouterLink("Lista rezerwacji", ReservationsView.class);
-        reservationsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink addRentalView = new RouterLink("Wypożyczanie", AddRentalView.class);
+        addRentalView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink companyView = new RouterLink("Konfiguracja", CompanyView.class);
         companyView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -52,12 +52,12 @@ public class MainLayout extends AppLayout {
         addReservationView.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
-                mainView,
-                reservationsView,
                 companyView,
+                carsView,
+                addReservationView,
+                addRentalView,
                 employeesView,
-                customersView,
-                addReservationView
+                customersView
         ));
 
     }

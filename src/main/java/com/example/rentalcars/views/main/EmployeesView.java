@@ -92,7 +92,7 @@ public class EmployeesView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("employees-grid");
         grid.setSizeFull();
-        grid.setColumns("name", "surname", "position");
+        grid.setColumns("firstName", "lastName", "position");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> editEmployee(event.getValue()));

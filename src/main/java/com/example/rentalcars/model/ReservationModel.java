@@ -46,4 +46,8 @@ public class ReservationModel {
     @ManyToOne
     private CustomerModel customer;
 
+    public String getReservationInfo(){
+        return car.getMark() + " " + car.getModel() + " | " + dateFrom.toString() + " - " + dateTo.toString();
+    }
+
 }

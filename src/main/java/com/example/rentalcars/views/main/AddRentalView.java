@@ -1,20 +1,17 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.DTO.ReservationDto;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.ReservationService;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "reservations", layout = MainLayout.class)
-@PageTitle("Rezerwacje")
-public class ReservationsView extends VerticalLayout {
+@Route(value = "addrental", layout = MainLayout.class)
+@PageTitle("Wypożyczanie")
+public class AddRentalView extends VerticalLayout {
 
     private final ReservationService reservationService;
     private final EmployeeService employeeService;
@@ -22,32 +19,36 @@ public class ReservationsView extends VerticalLayout {
     TextField filterText = new TextField();
     RentalForm form;
 
-    public ReservationsView(ReservationService reservationService, EmployeeService employeeService) {
+    public AddRentalView(ReservationService reservationService, EmployeeService employeeService) {
         this.reservationService = reservationService;
         this.employeeService = employeeService;
         addClassName("reservations-view");
         setSizeFull();
         configureGrid();
         configureForm();
-        add(grid, getContent());
+        add(
+//                getContent()
+                grid,
+                form
+        );
         updateReservationList();
     }
 
-    private Component getContent(){
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2, grid);
-        content.setFlexGrow(2, form);
-        content.addClassName("content");
-        content.setSizeFull();
-        return content;
-    }
+//    private Component getContent(){
+//        HorizontalLayout content = new HorizontalLayout(grid, form);
+////        content.setFlexGrow(2, grid);
+////        content.setFlexGrow(2, form);
+////        content.addClassName("content");
+//        content.setSizeFull();
+//        return content;
+//    }
 
     private void updateReservationList() {
         grid.setItems(reservationService.getReservationList());
     }
 
     private void configureForm() {
-        form = new RentalForm(employeeService.getEmployeeList());
+        form = new RentalForm(employeeService.getEmployeeList(), reservationService.getReservationList());
         form.setWidth("25em");
     }
 
@@ -56,8 +57,13 @@ public class ReservationsView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue", "returnVenue", "customer.firstName", "customer.lastName");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+//        grid.asSingleSelect().addValueChangeListener(event -> editRent(event.getValue()));
     }
 
+//    private void editRent(ReservationModel reservationModel) {
+//        form.setRental(reservationModel);
+//    }
 
 
 }

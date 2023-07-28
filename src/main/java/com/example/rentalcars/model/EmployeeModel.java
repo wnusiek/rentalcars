@@ -17,13 +17,17 @@ public class EmployeeModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "position")
     private String position;
+
+    public String getName(){
+        return firstName + " " + lastName;
+    }
 
 }

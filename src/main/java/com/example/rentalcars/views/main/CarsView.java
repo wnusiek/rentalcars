@@ -13,13 +13,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 @Route(value = "", layout =  MainLayout.class)
 @PageTitle("Gruz Car Rental")
-public class MainView extends VerticalLayout {
+public class CarsView extends VerticalLayout {
 
     private final GruzRentalVaadinService service;
     Grid<CarDto> grid = new Grid<>(CarDto.class);
     TextField filterText = new TextField();
 
-    public MainView(GruzRentalVaadinService service) {
+    public CarsView(GruzRentalVaadinService service) {
         this.service = service;
         addClassName("list-view");
         setSizeFull();
