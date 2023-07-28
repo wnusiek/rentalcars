@@ -1,6 +1,5 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.EmployeeService;
 import com.vaadin.flow.component.Component;
@@ -31,7 +30,6 @@ public class EmployeesView extends VerticalLayout {
         );
         updateEmployeeList();
         closeEditor();
-
     }
 
     private void closeEditor() {
@@ -56,7 +54,6 @@ public class EmployeesView extends VerticalLayout {
         form.addSaveListener(this::saveEmployee);
         form.addDeleteListener(this::deleteEmployee);
         form.addCloseListener(event -> closeEditor());
-
     }
 
     private void deleteEmployee(EmployeeForm.DeleteEvent event) {

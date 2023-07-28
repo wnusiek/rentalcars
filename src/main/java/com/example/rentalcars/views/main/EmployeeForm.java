@@ -69,14 +69,10 @@ public class EmployeeForm extends FormLayout {
     //Events
     public static abstract class EmployeeFormEvent extends ComponentEvent<EmployeeForm> {
         private EmployeeModel employeeModel;
-
         protected EmployeeFormEvent(EmployeeForm source, EmployeeModel employeeModel) {
-
-
             super(source, false);
             this.employeeModel = employeeModel;
         }
-
         public EmployeeModel getEmployee() {
             return employeeModel;
         }
