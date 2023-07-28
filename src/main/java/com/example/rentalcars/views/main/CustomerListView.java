@@ -26,6 +26,11 @@ public class CustomerListView extends VerticalLayout {
         add(
                 grid,
                 getContent());
+        updateCustomerList();
+    }
+
+    private void updateCustomerList() {
+        grid.setItems(customerService.getCustomerList());
     }
 
     private Component getContent() {
