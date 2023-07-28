@@ -17,6 +17,22 @@ public class CarService {
 
 
 
+    public List<CarModel> getCarList1() {
+        return carRepository.findAll();
+    }
+
+    public void saveCar(CarModel carModel){
+        if (carModel == null){
+            System.err.println("Car is null.");
+            return;
+        }
+        carRepository.save(carModel);
+    }
+
+    public void deleteCar(CarModel carModel){
+        carRepository.delete(carModel);
+    }
+
     public void postAddCar(CarModel car) {
         carRepository.save(car);
     }
@@ -24,7 +40,6 @@ public class CarService {
     public List<CarDto> getCarList() {
         return carRepository.findAll().stream().map(i -> new CarDto(i.getMark(),i.getModel(),i.getAvailability(), i.getMileage(), i.getProductionDate(),i.getPrice(),i.getBody(), i.getColor(),i.getFuelType(),i.getGearbox())).toList();
     }
-
     public CarModel findById(Long id) {
         return carRepository.findById(id).orElse(null);
     }
