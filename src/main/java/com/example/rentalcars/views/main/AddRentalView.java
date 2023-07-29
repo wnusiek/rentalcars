@@ -22,7 +22,7 @@ public class AddRentalView extends VerticalLayout {
     public AddRentalView(ReservationService reservationService, EmployeeService employeeService) {
         this.reservationService = reservationService;
         this.employeeService = employeeService;
-        addClassName("reservations-view");
+        addClassName("rental-view");
         setSizeFull();
         configureGrid();
         configureForm();
