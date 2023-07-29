@@ -12,7 +12,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route(value = "addreservation", layout =  MainLayout.class)
-@PageTitle("Tworzenie rezerwacji")
+@PageTitle("Rezerwowanie")
 public class AddReservationView extends VerticalLayout {
     private final GruzRentalVaadinService service;
     Grid<CarDto> grid = new Grid<>(CarDto.class);
