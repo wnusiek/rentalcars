@@ -100,6 +100,8 @@ public class CarsView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
     }
 
     private void editCar(CarModel carModel) {
