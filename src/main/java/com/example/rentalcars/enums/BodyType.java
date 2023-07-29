@@ -1,8 +1,5 @@
 package com.example.rentalcars.enums;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public enum BodyType {
     HATCHBACK("Hatchback"),
     WAGON("Wagon"),
