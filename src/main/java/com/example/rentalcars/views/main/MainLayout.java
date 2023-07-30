@@ -48,20 +48,28 @@ public class MainLayout extends AppLayout {
         RouterLink customersView = new RouterLink("Lista klientów", CustomerListView.class);
         customersView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink reservationsView = new RouterLink("Lista rezerwacji", ReservationsView.class);
-        reservationsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink reservationsListView = new RouterLink("Lista rezerwacji", ReservationsView.class);
+        reservationsListView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink addReservationView = new RouterLink("Rezerwowanie", AddReservationView.class);
         addReservationView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink departmentsView = new RouterLink("Oddziały", DepartmentsView.class);
+        departmentsView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink rentalsView = new RouterLink("Lista wypożyczeń", RentalView.class);
+        rentalsView.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
                 companyView,
                 carsView,
                 addReservationView,
-                reservationsView,
+                reservationsListView,
                 addRentalView,
                 employeesView,
-                customersView
+                customersView,
+                departmentsView,
+                rentalsView
         ));
 
     }
