@@ -1,13 +1,12 @@
 package com.example.rentalcars.enums;
 
-public enum CarStatus {
-    AVAILABLE("Available"),
-    HIRED("Hired"),
-    UNAVAILABLE("Unavailable");
+public enum EmployeePosition {
+    EMPLOYEE("Employee"),
+    MANAGER("Manager");
 
     private String name;
 
-    private CarStatus(String name) {
+    private EmployeePosition(String name) {
         this.name = name;
     }
 
@@ -15,4 +14,6 @@ public enum CarStatus {
     public String toString(){
         return name;
     }
+
+
 }

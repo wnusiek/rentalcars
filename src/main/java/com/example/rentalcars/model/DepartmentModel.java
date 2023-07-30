@@ -1,5 +1,6 @@
 package com.example.rentalcars.model;
 
+import com.example.rentalcars.DTO.EmployeeDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,21 +23,18 @@ public class DepartmentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "city")
     private String city;
 
     @Column(name = "address")
     private String address;
 
-    //lista pracowników placówki
     @OneToMany(cascade = CascadeType.ALL)
-    @Column
+//    @Column
     private Set<EmployeeModel> employees = new HashSet<>();
 
-    //    //lista aktualnie dostępnych aut
     @OneToMany(cascade = CascadeType.ALL)
-    @Column
+//    @Column
     private List<CarModel> cars = new ArrayList<>();
 
 

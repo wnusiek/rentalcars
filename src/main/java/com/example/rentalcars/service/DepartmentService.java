@@ -28,6 +28,9 @@ public class DepartmentService {
         departmentRepository.save(department);
     }
 
+    public List<DepartmentModel> getDepartmentList1() {
+        return departmentRepository.findAll();
+    }
     public List<DepartmentDTO> getDepartmentList() {
         return departmentRepository.findAll().stream().map(i -> new DepartmentDTO(i.getId(), i.getCity(), i.getCars())).toList();
     }

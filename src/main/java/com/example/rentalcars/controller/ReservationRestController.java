@@ -22,7 +22,7 @@ public class ReservationRestController {
     private final ReservationService reservationService;
 
     @GetMapping("/reservation")
-    public List<ReservationDto> get() {
+    public List<ReservationModel> get() {
         return reservationService.getReservationList();
     }
 

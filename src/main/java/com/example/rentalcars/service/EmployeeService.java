@@ -14,24 +14,25 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public void postAddEmployee(EmployeeModel employee) {
-        employeeRepository.save(employee);
+
+//    public List<EmployeeDto> getEmployeeList() {
+//    return employeeRepository.findAll().stream().map(i -> new EmployeeDto(i.getName(), i.getSurname(), i.getPosition())).toList();
+//    }
+
+    public List<EmployeeModel> getEmployeeList() {
+        return employeeRepository.findAll();
     }
 
-    public List<EmployeeDto> getEmployeeList() {
-        return employeeRepository.findAll().stream().map(i -> new EmployeeDto(i.getName())).toList();
+    public void saveEmployee(EmployeeModel employeeModel){
+        if (employeeModel == null ){
+            System.err.println("Employee is null.");
+            return;
+        }
+        employeeRepository.save(employeeModel);
     }
 
-    public EmployeeModel findById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(null);
-    }
-
-    public void updateEmployee(EmployeeModel employee) {
-        employeeRepository.save(employee);
-    }
-
-    public void removeEmployee(Long id) {
-        employeeRepository.deleteById(id);
+    public void deleteEmployee(EmployeeModel employeeModel){
+        employeeRepository.delete(employeeModel);
     }
 
 

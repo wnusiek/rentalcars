@@ -1,6 +1,7 @@
 package com.example.rentalcars.controller;
 
 import com.example.rentalcars.DTO.DepartmentDTO;
+import com.example.rentalcars.DTO.EmployeeDto;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
@@ -42,10 +43,10 @@ public class DepartmentRestController {
     }
 
 
-    @GetMapping("/getDepartmentEmployees/{id}")
-    public Set<EmployeeModel> getDepartmentEmployees(@PathVariable("id") Long id) {
-        return departmentService.getDepartmentEmployees(id);
-    }
+//    @GetMapping("/getDepartmentEmployees/{id}")
+//    public Set<EmployeeDto> getDepartmentEmployees(@PathVariable("id") Long id) {
+//        return departmentService.getDepartmentEmployees(id);
+//    }
 
     @GetMapping("/getAllCarsByDepartment/{id}")
     public List<CarModel> getAllCarsByDepartment(@PathVariable("id") Long departmentId) {

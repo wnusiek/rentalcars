@@ -18,24 +18,24 @@ public class EmployeeRestController {
     private final EmployeeService employeeService;
 
     @GetMapping("employees")
-    public List<EmployeeDto> get() {
+    public List<EmployeeModel> get() {
         return employeeService.getEmployeeList();
     }
 
-    @PostMapping("/addEmployee")
-    public void add(EmployeeModel employee) {
-        employeeService.postAddEmployee(employee);
-    }
-
-    @PostMapping("/editEmployee/{id}")
-    public void edit(EmployeeModel employee) {
-        employeeService.updateEmployee(employee);
-    }
-
-    @PostMapping("/removeEmployee/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        employeeService.removeEmployee(id);
-    }
+//    @PostMapping("/addEmployee")
+//    public void add(EmployeeModel employee) {
+//        employeeService.postAddEmployee(employee);
+//    }
+//
+//    @PostMapping("/editEmployee/{id}")
+//    public void edit(EmployeeModel employee) {
+//        employeeService.updateEmployee(employee);
+//    }
+//
+//    @PostMapping("/removeEmployee/{id}")
+//    public void delete(@PathVariable("id") Long id) {
+//        employeeService.removeEmployee(id);
+//    }
 
 }
 

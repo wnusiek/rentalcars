@@ -41,5 +41,7 @@ public class CustomerModel {
     @Column(name = "zip_code")
     private String zipCode;
 
-
+    public String getName(){
+        return firstName + " " + lastName;
+    }
 }

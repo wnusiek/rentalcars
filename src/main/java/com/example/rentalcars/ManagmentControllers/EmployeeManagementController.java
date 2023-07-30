@@ -15,16 +15,16 @@ public class EmployeeManagementController {
 
     private final DepartmentRepository departmentRepository;
 
-    @PostMapping("/addEmployeeToDepartment/{employeeId}/{departmentId}")
-    public void addEmployeeToDepartment(@PathVariable Long employeeId, @PathVariable Long departmentId){
-
-        var employee = employeeRepository.findById(employeeId);
-        var department = departmentRepository.findById(departmentId);
-        if (employee.isPresent() && department.isPresent()){
-            var e = employee.get();
-            var d = department.get();
-            d.getEmployees().add(e);
-            departmentRepository.save(d);
-        }
-    }
+//    @PostMapping("/addEmployeeToDepartment/{employeeId}/{departmentId}")
+//    public void addEmployeeToDepartment(@PathVariable Long employeeId, @PathVariable Long departmentId){
+//
+//        var employee = employeeRepository.findById(employeeId);
+//        var department = departmentRepository.findById(departmentId);
+//        if (employee.isPresent() && department.isPresent()){
+//            var e = employee.get();
+//            var d = department.get();
+//            d.getEmployees().add(e);
+//            departmentRepository.save(d);
+//        }
+//    }
 }
