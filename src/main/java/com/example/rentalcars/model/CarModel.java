@@ -65,6 +65,10 @@ public class CarModel {
     @Column(name = "production_date")
     private Integer productionDate;
 
+    public String getCarInfo(){
+        return mark + " " + model + " " + productionDate.toString();
+    }
+
 //    @ManyToOne
 //    public DepartmentModel department;
 }
