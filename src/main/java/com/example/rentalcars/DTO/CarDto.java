@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 @Data
 public class CarDto {
 
+    private Long id;
+
     private String mark;
 
     private String model;

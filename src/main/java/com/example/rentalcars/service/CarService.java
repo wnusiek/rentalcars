@@ -39,7 +39,7 @@ public class CarService {
     }
 
     public List<CarDto> getCarList() {
-        return carRepository.findAll().stream().map(i -> new CarDto(i.getMark(),i.getModel(),i.getAvailability(), i.getMileage(), i.getProductionDate(),i.getPrice(),i.getBody(), i.getColor(),i.getFuelType(),i.getGearbox())).toList();
+        return carRepository.findAll().stream().map(i -> new CarDto(i.getId(),i.getMark(),i.getModel(),i.getAvailability(), i.getMileage(), i.getProductionDate(),i.getPrice(),i.getBody(), i.getColor(),i.getFuelType(),i.getGearbox())).toList();
     }
     public CarModel findById(Long id) {
         return carRepository.findById(id).orElse(null);

@@ -1,19 +1,19 @@
 package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.model.CarModel;
-import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.vaadinService.RentalVaadinService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -22,15 +22,19 @@ import java.util.Collections;
 @Route(value = "addreservation", layout =  MainLayout.class)
 @PageTitle("Rezerwowanie")
 public class AddReservationView extends VerticalLayout {
+    private final RentalVaadinService service;
     private final ReservationService reservationService;
     private final DepartmentService departmentService;
     private final CarService carService;
     private final CustomerService customerService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class);
     TextField filterText = new TextField();
+    DatePicker startDate = new DatePicker();
+    DatePicker endDate = new DatePicker();
     ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
-    public AddReservationView(ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
+    public AddReservationView(RentalVaadinService service, ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
+        this.service = service;
         this.reservationService = reservationService;
         this.departmentService = departmentService;
         this.carService = carService;
@@ -63,7 +67,7 @@ public class AddReservationView extends VerticalLayout {
     }
 
     private void updateCarList() {
-        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
+        carGrid.setItems(service.findAvailableCarsByDates(startDate.getValue(),endDate.getValue()));
     }
 
     private void configureGrid() {
@@ -79,12 +83,14 @@ public class AddReservationView extends VerticalLayout {
         Button addReservationButton = new Button("Add reservation");
         addReservationButton.addClickListener(e->addReservation());
 
-        filterText.setPlaceholder("Filter by mark...");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateCarList());
+        startDate.setPlaceholder("Set start date");
+        endDate.setPlaceholder("Set end date");
+        startDate.setClearButtonVisible(true);
+        endDate.setClearButtonVisible(true);
+        startDate.addValueChangeListener(e -> updateCarList());
+        endDate.addValueChangeListener(e -> updateCarList());
 
-        var toolbar = new HorizontalLayout(filterText, addReservationButton);
+        var toolbar = new HorizontalLayout(startDate, endDate, addReservationButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
