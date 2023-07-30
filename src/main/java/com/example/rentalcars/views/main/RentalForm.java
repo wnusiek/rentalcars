@@ -20,7 +20,10 @@ import com.vaadin.flow.shared.Registration;
 import java.util.List;
 
 public class RentalForm extends FormLayout {
+
     Binder<RentalModel> binder = new Binder<>(RentalModel.class);
+    Binder<ReservationModel> binder1 = new Binder<>(ReservationModel.class);
+
     ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
     Button rent = new Button("Rent a car");
@@ -31,8 +34,8 @@ public class RentalForm extends FormLayout {
 
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("rental-form");
-//        binder.readBean(reservation);
-//        binder.bindInstanceFields(this);
+        binder1.forField(dateOfRental).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
+
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
         reservation.setItems(reservations);
