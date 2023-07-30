@@ -89,7 +89,8 @@ public class CarsView extends VerticalLayout {
     }
 
     private void updateCarList() {
-        carGrid.setItems(carService.getCarList1());
+//        carGrid.setItems(carService.getCarList1());
+        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
     }
 
     private void configureGrid() {
