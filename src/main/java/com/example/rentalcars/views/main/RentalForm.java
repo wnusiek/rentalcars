@@ -13,7 +13,6 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
@@ -21,7 +20,7 @@ import com.vaadin.flow.shared.Registration;
 import java.util.List;
 
 public class RentalForm extends FormLayout {
-    Binder<RentalModel> binder = new BeanValidationBinder<>(RentalModel.class);
+    Binder<RentalModel> binder = new Binder<>(RentalModel.class);
     ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
     Button rent = new Button("Rent a car");
@@ -32,12 +31,16 @@ public class RentalForm extends FormLayout {
 
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("rental-form");
-        binder.bindInstanceFields(this);
-
+//        binder.readBean(reservation);
+//        binder.bindInstanceFields(this);
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
         reservation.setItems(reservations);
         reservation.setItemLabelGenerator(ReservationModel::getReservationInfo);
+        binder.forField(employee).bind(RentalModel::getEmployee, RentalModel::setEmployee);
+        binder.forField(reservation).bind(RentalModel::getReservation, RentalModel::setReservation);
+        binder.forField(comments).bind(RentalModel::getComments, RentalModel::setComments);
+        binder.forField(dateOfRental).bind(RentalModel::getDateOfRental, RentalModel::setDateOfRental);
         add(
                 employee,
                 reservation,
@@ -47,16 +50,16 @@ public class RentalForm extends FormLayout {
                 );
     }
 
-    public void setRental(RentalModel rentalModel) {
-        this.rentalModel = rentalModel;
-        binder.readBean(rentalModel);
-    }
+//    public void setRental(ReservationModel reservationModel) {
+//        this.reservationModel = reservationModel;
+//    }
+
     private Component createButtonLayout(){
         rent.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         rent.addClickListener(event -> validateAndSave());
-        cancel.addClickListener(event -> fireEvent(new CancelEvent(this, rentalModel)));
+        cancel.addClickListener(event -> fireEvent(new CancelEvent(this)));
 
         return new HorizontalLayout(rent, cancel);
     }
@@ -64,7 +67,7 @@ public class RentalForm extends FormLayout {
     private void validateAndSave() {
         try{
             binder.writeBean(rentalModel);
-            fireEvent(new RentEvent(this, rentalModel));
+            fireEvent(new SaveEvent(this, rentalModel));
         } catch (ValidationException e){
             e.printStackTrace();
         }
@@ -83,21 +86,21 @@ public class RentalForm extends FormLayout {
             return rentalModel;
         }
     }
-    public static class RentEvent extends RentalForm.RentalFormEvent {
-        RentEvent(RentalForm source, RentalModel rentalModel) {
+    public static class SaveEvent extends RentalForm.RentalFormEvent {
+        SaveEvent(RentalForm source, RentalModel rentalModel) {
             super(source, rentalModel);
         }
     }
     public static class CancelEvent extends RentalForm.RentalFormEvent {
-        CancelEvent(RentalForm source, RentalModel rentalModel) {
-            super(source, rentalModel);
+        CancelEvent(RentalForm source) {
+            super(source, null);
         }
+    }
+    public Registration addRentListener(ComponentEventListener<SaveEvent> listener) {
+        return addListener(SaveEvent.class, listener);
     }
     public Registration addCancelListener(ComponentEventListener<CancelEvent> listener) {
         return addListener(CancelEvent.class, listener);
-    }
-    public Registration addRentListener(ComponentEventListener<RentEvent> listener) {
-        return addListener(RentEvent.class, listener);
     }
 
 }
