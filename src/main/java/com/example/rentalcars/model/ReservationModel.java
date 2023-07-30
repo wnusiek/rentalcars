@@ -24,6 +24,7 @@ public class ReservationModel {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "car_id")
     private CarModel car;
 
     @Column(name = "date_from")
@@ -39,13 +40,16 @@ public class ReservationModel {
 
 //    @Column(name = "reception_venue")
     @ManyToOne
+    @JoinColumn(name = "receptionVenue_id")
     private DepartmentModel receptionVenue;
 
 //    @Column(name = "return_venue")
     @ManyToOne
+    @JoinColumn(name = "returnVenue_id")
     private DepartmentModel returnVenue;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 
     public String getReservationInfo(){

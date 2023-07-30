@@ -21,6 +21,7 @@ public class RentalModel {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "employee_id")
     private EmployeeModel employee;
 
     @Column(name = "date_of_rental")

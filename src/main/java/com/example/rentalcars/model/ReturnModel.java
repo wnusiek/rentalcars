@@ -22,6 +22,7 @@ public class ReturnModel {
     Long id;
 
     @ManyToOne
+    @JoinColumn(name = "employee_id")
     private EmployeeModel employee;
 
     @Column

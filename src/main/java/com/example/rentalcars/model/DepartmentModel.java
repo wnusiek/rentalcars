@@ -29,14 +29,12 @@ public class DepartmentModel {
     @Column(name = "address")
     private String address;
 
-    //lista pracowników placówki
     @OneToMany(cascade = CascadeType.ALL)
-    @Column
+//    @Column
     private Set<EmployeeModel> employees = new HashSet<>();
 
-    //    //lista aktualnie dostępnych aut
     @OneToMany(cascade = CascadeType.ALL)
-    @Column
+//    @Column
     private List<CarModel> cars = new ArrayList<>();
 
 
