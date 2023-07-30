@@ -1,6 +1,7 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.DTO.CarDto;
+import com.example.rentalcars.MenagementServices.CarsBySpecificationService;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
@@ -76,6 +77,7 @@ public class CarService {
             return getCarsByMark(filterText);
         }
     }
+
     public List<CarModel> getCarsByMark(String mark) {
         return getCarList1().stream()
                 .filter(car -> car.getMark() != null)
