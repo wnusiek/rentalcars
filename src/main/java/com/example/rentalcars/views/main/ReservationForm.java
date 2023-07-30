@@ -24,7 +24,7 @@ import java.util.List;
 public class ReservationForm extends FormLayout {
     Binder<ReservationModel> binder = new Binder<>(ReservationModel.class);
     ComboBox<CustomerModel> customer = new ComboBox<>("Klient");
-    ComboBox<CarModel> car = new ComboBox<>("Samochów");
+    ComboBox<CarModel> car = new ComboBox<>("Samochód");
     DatePicker dateFrom = new DatePicker("Data od");
     DatePicker dateTo = new DatePicker("Data do");
     ComboBox<DepartmentModel> receptionVenue = new ComboBox<>("Oddział wypożyczenia auta");
@@ -38,9 +38,13 @@ public class ReservationForm extends FormLayout {
 
     public ReservationForm(List<DepartmentModel> departments, List<CarModel> cars, List<CustomerModel> customers) {
         binder.bindInstanceFields(this);
-        //        receptionVenue.setItems();
+        customer.setItems(customers);
+        customer.setItemLabelGenerator(CustomerModel::getName);
+        car.setItems(cars);
+        car.setItemLabelGenerator(CarModel::getCarInfo);
+        receptionVenue.setItems(departments);
         receptionVenue.setItemLabelGenerator(DepartmentModel::getCity);
-        returnVenue.setItems(departments.stream().toList());
+        returnVenue.setItems(departments);
         returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
 
         binder.forField(dateFrom).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
@@ -49,6 +53,8 @@ public class ReservationForm extends FormLayout {
         binder.forField(returnVenue).bind(ReservationModel::getReturnVenue, ReservationModel::setReturnVenue);
         addClassName("reservation-form");
         add(
+                customer,
+                car,
                 dateFrom,
                 dateTo,
                 receptionVenue,
