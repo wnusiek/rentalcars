@@ -37,11 +37,13 @@ public class ReservationModel {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "reception_venue")
-    private String receptionVenue;
+//    @Column(name = "reception_venue")
+    @ManyToOne
+    private DepartmentModel receptionVenue;
 
-    @Column(name = "return_venue")
-    private String returnVenue;
+//    @Column(name = "return_venue")
+    @ManyToOne
+    private DepartmentModel returnVenue;
 
     @ManyToOne
     private CustomerModel customer;
