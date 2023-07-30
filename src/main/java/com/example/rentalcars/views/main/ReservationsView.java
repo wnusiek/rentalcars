@@ -1,5 +1,8 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.CustomerModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
 import com.vaadin.flow.component.Component;
@@ -41,9 +44,10 @@ public class ReservationsView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("reservations-grid");
         grid.setSizeFull();
-        grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue", "returnVenue", "customer.firstName", "customer.lastName");
+        grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue.city", "returnVenue.city", "customer.firstName", "customer.lastName");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
+
 
 
 }
