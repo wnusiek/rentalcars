@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.enums.EmployeePosition;
 import com.example.rentalcars.model.EmployeeModel;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -7,6 +8,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,7 +22,7 @@ public class EmployeeForm extends FormLayout {
 
     TextField firstName = new TextField("First name");
     TextField lastName = new TextField("Last name");
-    TextField position = new TextField("Position");
+    ComboBox<EmployeePosition> position = new ComboBox<>("Position");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -28,6 +30,7 @@ public class EmployeeForm extends FormLayout {
     private EmployeeModel employeeModel;
 
     public EmployeeForm() {
+        position.setItems(EmployeePosition.values());
         binder.bindInstanceFields(this);
         addClassName("employee-form");
         add(
