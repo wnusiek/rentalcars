@@ -1,10 +1,7 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.model.CarModel;
-import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.CarService;
-import com.example.rentalcars.vaadinService.GruzRentalVaadinService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,9 +16,9 @@ import com.vaadin.flow.router.Route;
 public class CarsView extends VerticalLayout {
 
     private final CarService carService;
-    Grid<CarModel> grid = new Grid<>(CarModel.class);
+    Grid<CarModel> carGrid = new Grid<>(CarModel.class);
     TextField filterText = new TextField();
-    CarForm form = new CarForm();
+    CarForm carForm = new CarForm();
 
     public CarsView(CarService carService) {
         this.carService = carService;
@@ -38,27 +35,27 @@ public class CarsView extends VerticalLayout {
     }
 
     private void closeEditor() {
-        form.setCar(null);
-        form.setVisible(false);
+        carForm.setCar(null);
+        carForm.setVisible(false);
         removeClassName("editing");
     }
 
     private Component getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2,grid);
-        content.setFlexGrow(1, form);
+        HorizontalLayout content = new HorizontalLayout(carGrid, carForm);
+        content.setFlexGrow(2, carGrid);
+        content.setFlexGrow(1, carForm);
         content.addClassName("content");
         content.setSizeFull();
         return content;
     }
 
     private void configureForm() {
-        form = new CarForm();
-        form.setWidth("25em");
+        carForm = new CarForm();
+        carForm.setWidth("25em");
 
-        form.addSaveListener(this::saveCar);
-        form.addDeleteListener(this::deleteCar);
-        form.addCloseListener(event -> closeEditor());
+        carForm.addSaveListener(this::saveCar);
+        carForm.addDeleteListener(this::deleteCar);
+        carForm.addCloseListener(event -> closeEditor());
     }
 
     private void deleteCar(CarForm.DeleteEvent event) {
@@ -87,29 +84,29 @@ public class CarsView extends VerticalLayout {
     }
 
     private void addCar() {
-        grid.asSingleSelect().clear();
+        carGrid.asSingleSelect().clear();
         editCar(new CarModel());
     }
 
     private void updateCarList() {
-        grid.setItems(carService.getCarList1());
+        carGrid.setItems(carService.getCarList1());
     }
 
     private void configureGrid() {
-        grid.addClassNames("cars-grid");
-        grid.setSizeFull();
-        grid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        carGrid.addClassNames("cars-grid");
+        carGrid.setSizeFull();
+        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
+        carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        grid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
+        carGrid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
     }
 
     private void editCar(CarModel carModel) {
         if(carModel == null){
             closeEditor();
         }else {
-            form.setCar(carModel);
-            form.setVisible(true);
+            carForm.setCar(carModel);
+            carForm.setVisible(true);
             addClassName("editing");
         }
     }
