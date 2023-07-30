@@ -6,6 +6,7 @@ import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -38,12 +39,26 @@ public class AddRentalView extends VerticalLayout {
         updateReservationList();
     }
 
+
+    private void addRental() {
+        editRental(new RentalModel());
+    }
+
+    private void editRental(RentalModel rentalModel){
+        if (rentalModel == null){
+        }else {
+//            form.setRental(rentalModel);
+        }
+    }
+
     private Component getContent(){
         HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2, grid);
-        content.setFlexGrow(2, form);
-        content.addClassName("content");
+//        content.setFlexGrow(2, grid);
+//        content.setFlexGrow(2, form);
+//        content.addClassName("content");
         content.setSizeFull();
+        Button addRentalButton = new Button("Add rental");
+        addRentalButton.addClickListener(e->addRental());
         return content;
     }
 
@@ -66,6 +81,7 @@ public class AddRentalView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
 //        grid.asSingleSelect().addValueChangeListener(event -> setRentalReservation(event.getValue()));
+//        grid.asSingleSelect().addValueChangeListener(event -> editRental(event.getValue()));
     }
 
 //    private void setRentalReservation(ReservationModel reservationModel) {
