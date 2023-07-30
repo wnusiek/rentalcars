@@ -1,6 +1,7 @@
 package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.service.CustomerService;
@@ -16,6 +17,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.Collections;
+
 @Route(value = "addreservation", layout =  MainLayout.class)
 @PageTitle("Rezerwowanie")
 public class AddReservationView extends VerticalLayout {
@@ -25,7 +28,7 @@ public class AddReservationView extends VerticalLayout {
     private final CustomerService customerService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class);
     TextField filterText = new TextField();
-    ReservationForm reservationForm = new ReservationForm();
+    ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
     public AddReservationView(ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
         this.reservationService = reservationService;
@@ -69,12 +72,12 @@ public class AddReservationView extends VerticalLayout {
         carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        carGrid.asSingleSelect().addValueChangeListener(e ->editReservation(e.getValue()));
+//        carGrid.asSingleSelect().addValueChangeListener(e ->editReservation(e.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
         Button addReservationButton = new Button("Add reservation");
-        addReservationButton.addClickListener(e->addReservation(e.));
+        addReservationButton.addClickListener(e->addReservation());
 
         filterText.setPlaceholder("Filter by mark...");
         filterText.setClearButtonVisible(true);
