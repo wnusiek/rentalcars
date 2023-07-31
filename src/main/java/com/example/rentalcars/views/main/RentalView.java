@@ -89,17 +89,17 @@ public class RentalView extends VerticalLayout {
         rentalForm.setWidth("25em");
 
         rentalForm.addSaveListener(this::saveRental);
-        rentalForm.addDeleteListener(this::deleteRental);
+//        rentalForm.addDeleteListener(this::deleteRental);
         rentalForm.addCloseListener(event -> closeEditor());
 
 
     }
 
-    private void deleteRental(RentalForm.DeleteEvent event){
-        rentalService.deleteRental(event.getRental());
-        updateRentalList();
-        closeEditor();
-    }
+//    private void deleteRental(RentalForm.DeleteEvent event){
+//        rentalService.deleteRental(event.getRental());
+//        updateRentalList();
+//        closeEditor();
+//    }
 
     private void saveRental(RentalForm.SaveEvent event){
         rentalService.postAddRental(event.getRental());

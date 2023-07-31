@@ -24,13 +24,13 @@ public class RentalForm extends FormLayout {
 
     Binder<RentalModel> rentalBinder = new Binder<>(RentalModel.class);
     Binder<ReservationModel> reservationBinder = new Binder<>(ReservationModel.class);
-
     ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
-    Button rent = new Button("Rent a car");
-    Button cancel = new Button("Cancel reservation");
     DatePicker dateOfRental = new DatePicker("Date of rental");
     TextField comments = new TextField("Comments");
+
+    Button save = new Button("Wypożycz auto");
+    Button cancel = new Button("Anuluj");
     private RentalModel rentalModel;
 
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
@@ -58,16 +58,17 @@ public class RentalForm extends FormLayout {
 
     public void setRental(RentalModel rentalModel) {
         this.rentalModel = rentalModel;
+//        rentalBinder.readBean(rentalModel);
     }
 
     private Component createButtonLayout(){
-        rent.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        rent.addClickListener(event -> validateAndSave());
-        cancel.addClickListener(event -> fireEvent(new CancelEvent(this)));
+        save.addClickListener(event -> validateAndSave());
+        cancel.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
-        return new HorizontalLayout(rent, cancel);
+        return new HorizontalLayout(save, cancel);
     }
 
     private void validateAndSave() {
@@ -97,24 +98,24 @@ public class RentalForm extends FormLayout {
             super(source, rentalModel);
         }
     }
-    public static class DeleteEvent extends RentalFormEvent{
-        DeleteEvent(RentalForm source, RentalModel rentalModel){
-            super(source, rentalModel);
-        }
-    }
-    public static class CancelEvent extends RentalForm.RentalFormEvent {
-        CancelEvent(RentalForm source) {
+//    public static class DeleteEvent extends RentalFormEvent{
+//        DeleteEvent(RentalForm source, RentalModel rentalModel){
+//            super(source, rentalModel);
+//        }
+//    }
+    public static class CloseEvent extends RentalForm.RentalFormEvent {
+        CloseEvent(RentalForm source) {
             super(source, null);
         }
     }
-    public Registration addDeleteListener(ComponentEventListener<DeleteEvent> listener){
-        return addListener(DeleteEvent.class, listener);
-    }
+//    public Registration addDeleteListener(ComponentEventListener<DeleteEvent> listener){
+//        return addListener(DeleteEvent.class, listener);
+//    }
     public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
         return addListener(SaveEvent.class, listener);
     }
-    public Registration addCloseListener(ComponentEventListener<CancelEvent> listener) {
-        return addListener(CancelEvent.class, listener);
+    public Registration addCloseListener(ComponentEventListener<CloseEvent> listener) {
+        return addListener(CloseEvent.class, listener);
     }
 
 }
