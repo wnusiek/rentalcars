@@ -22,8 +22,8 @@ import java.util.List;
 @PermitAll
 public class RentalForm extends FormLayout {
 
-    Binder<RentalModel> binder = new Binder<>(RentalModel.class);
-    Binder<ReservationModel> binder1 = new Binder<>(ReservationModel.class);
+    Binder<RentalModel> rentalBinder = new Binder<>(RentalModel.class);
+    Binder<ReservationModel> reservationBinder = new Binder<>(ReservationModel.class);
 
     ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
@@ -35,16 +35,18 @@ public class RentalForm extends FormLayout {
 
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("rental-form");
-        binder1.forField(dateOfRental).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
+//        rentalBinder.bindInstanceFields(this);
+        reservationBinder.forField(dateOfRental).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
 
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
         reservation.setItems(reservations);
         reservation.setItemLabelGenerator(ReservationModel::getReservationInfo);
-        binder.forField(employee).bind(RentalModel::getEmployee, RentalModel::setEmployee);
-        binder.forField(reservation).bind(RentalModel::getReservation, RentalModel::setReservation);
-        binder.forField(comments).bind(RentalModel::getComments, RentalModel::setComments);
-        binder.forField(dateOfRental).bind(RentalModel::getDateOfRental, RentalModel::setDateOfRental);
+
+        rentalBinder.forField(employee).bind(RentalModel::getEmployee, RentalModel::setEmployee);
+        rentalBinder.forField(reservation).bind(RentalModel::getReservation, RentalModel::setReservation);
+        rentalBinder.forField(comments).bind(RentalModel::getComments, RentalModel::setComments);
+        rentalBinder.forField(dateOfRental).bind(RentalModel::getDateOfRental, RentalModel::setDateOfRental);
         add(
                 employee,
                 reservation,
@@ -54,9 +56,9 @@ public class RentalForm extends FormLayout {
                 );
     }
 
-//    public void setRental(ReservationModel reservationModel) {
-//        this.reservationModel = reservationModel;
-//    }
+    public void setRental(RentalModel rentalModel) {
+        this.rentalModel = rentalModel;
+    }
 
     private Component createButtonLayout(){
         rent.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -70,7 +72,7 @@ public class RentalForm extends FormLayout {
 
     private void validateAndSave() {
         try{
-            binder.writeBean(rentalModel);
+            rentalBinder.writeBean(rentalModel);
             fireEvent(new SaveEvent(this, rentalModel));
         } catch (ValidationException e){
             e.printStackTrace();
@@ -95,15 +97,23 @@ public class RentalForm extends FormLayout {
             super(source, rentalModel);
         }
     }
+    public static class DeleteEvent extends RentalFormEvent{
+        DeleteEvent(RentalForm source, RentalModel rentalModel){
+            super(source, rentalModel);
+        }
+    }
     public static class CancelEvent extends RentalForm.RentalFormEvent {
         CancelEvent(RentalForm source) {
             super(source, null);
         }
     }
-    public Registration addRentListener(ComponentEventListener<SaveEvent> listener) {
+    public Registration addDeleteListener(ComponentEventListener<DeleteEvent> listener){
+        return addListener(DeleteEvent.class, listener);
+    }
+    public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
         return addListener(SaveEvent.class, listener);
     }
-    public Registration addCancelListener(ComponentEventListener<CancelEvent> listener) {
+    public Registration addCloseListener(ComponentEventListener<CancelEvent> listener) {
         return addListener(CancelEvent.class, listener);
     }
 
