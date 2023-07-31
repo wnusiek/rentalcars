@@ -75,10 +75,10 @@ public class MainLayout extends AppLayout {
                 addReservationView,
                 reservationsListView,
                 addRentalView,
+                rentalsView,
                 employeesView,
                 customersView,
-                departmentsView,
-                rentalsView
+                departmentsView
         ));
 
     }
