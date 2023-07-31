@@ -54,7 +54,6 @@ public class AddRentalView extends VerticalLayout {
         content.setFlexGrow(2, form);
         content.addClassName("content");
         content.setSizeFull();
-        Button addRentalButton = new Button("Add rental");
         return content;
     }
 
@@ -93,6 +92,7 @@ public class AddRentalView extends VerticalLayout {
 
     private void saveRental(RentalForm.SaveEvent event){
         rentalService.postAddRental(event.getRental());
+        closeEditor();
     }
 
     private void editRental(RentalModel rentalModel){
