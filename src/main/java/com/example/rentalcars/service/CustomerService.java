@@ -1,6 +1,7 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CustomerModel;
+import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,18 @@ public class CustomerService {
 
     public void removeCustomer(Long id) {
         customerRepository.deleteById(id);
+    }
+
+
+    public void saveCustomer(CustomerModel customerModel){
+        if (customerModel == null ){
+            System.err.println("Employee is null.");
+            return;
+        }
+        customerRepository.save(customerModel);
+    }
+
+    public void deleteCustomer(CustomerModel customerModel){
+        customerRepository.delete(customerModel);
     }
 }
