@@ -19,8 +19,9 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.shared.Registration;
+import jakarta.annotation.security.PermitAll;
 
-
+@PermitAll
 public class CarForm extends FormLayout {
     Binder<CarModel> binder = new Binder<>(CarModel.class);
     Binder<CarModel> enumBinder = new Binder<>(CarModel.class);

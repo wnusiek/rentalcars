@@ -16,7 +16,9 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import jakarta.annotation.security.PermitAll;
 
+@PermitAll
 public class EmployeeForm extends FormLayout {
     Binder<EmployeeModel> binder = new BeanValidationBinder<>(EmployeeModel.class);
 

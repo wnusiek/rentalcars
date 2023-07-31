@@ -18,9 +18,10 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import jakarta.annotation.security.PermitAll;
 
 import java.util.List;
-
+@PermitAll
 public class ReservationForm extends FormLayout {
     Binder<ReservationModel> binder = new Binder<>(ReservationModel.class);
     ComboBox<CustomerModel> customer = new ComboBox<>("Klient");

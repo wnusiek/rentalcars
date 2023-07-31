@@ -16,9 +16,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import jakarta.annotation.security.PermitAll;
 
 import java.util.List;
-
+@PermitAll
 public class RentalForm extends FormLayout {
 
     Binder<RentalModel> binder = new Binder<>(RentalModel.class);

@@ -13,7 +13,9 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import jakarta.annotation.security.PermitAll;
 
+@PermitAll
 public class CompanyForm extends VerticalLayout {
     Binder<CompanyModel> binder = new BeanValidationBinder<>(CompanyModel.class);
     TextField companyName = new TextField("Company name");
