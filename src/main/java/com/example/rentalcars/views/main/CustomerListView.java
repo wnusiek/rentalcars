@@ -9,9 +9,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 
 @Route(value = "customers", layout = MainLayout.class)
 @PageTitle("Lista klientów")
+@PermitAll
 public class CustomerListView extends VerticalLayout {
 
     private final CustomerService customerService;

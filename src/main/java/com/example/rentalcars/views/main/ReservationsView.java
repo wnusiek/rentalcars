@@ -11,9 +11,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 
 @Route(value = "reservations", layout = MainLayout.class)
 @PageTitle("Lista rezerwacji")
+@PermitAll
 public class ReservationsView extends VerticalLayout {
 
     private final ReservationService reservationService;

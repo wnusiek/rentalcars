@@ -8,9 +8,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 
 @Route(value = "rentals", layout = MainLayout.class)
 @PageTitle("Lista wypożyczeń")
+@PermitAll
 public class RentalView extends VerticalLayout {
 
     private final RentalService rentalService;
