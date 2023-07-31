@@ -35,7 +35,7 @@ public class RentalView extends VerticalLayout {
         configureGrid();
         configureForm();
         add(
-                getToolbar(),
+//                getToolbar(),
                 getContent()
         );
         updateRentalList();
@@ -67,7 +67,7 @@ public class RentalView extends VerticalLayout {
         rentalGrid.setColumns("employee.firstName", "employee.lastName", "dateOfRental", "reservation.customer.firstName", "reservation.customer.lastName", "comments");
         rentalGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        rentalGrid.asSingleSelect().addValueChangeListener(event -> editRental(event.getValue()));
+//        rentalGrid.asSingleSelect().addValueChangeListener(event -> editRental(event.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
