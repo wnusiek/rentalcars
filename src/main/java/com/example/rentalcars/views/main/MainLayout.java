@@ -72,6 +72,9 @@ public class MainLayout extends AppLayout {
         RouterLink addReturnView = new RouterLink("Zwroty", AddReturnView.class);
         addReturnView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink returnsView = new RouterLink("Lista zwrotów", ReturnListView.class);
+        returnsView.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
                 companyView,
                 carsView,
@@ -80,6 +83,7 @@ public class MainLayout extends AppLayout {
                 addRentalView,
                 rentalsView,
                 addReturnView,
+                returnsView,
                 employeesView,
                 customersView,
                 departmentsView
