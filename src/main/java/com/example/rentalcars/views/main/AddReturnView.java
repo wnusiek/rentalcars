@@ -23,7 +23,7 @@ public class AddReturnView extends VerticalLayout {
     private final EmployeeService employeeService;
     private final ReturnService returnService;
     private final RentalService rentalService;
-    Grid<RentalModel> grid = new Grid<>(RentalModel.class);
+    Grid<RentalModel> grid = new Grid<>(RentalModel.class, false);
     ReturnForm form;
 
     public AddReturnView(ReservationService reservationService, EmployeeService employeeService, ReturnService returnService, RentalService rentalService) {
@@ -65,7 +65,19 @@ public class AddReturnView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("rental-grid");
         grid.setSizeFull();
-        grid.setColumns("employee.firstName", "employee.lastName", "reservation.car.mark", "reservation.car.model", "reservation.dateFrom", "reservation.dateTo", "reservation.customer.firstName", "reservation.customer.lastName", "reservation.price", "dateOfRental", "comments");
+
+        grid.addColumn("employee.firstName").setHeader("Imię pracownika");
+        grid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
+        grid.addColumn("reservation.car.mark").setHeader("Marka");
+        grid.addColumn("reservation.car.model").setHeader("Model");
+        grid.addColumn("reservation.dateFrom").setHeader("Data rezerwacji od");
+        grid.addColumn("reservation.dateTo" ).setHeader("Data rezerwacji  do");
+        grid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
+        grid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
+        grid.addColumn("reservation.price").setHeader("Cena");
+        grid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
+        grid.addColumn("comments").setHeader("Komentarz");
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
