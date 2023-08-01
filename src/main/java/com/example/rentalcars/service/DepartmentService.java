@@ -47,6 +47,9 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
+    public void deleteDepartment(DepartmentModel departmentModel){
+        departmentRepository.delete(departmentModel);
+    }
 
     public Set<EmployeeModel> getDepartmentEmployees(Long departmentId) {
         return departmentRepository.findAll().stream()
