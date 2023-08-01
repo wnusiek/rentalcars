@@ -10,7 +10,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
@@ -24,7 +23,6 @@ public class AddRentalView extends VerticalLayout {
     private final EmployeeService employeeService;
     private final RentalService rentalService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
-    TextField filterText = new TextField();
     RentalForm form;
 
     public AddRentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService) {
@@ -36,44 +34,31 @@ public class AddRentalView extends VerticalLayout {
         configureGrid();
         configureForm();
         add(
+                getToolbar(),
                 getContent()
         );
         updateReservationList();
+        closeEditor();
+
     }
 
-
-    private void addRental() {
-        editRental(new RentalModel());
-    }
-
-    private void editRental(RentalModel rentalModel){
-        if (rentalModel == null){
-        }else {
-//            form.setRental(rentalModel);
-        }
+    private void closeEditor() {
+        form.setRental(null);
+        form.setVisible(false);
+        removeClassName("editing");
     }
 
     private Component getContent(){
         HorizontalLayout content = new HorizontalLayout(grid, form);
-//        content.setFlexGrow(2, grid);
-//        content.setFlexGrow(2, form);
-//        content.addClassName("content");
+        content.setFlexGrow(2, grid);
+        content.setFlexGrow(2, form);
+        content.addClassName("content");
         content.setSizeFull();
-        Button addRentalButton = new Button("Add rental");
-        addRentalButton.addClickListener(e->addRental());
         return content;
     }
 
     private void updateReservationList() {
         grid.setItems(reservationService.getReservationList());
-    }
-
-    private void configureForm() {
-        form = new RentalForm(employeeService.getEmployeeList(), reservationService.getReservationList());
-        form.setWidth("25em");
-
-        form.addRentListener(this::saveRental);
-//        form.addCancelListener(cancelEvent -> );
     }
 
     private void configureGrid() {
@@ -82,18 +67,43 @@ public class AddRentalView extends VerticalLayout {
         grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue.city", "returnVenue.city", "customer.firstName", "customer.lastName");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-//        grid.asSingleSelect().addValueChangeListener(event -> setRentalReservation(event.getValue()));
-//        grid.asSingleSelect().addValueChangeListener(event -> editRental(event.getValue()));
     }
 
-//    private void setRentalReservation(ReservationModel reservationModel) {
-//        form.setRental(reservationModel);
-//    }
+    private HorizontalLayout getToolbar() {
+        Button addRentalButton = new Button("Add rental");
+        addRentalButton.addClickListener(e->addRental());
+
+        var toolbar = new HorizontalLayout(addRentalButton);
+        toolbar.addClassName("toolbar");
+        return toolbar;
+    }
+    private void addRental() {
+        grid.asSingleSelect().clear();
+        editRental(new RentalModel());
+    }
+
+    private void configureForm() {
+        form = new RentalForm(employeeService.getEmployeeList(), reservationService.getReservationList());
+        form.setWidth("25em");
+
+        form.addSaveListener(this::saveRental);
+        form.addCloseListener(cancelEvent -> closeEditor());
+    }
 
     private void saveRental(RentalForm.SaveEvent event){
         rentalService.postAddRental(event.getRental());
-//        updateEmployeeList();
-//        closeEditor();
+        closeEditor();
     }
+
+    private void editRental(RentalModel rentalModel){
+        if (rentalModel == null){
+            closeEditor();
+        }else {
+            form.setRental(rentalModel);
+            form.setVisible(true);
+            addClassName("editing");
+        }
+    }
+
 
 }
