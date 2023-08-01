@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -31,6 +32,12 @@ public class ReturnModel {
 
     @OneToOne
     private ReservationModel reservation;
+
+    @Column(name = "supplement")
+    private BigDecimal supplement;
+
+    @Column(name = "total_cost")
+    private BigDecimal totalCost;
 
     @Column(name = "comments")
     private String comments;
