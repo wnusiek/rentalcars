@@ -12,13 +12,12 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Login")
 public class LoginView extends VerticalLayout implements BeforeEnterListener {
 
-    private UserService userService;
+    private final UserService userService;
 
-    private LoginForm login = new LoginForm();
+    LoginForm login = new LoginForm();
 
 
-
-    private RegisterForm registerForm = new RegisterForm();
+    RegisterForm registerForm = new RegisterForm();
     public LoginView(UserService userService) {
         this.userService = userService;
         addClassName("login-view");
@@ -40,7 +39,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
     }
 
     private void configureForm(){
+        setAlignItems(Alignment.CENTER);
         registerForm = new RegisterForm();
+        registerForm.setWidth("25em");
+
         registerForm.addSaveListener(this::saveUser);
     }
 

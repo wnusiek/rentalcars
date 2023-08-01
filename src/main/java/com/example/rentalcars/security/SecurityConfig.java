@@ -5,6 +5,7 @@ import com.example.rentalcars.repository.UserRepository;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,20 +36,27 @@ public class SecurityConfig extends VaadinWebSecurity {
         super.configure(web);
     }
 
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        return userName -> {
-            // Pobierz użytkownika z bazy danych na podstawie nazwy użytkownika
-            UserModel user = userService.findByName(userName);
-            if (user == null) {
-                throw new UsernameNotFoundException("Użytkownik o takim emailu nie został znaleziony.");
-            }
+//    @Bean
+//    protected UserDetailsService userDetailsService() {
+//        return userName -> {
+//            // Pobierz użytkownika z bazy danych na podstawie nazwy użytkownika
+//            UserModel user = userService.findByName(userName);
+//            if (user == null) {
+//                throw new UsernameNotFoundException("Użytkownik o takim emailu nie został znaleziony.");
+//            }
+//
+//            return org.springframework.security.core.userdetails.User
+//                    .withUsername(user.getName())
+//                    .password(user.getPassword())
+//                    .build();
+//        };
+//    }
 
-            return org.springframework.security.core.userdetails.User
-                    .withUsername(user.getName())
-                    .password(user.getPassword())
-                    .build();
-        };
+    @Bean
+    protected UserDetailsService userDetailsService(){
+        return new InMemoryUserDetailsManager(User.withUsername("user")
+                .password("{noop}userpass")
+                .build());
     }
 }
 

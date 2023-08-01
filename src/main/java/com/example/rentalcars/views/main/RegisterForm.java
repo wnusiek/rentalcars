@@ -26,35 +26,39 @@ import java.awt.*;
 
 public class RegisterForm extends FormLayout {
 
-    private UserModel userModel;
-
-
     Binder<UserModel> binder = new BeanValidationBinder<>(UserModel.class);
 
     TextField name = new TextField("name");
 
-    PasswordField passwordField = new PasswordField("password");
+    PasswordField password= new PasswordField("password");
 
-    EmailField emailField = new EmailField("email");
+    EmailField email = new EmailField("email");
 
-    Button registerButton = new Button("Register");
+    Button save = new Button("Register");
+
+    private UserModel userModel;
 
 
     public RegisterForm() {
         binder.bindInstanceFields(this);
         add(
                 name,
-                passwordField,
-                emailField,
+                password,
+                email,
                 registerButtonLayout()
         );
     }
 
-    private Component registerButtonLayout() {
-        registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        registerButton.addClickListener(event -> validateAndSave());
+   public void setUser(UserModel userModel){
+        this.userModel = userModel;
+        binder.readBean(userModel);
+   }
 
-        return new HorizontalLayout(registerButton);
+    private Component registerButtonLayout() {
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.addClickListener(event -> validateAndSave());
+
+        return new HorizontalLayout(save);
 
     }
 
@@ -81,14 +85,14 @@ public static abstract class ReqisterFormEvent extends ComponentEvent<RegisterFo
     }
 }
 
-    public static class SaveEvent extends RegisterForm.ReqisterFormEvent {
+    public static class SaveEvent extends ReqisterFormEvent {
         SaveEvent(RegisterForm source, UserModel userModel) {
             super(source, userModel);
         }
     }
 
     public Registration addSaveListener(ComponentEventListener<RegisterForm.SaveEvent> listener) {
-        return addListener(RegisterForm.SaveEvent.class, listener);
+        return addListener(SaveEvent.class, listener);
     }
 }
 
