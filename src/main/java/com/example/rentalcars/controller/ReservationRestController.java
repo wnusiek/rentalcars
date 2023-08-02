@@ -50,8 +50,8 @@ public class ReservationRestController {
     }
 
     @GetMapping("/getAvailableCarsByDateRange")
-    public List<CarModel> getAvailableCarsByDateRange(LocalDate dateFrom, LocalDate dateTo) {
-        return reservationService.getAvailableCarsByDateRange(dateFrom, dateTo);
+    public List<CarModel> getAvailableCarsByDateRange(List<CarModel> cars, LocalDate dateFrom, LocalDate dateTo) {
+        return reservationService.getAvailableCarsByDateRange(cars, dateFrom, dateTo);
     }
 
 }

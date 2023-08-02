@@ -68,9 +68,8 @@ public class ReservationService {
         return true;
     }
 
-    public List<CarModel> getAvailableCarsByDateRange(LocalDate dateFrom, LocalDate dateTo) {
+    public List<CarModel> getAvailableCarsByDateRange(List<CarModel> cars, LocalDate dateFrom, LocalDate dateTo) {
         List<CarModel> availableCarList = new ArrayList<>();
-        List<CarModel> cars = carService.getCarList1();
 
         for (CarModel c : cars) {
             if (getCarAvailabilityByDateRange(c.getId(), dateFrom, dateTo)) {
