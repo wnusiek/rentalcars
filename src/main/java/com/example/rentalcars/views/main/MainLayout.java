@@ -34,6 +34,9 @@ public class MainLayout extends AppLayout {
         Button logOut = new Button("Log out", e -> securityService.logout());
         HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, logOut);
 
+        //todo
+        Button register = new Button("Register");
+
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(companyName);
         header.setWidthFull();

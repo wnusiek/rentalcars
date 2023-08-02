@@ -1,4 +1,6 @@
 package com.example.rentalcars.views.main;
+import com.example.rentalcars.service.UserService;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -8,23 +10,49 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route("login")
-@PageTitle("Login | Vaadin CRM")
+@PageTitle("Login")
 public class LoginView extends VerticalLayout implements BeforeEnterListener {
 
+    private final UserService userService;
 
-    private LoginForm login = new LoginForm();
-    public LoginView() {
+    LoginForm login = new LoginForm();
+
+    Button registerButton = new Button("Zarejestruj się");
+
+
+
+
+    RegisterForm registerForm = new RegisterForm();
+    public LoginView(UserService userService) {
+        this.userService = userService;
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
+        configureForm();
         login.setAction("login");
+
+        registerButton.addClickListener(e-> getUI().ifPresent(ui -> ui.navigate("register")));
 
         add(
                 new H1("Wypożyczalnia Gruz-rental"),
-                login
+                login,
+                new H1("Nie masz jeszcze konta? Zarejestruj się!"),
+                registerButton
+
+
         );
+
+
+    }
+
+    private void configureForm(){
+        setAlignItems(Alignment.CENTER);
+        registerForm = new RegisterForm();
+        registerForm.setWidth("25em");
+
+        registerForm.addSaveListener(this::saveUser);
     }
 
     @Override
@@ -36,5 +64,9 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
                 .containsKey("error")){
             login.setError(true);
         }
+    }
+
+    private void saveUser(RegisterForm.SaveEvent event){
+        userService.saveUser(event.getUser());
     }
 }
