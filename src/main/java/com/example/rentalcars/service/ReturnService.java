@@ -1,10 +1,12 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.repository.ReturnRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -12,8 +14,19 @@ import java.util.List;
 public class ReturnService {
 
     private final ReturnRepository returnRepository;
+    private final ReservationService reservationService;
+    private final DepartmentService departmentService;
 
     public void addReturn(ReturnModel returnModel) {
+        returnModel.setTotalCost(returnModel.getReservation().getPrice());
+        departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
+        returnRepository.save(returnModel);
+    }
+
+    public void addReturn(ReturnModel returnModel, BigDecimal supplement) {
+        returnModel.setSupplement(supplement);
+        returnModel.setTotalCost(returnModel.getReservation().getPrice().add(returnModel.getSupplement()));
+        departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
         returnRepository.save(returnModel);
     }
 
@@ -31,6 +44,12 @@ public class ReturnService {
 
     public ReturnModel findById(Long id) {
         return returnRepository.findById(id).orElse(null);
+    }
+
+    public BigDecimal getIncome (List<ReturnModel> returnModelList) {
+        BigDecimal income = null;
+        returnModelList.stream().forEach(e -> income.add(e.getTotalCost()));
+        return income;
     }
 
 

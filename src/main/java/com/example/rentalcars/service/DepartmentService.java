@@ -47,6 +47,9 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
+    public void deleteDepartment(DepartmentModel departmentModel){
+        departmentRepository.delete(departmentModel);
+    }
 
     public Set<EmployeeModel> getDepartmentEmployees(Long departmentId) {
         return departmentRepository.findAll().stream()
@@ -63,6 +66,18 @@ public class DepartmentService {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
 
+    }
+
+    public void addCarToDepartment(Long carId, Long departmentId){
+        var department = departmentRepository.findById(departmentId);
+        var car = carRepository.findById(carId);
+
+        if(car.isPresent() && department.isPresent()){
+            var c = car.get();
+            var d = department.get();
+            d.getCars().add(c);
+            departmentRepository.save(d);
+        }
     }
 
 }

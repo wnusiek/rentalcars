@@ -72,16 +72,24 @@ public class MainLayout extends AppLayout {
         RouterLink rentalsView = new RouterLink("Lista wypożyczeń", RentalView.class);
         rentalsView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink addReturnView = new RouterLink("Zwroty", AddReturnView.class);
+        addReturnView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink returnsView = new RouterLink("Lista zwrotów", ReturnListView.class);
+        returnsView.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
                 companyView,
                 carsView,
                 addReservationView,
                 reservationsListView,
                 addRentalView,
+                rentalsView,
+                addReturnView,
+                returnsView,
                 employeesView,
                 customersView,
-                departmentsView,
-                rentalsView
+                departmentsView
         ));
 
     }
