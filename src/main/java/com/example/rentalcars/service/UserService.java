@@ -53,7 +53,8 @@ public class UserService {
         } else {
             UserModel user = new UserModel();
             user.setName(userModel.getName());
-            user.setPassword(passwordEncoder.encode(userModel.getPassword()));
+            user.setEmail(userModel.getEmail());
+            user.setPassword(userModel.getPassword());
 
             userRepository.save(user);
         }

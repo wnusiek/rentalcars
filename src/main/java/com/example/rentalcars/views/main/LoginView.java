@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main;
 import com.example.rentalcars.service.UserService;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,6 +17,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
 
     LoginForm login = new LoginForm();
 
+    Button registerButton = new Button("Zarejestruj się");
+
+
+
 
     RegisterForm registerForm = new RegisterForm();
     public LoginView(UserService userService) {
@@ -28,10 +33,14 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
         configureForm();
         login.setAction("login");
 
+        registerButton.addClickListener(e-> getUI().ifPresent(ui -> ui.navigate("register")));
+
         add(
                 new H1("Wypożyczalnia Gruz-rental"),
                 login,
-                registerForm
+                new H1("Nie masz jeszcze konta? Zarejestruj się!"),
+                registerButton
+
 
         );
 
