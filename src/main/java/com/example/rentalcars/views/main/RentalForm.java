@@ -36,7 +36,7 @@ public class RentalForm extends FormLayout {
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("rental-form");
 //        rentalBinder.bindInstanceFields(this);
-        reservationBinder.forField(dateOfRental).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
+//        reservationBinder.forField(dateOfRental).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
 
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
