@@ -33,7 +33,7 @@ public class DepartmentModel {
 //    @Column
     private Set<EmployeeModel> employees = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @Column
     private List<CarModel> cars = new ArrayList<>();
 
