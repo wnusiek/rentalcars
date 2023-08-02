@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,8 +23,8 @@ public class ReturnRestController {
     }
 
     @PostMapping("/addReturn")
-    public void add(ReturnModel returnModel) {
-        returnService.addReturn(returnModel);
+    public void add(ReturnModel returnModel, BigDecimal supplement) {
+        returnService.addReturn(returnModel, supplement);
     }
 
     @PostMapping("/editReturn/{id}")

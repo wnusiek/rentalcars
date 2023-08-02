@@ -87,6 +87,7 @@ public class ReservationService {
         LocalDate endDate = reservation.getDateTo();
 
         // Upewniamy się, że data końcowa nie jest wcześniejsza niż data początkowa
+        // Walidację daty to raczej w w samym rezerwowaniu a nie przy obliczaniu kosztów
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("Data końcowa nie może być wcześniejsza niż data początkowa.");
         }
@@ -97,7 +98,11 @@ public class ReservationService {
         // Obliczamy koszt rezerwacji (cena za dzień * liczba dni)
         BigDecimal totalCost = dailyRentalPrice.multiply(BigDecimal.valueOf(numberOfDays));
 
-        return totalCost;
+        if (reservation.getReceptionVenue().equals(reservation.getReturnVenue())){
+            return totalCost;
+        } else {
+            return totalCost.add(BigDecimal.valueOf(100l));
+        }
     }
 
 
