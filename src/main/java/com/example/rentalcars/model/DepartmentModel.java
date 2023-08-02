@@ -30,11 +30,11 @@ public class DepartmentModel {
     private String address;
 
     @OneToMany(cascade = CascadeType.ALL)
-//    @Column
+    @Column(name = "employees")
     private Set<EmployeeModel> employees = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @Column
+    @Column(name = "cars")
     private List<CarModel> cars = new ArrayList<>();
 
 
