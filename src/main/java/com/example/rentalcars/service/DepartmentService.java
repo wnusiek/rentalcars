@@ -80,4 +80,16 @@ public class DepartmentService {
         }
     }
 
+    public void removeCarFromDepartment(Long carId, Long departmentId){
+        var department = departmentRepository.findById(departmentId);
+        var car = carRepository.findById(carId);
+
+        if(car.isPresent() && department.isPresent()){
+            var c = car.get();
+            var d = department.get();
+            d.getCars().remove(c);
+            departmentRepository.save(d);
+        }
+    }
+
 }

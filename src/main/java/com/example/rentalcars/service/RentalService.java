@@ -12,8 +12,10 @@ import java.util.List;
 public class RentalService {
 
     private final RentalRepository rentalRepository;
+    private final DepartmentService departmentService;
 
     public void postAddRental(RentalModel rental) {
+        departmentService.removeCarFromDepartment(rental.getReservation().getCar().getId(), rental.getReservation().getReceptionVenue().getId());
         rentalRepository.save(rental);
     }
 
