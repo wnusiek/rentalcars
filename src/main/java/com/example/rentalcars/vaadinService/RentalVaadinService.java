@@ -4,8 +4,10 @@ import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.MenagementServices.CarsByDateService;
 import com.example.rentalcars.MenagementServices.CarsBySpecificationService;
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.repository.*;
 import com.example.rentalcars.service.CarService;
+import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.ReservationService;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class RentalVaadinService {
 
     private final CarsBySpecificationService carsBySpecificationService;
     private final CarService carService;
+    private final DepartmentService departmentService;
     private final CompanyRepository companyRepository;
     private final CustomerRepository customerRepository;
     private final DepartmentRepository departmentRepository;
@@ -29,7 +32,7 @@ public class RentalVaadinService {
     private final CarsByDateService carsBydateService;
     private final ReservationService reservationService;
 
-    public RentalVaadinService(CarRepository carRepository, CarsBySpecificationService carsBySpecificationService, CarService carService, CompanyRepository companyRepository,
+    public RentalVaadinService(CarRepository carRepository, CarsBySpecificationService carsBySpecificationService, CarService carService, DepartmentService departmentService, CompanyRepository companyRepository,
                                CustomerRepository customerRepository, DepartmentRepository departmentRepository,
                                EmployeeRepository employeeRepository, RentalRepository rentalRepository,
                                ReservationRepository reservationRepository, ReturnRepository returnRepository, CarsByDateService carsBydateService, ReservationService reservationService) {
@@ -37,6 +40,7 @@ public class RentalVaadinService {
         this.carRepository = carRepository;
         this.carsBySpecificationService = carsBySpecificationService;
         this.carService = carService;
+        this.departmentService = departmentService;
         this.companyRepository = companyRepository;
         this.customerRepository = customerRepository;
         this.departmentRepository = departmentRepository;
@@ -57,9 +61,17 @@ public class RentalVaadinService {
         }
     }
 
-    public List<CarModel> findAvailableCarsByDates (LocalDate startDate, LocalDate endDate){
+    public List<CarModel> findAvailableCarsByDates (DepartmentModel departmentModel, LocalDate startDate, LocalDate endDate){
         try {
-            return reservationService.getAvailableCarsByDateRange(startDate, endDate);
+            return reservationService.getAvailableCarsByDateRange(findCarsByDepartment(departmentModel),startDate, endDate);
+        } catch (NullPointerException n) {
+            return findCarsByDepartment(departmentModel);
+        }
+    }
+
+    public List<CarModel> findCarsByDepartment (DepartmentModel departmentModel){
+        try {
+            return departmentService.getAllCarsByDepartment(departmentModel.getId());
         } catch (NullPointerException n) {
             return carService.getCarList1();
         }
