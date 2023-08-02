@@ -15,15 +15,18 @@ public class ReturnService {
 
     private final ReturnRepository returnRepository;
     private final ReservationService reservationService;
+    private final DepartmentService departmentService;
 
     public void addReturn(ReturnModel returnModel) {
         returnModel.setTotalCost(returnModel.getReservation().getPrice());
+        departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
         returnRepository.save(returnModel);
     }
 
     public void addReturn(ReturnModel returnModel, BigDecimal supplement) {
         returnModel.setSupplement(supplement);
         returnModel.setTotalCost(returnModel.getReservation().getPrice().add(returnModel.getSupplement()));
+        departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
         returnRepository.save(returnModel);
     }
 
