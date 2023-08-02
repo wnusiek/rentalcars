@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,11 @@ public class RentalService {
 
     private final RentalRepository rentalRepository;
     private final DepartmentService departmentService;
+    private final CarService carService;
 
     public void postAddRental(RentalModel rental) {
         departmentService.removeCarFromDepartment(rental.getReservation().getCar().getId(), rental.getReservation().getReceptionVenue().getId());
+        carService.setCarStatus(rental.getReservation().getCar().getId(), CarStatus.HIRED);
         rentalRepository.save(rental);
     }
 
