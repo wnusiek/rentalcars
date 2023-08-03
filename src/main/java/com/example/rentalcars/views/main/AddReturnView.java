@@ -14,10 +14,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "addreturn", layout = MainLayout.class)
 @PageTitle("Zwroty")
-@PermitAll
+@Secured("ROLE_ADMIN")
 public class AddReturnView extends VerticalLayout {
     private final ReservationService reservationService;
     private final EmployeeService employeeService;

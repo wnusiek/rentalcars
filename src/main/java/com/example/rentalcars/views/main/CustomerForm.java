@@ -9,7 +9,9 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -22,6 +24,12 @@ public class CustomerForm extends FormLayout {
     Binder<CustomerModel> binder = new BeanValidationBinder<>(CustomerModel.class);
     TextField firstName = new TextField("First name");
     TextField lastName = new TextField("Last name");
+    TextField phoneNumber = new TextField("Phone number");
+    TextField driverLicenceNumber = new TextField("Driver licence number");
+    TextField email = new TextField("Email");
+    TextField pesel = new TextField("Pesel");
+    TextField city = new TextField("City");
+    TextField zipCode = new TextField("Zip code");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -35,6 +43,12 @@ public class CustomerForm extends FormLayout {
         add(
                 firstName,
                 lastName,
+                phoneNumber,
+                driverLicenceNumber,
+                email,
+                pesel,
+                city,
+                zipCode,
                 createButtonLayout()
         );
     }
@@ -55,6 +69,11 @@ public class CustomerForm extends FormLayout {
     }
 
     private void validateAndSave() {
+        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()||email.isEmpty()
+        ||pesel.isEmpty()||city.isEmpty()||zipCode.isEmpty()){
+            Notification.show("Wszystkie pola są wymagane");
+            return;
+        }
         try {
             binder.writeBean(customerModel);
             fireEvent(new SaveEvent(this, customerModel));

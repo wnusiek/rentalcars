@@ -10,10 +10,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "configuration", layout = MainLayout.class)
 @PageTitle("Company configuration")
-@PermitAll
+@Secured("ROLE_ADMIN")
 public class CompanyView extends VerticalLayout {
 
     private final CompanyService companyService;

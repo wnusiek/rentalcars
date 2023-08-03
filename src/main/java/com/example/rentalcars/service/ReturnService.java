@@ -4,10 +4,12 @@ import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.repository.ReturnRepository;
+import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,6 +21,10 @@ public class ReturnService {
     private final CarService carService;
 
     public void addReturn(ReturnModel returnModel) {
+        if(!returnModel.getDateOfReturn().isEqual(LocalDate.now())){
+            Notification.show("Coś napierdaczyłeś z datą drogi kolego");
+            return;
+        }
         returnModel.setTotalCost(returnModel.getReservation().getPrice());
         departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
         carService.setCarStatus(returnModel.getReservation().getCar().getId(), CarStatus.AVAILABLE);

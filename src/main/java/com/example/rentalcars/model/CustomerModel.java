@@ -1,6 +1,8 @@
 package com.example.rentalcars.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +19,11 @@ public class CustomerModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
@@ -29,6 +33,7 @@ public class CustomerModel {
     @Column(name = "driver_license_number")
     private String driverLicenseNumber;
 
+    @Email
     @Column(name = "email")
     private String email;
 

@@ -11,10 +11,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "customers", layout = MainLayout.class)
 @PageTitle("Lista klientów")
-@PermitAll
+@Secured("ROLE_ADMIN")
 public class CustomerListView extends VerticalLayout {
 
     private final CustomerService customerService;

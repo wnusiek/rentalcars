@@ -7,6 +7,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -53,6 +54,10 @@ public class DepartmentForm extends FormLayout {
     }
 
     private void validateAndSave() {
+        if(city.isEmpty() || address.isEmpty()){
+            Notification.show("Wszystkie pola są wymagane");
+            return;
+        }
         try{
             departmentBinder.writeBean(departmentModel);
             fireEvent(new SaveEvent(this, departmentModel));

@@ -6,10 +6,12 @@ import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.ReservationRepository;
+import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -24,8 +26,17 @@ public class ReservationService {
     private final CarRepository carRepository;
     private final CarService carService;
     public void addReservation(ReservationModel reservation) {
-        reservation.setPrice(calculateRentalCost(reservation));
-        reservationRepository.save(reservation);
+        if(!getCarAvailabilityByDateRange(reservation.getCar().getId(), reservation.getDateFrom(),reservation.getDateTo())) {
+            throw new RuntimeException("Samochód jest zarezerwowany na ten termin");
+        }else if(reservation.getDateFrom().isAfter(reservation.getDateTo())){
+            Notification.show("Coś napierdoczyłeś z datami drogi przyjacielu. Data DO nie może być wcześniej niż data OD!");
+            throw new RuntimeException("Data od jest później niż data do");
+
+
+        }else {
+            reservation.setPrice(calculateRentalCost(reservation));
+            reservationRepository.save(reservation);
+        }
     }
 
     public List<ReservationModel> getReservationList() {

@@ -36,6 +36,7 @@ public class RegisterView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         registerButton.addClickListener(e -> register());
+        registerButton.addClickListener(e-> getUI().ifPresent(ui -> ui.navigate("")));
         add(
                 new H1("REJESTRACJA"),
         name = new TextField("Imię"),
@@ -47,6 +48,11 @@ public class RegisterView extends VerticalLayout {
     }
 
     public void register() {
+        if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
+            Notification.show("Wszystkie pola są wymagane!");
+            return;
+        }
+
         String firstName = name.getValue();
         String userEmail = email.getValue();
         String userPassword = password.getValue();

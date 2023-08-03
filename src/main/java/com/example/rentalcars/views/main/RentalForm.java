@@ -43,10 +43,10 @@ public class RentalForm extends FormLayout {
         reservation.setItems(reservations);
         reservation.setItemLabelGenerator(ReservationModel::getReservationInfo);
 
-        rentalBinder.forField(employee).bind(RentalModel::getEmployee, RentalModel::setEmployee);
-        rentalBinder.forField(reservation).bind(RentalModel::getReservation, RentalModel::setReservation);
+        rentalBinder.forField(employee).asRequired("To pole jest wymagane!").bind(RentalModel::getEmployee, RentalModel::setEmployee);
+        rentalBinder.forField(reservation).asRequired("To pole jest wymagane!").bind(RentalModel::getReservation, RentalModel::setReservation);
         rentalBinder.forField(comments).bind(RentalModel::getComments, RentalModel::setComments);
-        rentalBinder.forField(dateOfRental).bind(RentalModel::getDateOfRental, RentalModel::setDateOfRental);
+        rentalBinder.forField(dateOfRental).asRequired("To pole jest wymagane!").bind(RentalModel::getDateOfRental, RentalModel::setDateOfRental);
         add(
                 employee,
                 reservation,

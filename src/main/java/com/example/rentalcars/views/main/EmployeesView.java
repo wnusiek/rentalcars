@@ -10,10 +10,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "employees", layout = MainLayout.class)
 @PageTitle("Lista pracowników")
-@PermitAll
+@Secured("ROLE_ADMIN")
 public class EmployeesView extends VerticalLayout {
 
     private final EmployeeService employeeService;

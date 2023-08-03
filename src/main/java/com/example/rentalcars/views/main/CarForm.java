@@ -48,13 +48,13 @@ public class CarForm extends FormLayout {
         fuelType.setItems(FuelType.values());
         gearbox.setItems(GearboxType.values());
         availability.setItems(CarStatus.values());
-        binder.forField(mark).bind(CarModel::getMark, CarModel::setMark);
-        binder.forField(model).bind(CarModel::getModel, CarModel::setModel);
+        binder.forField(mark).asRequired("To pole jest wymagane!").bind(CarModel::getMark, CarModel::setMark);
+        binder.forField(model).asRequired("To pole jest wymagane!").bind(CarModel::getModel, CarModel::setModel);
         binder.bind(body,CarModel::getBody, CarModel::setBody);
-        binder.forField(color).bind(CarModel::getColor, CarModel::setColor);
+        binder.forField(color).asRequired("To pole jest wymagane!").bind(CarModel::getColor, CarModel::setColor);
         binder.bind(fuelType,CarModel::getFuelType, CarModel::setFuelType);
         binder.bind(gearbox,CarModel::getGearbox, CarModel::setGearbox);
-        binder.forField(price).withNullRepresentation("").withConverter(new StringToBigDecimalConverter("zła wartość")).bind(CarModel::getPrice, CarModel::setPrice);
+        binder.forField(price).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToBigDecimalConverter("zła wartość")).bind(CarModel::getPrice, CarModel::setPrice);
         binder.bind(availability,CarModel::getAvailability, CarModel::setAvailability);
 
         addClassName("car-form");
