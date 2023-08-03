@@ -71,7 +71,6 @@ public class DepartmentService {
     public void addCarToDepartment(Long carId, Long departmentId){
         var department = departmentRepository.findById(departmentId);
         var car = carRepository.findById(carId);
-
         if(car.isPresent() && department.isPresent()){
             var c = car.get();
             var d = department.get();
@@ -86,6 +85,27 @@ public class DepartmentService {
         if(car.isPresent() && department.isPresent()){
             var d = department.get();
             d.getCars().removeIf(carInList -> carInList.getId().equals(carId));
+            departmentRepository.save(d);
+        }
+    }
+
+    public void addEmployeeToDepartment(Long employeeId, Long departmentId){
+        var employee = employeeRepository.findById(employeeId);
+        var department = departmentRepository.findById(departmentId);
+        if (employee.isPresent() && department.isPresent()){
+            var e = employee.get();
+            var d = department.get();
+            d.getEmployees().add(e);
+            departmentRepository.save(d);
+        }
+    }
+
+    public void removeEmployeeFromDepartment(Long employeeId, Long departmentId){
+        var employee = employeeRepository.findById(employeeId);
+        var department = departmentRepository.findById(departmentId);
+        if (employee.isPresent() && department.isPresent()){
+            var d = department.get();
+            d.getEmployees().removeIf(employeeInList -> employeeInList.equals(employeeId));
             departmentRepository.save(d);
         }
     }
