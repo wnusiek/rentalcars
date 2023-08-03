@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.repository.ReturnRepository;
@@ -14,12 +15,13 @@ import java.util.List;
 public class ReturnService {
 
     private final ReturnRepository returnRepository;
-    private final ReservationService reservationService;
     private final DepartmentService departmentService;
+    private final CarService carService;
 
     public void addReturn(ReturnModel returnModel) {
         returnModel.setTotalCost(returnModel.getReservation().getPrice());
         departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
+        carService.setCarStatus(returnModel.getReservation().getCar().getId(), CarStatus.AVAILABLE);
         returnRepository.save(returnModel);
     }
 
@@ -27,6 +29,7 @@ public class ReturnService {
         returnModel.setSupplement(supplement);
         returnModel.setTotalCost(returnModel.getReservation().getPrice().add(returnModel.getSupplement()));
         departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
+        carService.setCarStatus(returnModel.getReservation().getCar().getId(), CarStatus.AVAILABLE);
         returnRepository.save(returnModel);
     }
 
