@@ -13,12 +13,12 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
 @Route(value = "departmentsEmployees", layout = MainLayout.class)
-@PageTitle("Pracownicy oddziałów")
+@PageTitle("Pracownicy wg oddziałów")
 @PermitAll
 public class DepartmentsEmployeesView extends VerticalLayout {
     private final DepartmentService departmentService;
     Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
-    ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>("Oddziały");
+    ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>();
 
 
     public DepartmentsEmployeesView(DepartmentService departmentService) {
@@ -29,18 +29,15 @@ public class DepartmentsEmployeesView extends VerticalLayout {
                 getToolbar(),
                 getContent()
         );
-        updateEmployeeList();
+//        updateDepartmentEmployeeList();
     }
 
     private Component getContent() {
         HorizontalLayout content = new HorizontalLayout(grid);
+        content.setFlexGrow(2,grid);
         content.addClassName("content");
         content.setSizeFull();
         return content;
-    }
-
-    private void updateEmployeeList() {
-        grid.setItems(departmentService.getDepartmentEmployees(departmentModelComboBox.getValue().getId()));
     }
 
     private void configureGrid() {
@@ -49,16 +46,19 @@ public class DepartmentsEmployeesView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
-    private HorizontalLayout getToolbar(){
+    private Component getToolbar(){
+        HorizontalLayout toolbar = new HorizontalLayout(departmentModelComboBox);
         departmentModelComboBox.setPlaceholder("Oddziały");
         departmentModelComboBox.setItems(departmentService.getDepartmentList1());
         departmentModelComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         departmentModelComboBox.setClearButtonVisible(true);
-        departmentModelComboBox.addValueChangeListener(e -> updateEmployeeList());
-
-        var toolbar = new HorizontalLayout(departmentModelComboBox);
+        departmentModelComboBox.addValueChangeListener(e -> updateDepartmentEmployeeList());
         toolbar.addClassName("toolbar");
         return toolbar;
+    }
+
+    private void updateDepartmentEmployeeList() {
+        grid.setItems(departmentService.findById(departmentModelComboBox.getValue().getId()).getEmployees());
     }
 
 
