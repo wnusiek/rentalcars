@@ -13,12 +13,12 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
 @Route(value = "departmentsEmployees", layout = MainLayout.class)
-@PageTitle("Pracownicy wg oddziałów")
+@PageTitle("Pracownicy oddziałów")
 @PermitAll
 public class DepartmentsEmployeesView extends VerticalLayout {
     private final DepartmentService departmentService;
     Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
-    ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>();
+    ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>("Wybierz oddział: ");
 
 
     public DepartmentsEmployeesView(DepartmentService departmentService) {
