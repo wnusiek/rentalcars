@@ -65,8 +65,8 @@ public class DepartmentService {
                 .map(DepartmentModel::getCars)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-
     }
+
 
     public void addCarToDepartment(Long carId, Long departmentId){
         var department = departmentRepository.findById(departmentId);

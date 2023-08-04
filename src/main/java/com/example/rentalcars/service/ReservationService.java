@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,12 @@ public class ReservationService {
     private final CarRepository carRepository;
     private final CarService carService;
     public void addReservation(ReservationModel reservation) {
-        reservation.setPrice(calculateRentalCost(reservation));
-        reservationRepository.save(reservation);
+        if (beforeAfterDatesValidation(reservation)){
+            if (getCarAvailabilityByDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())){
+                reservation.setPrice(calculateRentalCost(reservation));
+                reservationRepository.save(reservation);
+            } else throw new InputMismatchException ("Samochód niedostępny w podanym terminie!");
+        } else throw new IllegalArgumentException ("Nieprawidłowa kolejność dat!");
     }
 
     public List<ReservationModel> getReservationList() {
@@ -69,14 +74,21 @@ public class ReservationService {
     }
 
     public List<CarModel> getAvailableCarsByDateRange(List<CarModel> cars, LocalDate dateFrom, LocalDate dateTo) {
-        List<CarModel> availableCarList = new ArrayList<>();
+        List<CarModel> availableInDateRangeCarList = new ArrayList<>();
 
         for (CarModel c : cars) {
             if (getCarAvailabilityByDateRange(c.getId(), dateFrom, dateTo)) {
-                availableCarList.add(c);
+                availableInDateRangeCarList.add(c);
             }
         }
-        return availableCarList;
+        return availableInDateRangeCarList;
+    }
+
+    public Boolean beforeAfterDatesValidation(ReservationModel reservation) {
+        if (reservation.getDateFrom().isBefore(reservation.getDateTo())){
+            return true;
+        }
+        return false;
     }
 
     public  BigDecimal calculateRentalCost(ReservationModel reservation) {
@@ -84,12 +96,6 @@ public class ReservationService {
         BigDecimal dailyRentalPrice = reservation.getCar().getPrice();
         LocalDate startDate = reservation.getDateFrom();
         LocalDate endDate = reservation.getDateTo();
-
-        // Upewniamy się, że data końcowa nie jest wcześniejsza niż data początkowa
-        // Walidację daty to raczej w w samym rezerwowaniu a nie przy obliczaniu kosztów
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("Data końcowa nie może być wcześniejsza niż data początkowa.");
-        }
 
         // Obliczamy różnicę między datami i zaokrąglamy w górę do pełnych dni
         long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
