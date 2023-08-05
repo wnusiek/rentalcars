@@ -2,6 +2,7 @@ package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.repository.CompanyRepository;
 import com.example.rentalcars.security.SecurityService;
+import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -10,19 +11,21 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import jakarta.annotation.security.PermitAll;
-import javax.swing.text.html.ListView;
 
 @PermitAll
 public class MainLayout extends AppLayout {
 
     private final CompanyRepository companyRepository;
     private SecurityService securityService;
-    public MainLayout(CompanyRepository companyRepository, SecurityService securityService) {
+    private final UserService userService;
+    private String loggedUserName;
+    public MainLayout(CompanyRepository companyRepository, SecurityService securityService, UserService userService) {
         this.companyRepository = companyRepository;
         this.securityService = securityService;
+        this.userService = userService;
+        loggedUserName = userService.getNameOfLoggedUser();
         createHeader();
         createDrawer();
     }
@@ -31,7 +34,7 @@ public class MainLayout extends AppLayout {
         companyName.addClassNames("text-l", "m-m");
 
 
-        Button logOut = new Button("Log out", e -> securityService.logout());
+        Button logOut = new Button("Log out " + loggedUserName, e -> securityService.logout());
         HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, logOut);
 
         //todo
