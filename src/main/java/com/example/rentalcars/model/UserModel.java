@@ -36,9 +36,10 @@ public class UserModel {
 
 
     public Boolean isEnabled(){
-        if (active){
-            return true;
-        }
-        return false;
+        return active;
+//        if (active){
+//            return true;
+//        }
+//        return false;
     }
 }
