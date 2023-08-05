@@ -38,10 +38,14 @@ public class CustomerView extends VerticalLayout {
                 getContent()
         );
         updateReservationList();
+        closeEditor();
     }
 
     private Component getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid);
+        HorizontalLayout content = new HorizontalLayout(grid, form);
+        content.setFlexGrow(2,grid);
+        content.setFlexGrow(1, form);
+        content.addClassName("content");
         content.setSizeFull();
         return content;
     }
@@ -94,12 +98,14 @@ public class CustomerView extends VerticalLayout {
             closeEditor();
         }else {
             form.setCustomer(customerModel);
+            form.setVisible(true);
             addClassName("editing");
        }
     }
 
     private void closeEditor() {
         form.setCustomer(null);
+        form.setVisible(false);
         removeClassName("editing");
     }
 
