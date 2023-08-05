@@ -1,7 +1,7 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.EmployeeModel;
+import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private UserService userService;
 
     public void postAddCustomer(CustomerModel customer) {
         customerRepository.save(customer);
@@ -46,4 +47,25 @@ public class CustomerService {
     public void deleteCustomer(CustomerModel customerModel){
         customerRepository.delete(customerModel);
     }
+
+//    public CustomerModel findCustomerByName(String name){
+//        var customer = getCustomerList().stream().filter(customerModel -> customerModel.getName().equals(name)).findFirst();
+//        if (customer.isPresent())
+//            return customer.get();
+//        else {
+//            System.err.println("Nie ma takiego klienta");
+//        }
+//        return null;
+//    }
+//
+//    public void bindLoggedUserToCustomer(){
+//        String customerName = userService.getNameOfLoggedUser();
+//        if (customerName != null){
+//            CustomerModel customerModel = findCustomerByName(customerName);
+//            UserModel userModel = userService.findUserByNameModel(customerName);
+//            customerModel.setUser(userModel);
+//            customerRepository.save(customerModel);
+//        }
+//    }
+
 }
