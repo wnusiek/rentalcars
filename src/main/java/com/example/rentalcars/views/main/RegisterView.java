@@ -27,49 +27,51 @@ public class RegisterView extends VerticalLayout {
     // Inicjujemy pola i przycisk (tak jak wcześniej)
 
 
-
-
-
     public RegisterView(UserService userService) {
         this.userService = userService;
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         registerButton.addClickListener(e -> register());
-        registerButton.addClickListener(e-> getUI().ifPresent(ui -> ui.navigate("")));
+ //       registerButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("")));
         add(
                 new H1("REJESTRACJA"),
-        name = new TextField("Imię"),
-        email = new EmailField("E-mail"),
-        password = new TextField("Hasło"),
+                name = new TextField("Imię"),
+                email = new EmailField("E-mail"),
+                password = new TextField("Hasło"),
                 registerButton
 
         );
     }
 
     public void register() {
-        if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
-            Notification.show("Wszystkie pola są wymagane!");
-            return;
+
+        if (checkIfFieldEmpty()) {
+            Notification.show("Wszystkie pola są wymagane!").setPosition(Notification.Position.BOTTOM_CENTER);
+        } else {
+            String firstName = name.getValue();
+            String userEmail = email.getValue();
+            String userPassword = password.getValue();
+
+            UserModel newUser = new UserModel();
+            newUser.setName(firstName);
+            newUser.setEmail(userEmail);
+            newUser.setPassword(userPassword);
+
+            if (userService.checkIfUserExists(newUser)) {
+                Notification.show("User istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
+            } else {
+                userService.saveUser(newUser);
+                Notification.show("Rejestracja zakończona sukcesem!").setPosition(Notification.Position.BOTTOM_CENTER);
+            }
         }
+    }
 
-        String firstName = name.getValue();
-        String userEmail = email.getValue();
-        String userPassword = password.getValue();
-
-        // Tworzymy nowy obiekt UserModel i ustawiamy odpowiednie pola
-        UserModel newUser = new UserModel();
-        newUser.setName(firstName);
-        newUser.setEmail(userEmail);
-        newUser.setPassword(userPassword);
-
-        // Zapisujemy nowego użytkownika do bazy danych za pomocą UserService
-        userService.saveUser(newUser);
-
-        // Tutaj możesz dodać więcej logiki, np. obsługę błędów, powiadomienia itp.
-
-        // W tym przykładzie używamy powiadomienia Vaadin do potwierdzenia rejestracji
-        Notification.show("Rejestracja zakończona sukcesem!");
+    public boolean checkIfFieldEmpty() {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }
 

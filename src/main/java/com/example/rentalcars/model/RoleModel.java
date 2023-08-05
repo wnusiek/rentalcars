@@ -8,11 +8,10 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
-public class UserModel {
-
+public class RoleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -20,25 +19,4 @@ public class UserModel {
     @Column
     private String name;
 
-    @Column
-    private String password;
-
-    @Column
-    private String email;
-
-    @Column
-    private Boolean active;
-
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private RoleModel role;
-
-
-    public Boolean isEnabled(){
-        if (active){
-            return true;
-        }
-        return false;
-    }
 }

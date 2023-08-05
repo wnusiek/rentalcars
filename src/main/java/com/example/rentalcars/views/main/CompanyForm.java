@@ -14,8 +14,9 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
-@PermitAll
+@RolesAllowed("ROLE_ADMIN")
 public class CompanyForm extends VerticalLayout {
     Binder<CompanyModel> binder = new BeanValidationBinder<>(CompanyModel.class);
     TextField companyName = new TextField("Company name");

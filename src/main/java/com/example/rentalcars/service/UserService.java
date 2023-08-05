@@ -1,6 +1,7 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.UserModel;
+import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
@@ -17,47 +18,65 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
-    public void addUser(UserModel userModel){
+    public void addUser(UserModel userModel) {
         userRepository.save(userModel);
     }
 
-    public List<UserModel> getUserList(){
+    public List<UserModel> getUserList() {
         return userRepository.findAll();
     }
 
-    public void updateUser(UserModel userToUpdate){
+    public void updateUser(UserModel userToUpdate) {
         userRepository.save(userToUpdate);
     }
 
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-    public UserModel findById(Long id){
+    public UserModel findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    public UserModel findByName(String name){
-        for(UserModel user: getUserList()){
-            if(user.getName().equals(name)){
+    public boolean findByName(String name) {
+        for (UserModel user : getUserList()) {
+            if (user.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public UserModel findByNameModel(String name) {
+        for (UserModel user : getUserList()) {
+            if (user.getName().equals(name)) {
                 return user;
             }
-        }return null;
+        }
+        return null;
     }
 
     public void saveUser(UserModel userModel) {
-        if (userModel.getName().equals(findByName(userModel.getName()))) {
-            System.err.println("User exists");
-        } else {
+
             UserModel user = new UserModel();
             user.setName(userModel.getName());
             user.setEmail(userModel.getEmail());
             user.setPassword(userModel.getPassword());
-
+            user.setRole(roleRepository.findById(1l).orElse(null));
+            user.setActive(true);
             userRepository.save(user);
+
+    }
+
+    public boolean checkIfUserExists(UserModel userModel) {
+        if (findByName(userModel.getName())) {
+            return true;
         }
+        return false;
     }
 
 }
+
