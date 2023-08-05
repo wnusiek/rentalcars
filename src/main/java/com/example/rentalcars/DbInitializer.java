@@ -44,7 +44,7 @@ public class DbInitializer implements ApplicationRunner {
         var dep1 = departmentRepository.save((new DepartmentModel(1l, "Lublin")));
         var dep2 = departmentRepository.save((new DepartmentModel(2l, "kraków")));
         var dep3 = departmentRepository.save((new DepartmentModel(3l, "Katowice")));
-        var dep4 = departmentRepository.save((new DepartmentModel(3l, "Warszawa")));
+        var dep4 = departmentRepository.save((new DepartmentModel(4l, "Warszawa")));
 
         var car1 = carRepository.save(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(1111), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004));
         var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));

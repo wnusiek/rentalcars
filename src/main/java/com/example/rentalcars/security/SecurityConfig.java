@@ -7,8 +7,10 @@ import com.example.rentalcars.views.main.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -52,11 +54,19 @@ public class SecurityConfig extends VaadinWebSecurity {
 //        };
 //    }
 
-    @Bean
-    protected UserDetailsService userDetailsService(){
-        return new InMemoryUserDetailsManager(User.withUsername("user")
-                .password("{noop}userpass")
-                .build());
+//    @Bean
+//    protected UserDetailsService userDetailsService(){
+//        return new InMemoryUserDetailsManager(User.withUsername("user")
+//                .password("{noop}userpass")
+//                .build());
+//    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("admin").password("{noop}admin").roles("ADMIN")
+                .and()
+                .withUser("user").password("{noop}user").roles("USER");
     }
 }
 

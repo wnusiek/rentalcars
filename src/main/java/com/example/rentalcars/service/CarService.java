@@ -5,6 +5,7 @@ import com.example.rentalcars.MenagementServices.CarsBySpecificationService;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
+import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class CarService {
             return;
         }
         carRepository.save(carModel);
+        Notification.show("Samochód został dodany pomyślnie");
     }
 
     public void deleteCar(CarModel carModel){

@@ -13,6 +13,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -48,10 +49,10 @@ public class ReservationForm extends FormLayout {
         returnVenue.setItems(departments);
         returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
 
-        binder.forField(dateFrom).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
-        binder.forField(dateTo).bind(ReservationModel::getDateTo, ReservationModel::setDateTo);
-        binder.forField(receptionVenue).bind(ReservationModel::getReceptionVenue, ReservationModel::setReceptionVenue);
-        binder.forField(returnVenue).bind(ReservationModel::getReturnVenue, ReservationModel::setReturnVenue);
+        binder.forField(dateFrom).asRequired("To pole jest wymagane!").bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
+        binder.forField(dateTo).asRequired("To pole jest wymagane!").bind(ReservationModel::getDateTo, ReservationModel::setDateTo);
+        binder.forField(receptionVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReceptionVenue, ReservationModel::setReceptionVenue);
+        binder.forField(returnVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReturnVenue, ReservationModel::setReturnVenue);
         addClassName("reservation-form");
         add(
                 customer,
@@ -88,8 +89,11 @@ public class ReservationForm extends FormLayout {
         try {
             binder.writeBean(reservationModel);
             fireEvent(new ReservationForm.SaveEvent(this, reservationModel));
+            Notification.show("Rezerwacja samochodu zakończona sukcesem!");
         } catch (ValidationException e) {
+            Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(");
             e.printStackTrace();
+
         }
     }
 

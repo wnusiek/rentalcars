@@ -8,7 +8,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.access.annotation.Secured;
+
 @Route(value = "returns", layout = MainLayout.class)
 @PageTitle("Lista zwrotów")
 @PermitAll
