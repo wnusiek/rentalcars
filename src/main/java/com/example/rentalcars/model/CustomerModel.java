@@ -30,8 +30,8 @@ public class CustomerModel {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "driver_license_number")
-    private String driverLicenseNumber;
+    @Column(name = "driver_licence_number")
+    private String driverLicenceNumber;
 
     @Email
     @Column(name = "email")
