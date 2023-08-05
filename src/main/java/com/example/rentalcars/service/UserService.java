@@ -1,6 +1,7 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.UserModel;
+import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
     public void addUser(UserModel userModel) {
@@ -48,13 +50,23 @@ public class UserService {
         return false;
     }
 
+    public UserModel findByNameModel(String name) {
+        for (UserModel user : getUserList()) {
+            if (user.getName().equals(name)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     public void saveUser(UserModel userModel) {
 
             UserModel user = new UserModel();
             user.setName(userModel.getName());
             user.setEmail(userModel.getEmail());
             user.setPassword(userModel.getPassword());
-
+            user.setRole(roleRepository.findById(1l).orElse(null));
+            user.setActive(true);
             userRepository.save(user);
 
     }
@@ -65,5 +77,6 @@ public class UserService {
         }
         return false;
     }
+
 }
 
