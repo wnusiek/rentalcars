@@ -19,45 +19,51 @@ public class UserService {
 
     private PasswordEncoder passwordEncoder;
 
-    public void addUser(UserModel userModel){
+    public void addUser(UserModel userModel) {
         userRepository.save(userModel);
     }
 
-    public List<UserModel> getUserList(){
+    public List<UserModel> getUserList() {
         return userRepository.findAll();
     }
 
-    public void updateUser(UserModel userToUpdate){
+    public void updateUser(UserModel userToUpdate) {
         userRepository.save(userToUpdate);
     }
 
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-    public UserModel findById(Long id){
+    public UserModel findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    public UserModel findByName(String name){
-        for(UserModel user: getUserList()){
-            if(user.getName().equals(name)){
-                return user;
+    public boolean findByName(String name) {
+        for (UserModel user : getUserList()) {
+            if (user.getName().equals(name)) {
+                return true;
             }
-        }return null;
+        }
+        return false;
     }
 
     public void saveUser(UserModel userModel) {
-        if (userModel.getName().equals(findByName(userModel.getName()))) {
-            System.err.println("User exists");
-        } else {
+
             UserModel user = new UserModel();
             user.setName(userModel.getName());
             user.setEmail(userModel.getEmail());
             user.setPassword(userModel.getPassword());
 
             userRepository.save(user);
-        }
+
     }
 
+    public boolean checkIfUserExists(UserModel userModel) {
+        if (findByName(userModel.getName())) {
+            return true;
+        }
+        return false;
+    }
 }
+

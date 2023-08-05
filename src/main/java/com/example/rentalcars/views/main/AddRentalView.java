@@ -13,10 +13,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
 @Route(value = "addrental", layout = MainLayout.class)
 @PageTitle("Wypożyczanie")
-@PermitAll
+@RolesAllowed("ROLE_ADMIN")
 public class AddRentalView extends VerticalLayout {
 
     private final ReservationService reservationService;

@@ -13,10 +13,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "", layout =  MainLayout.class)
 @PageTitle("Gruz Car Rental")
-@AnonymousAllowed
+@Secured("ROLE_ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class CarsView extends VerticalLayout {
 
     private final CarService carService;

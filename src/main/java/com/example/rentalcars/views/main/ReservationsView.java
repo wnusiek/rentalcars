@@ -12,11 +12,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "reservations", layout = MainLayout.class)
 @PageTitle("Lista rezerwacji")
 @Secured("ROLE_ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class ReservationsView extends VerticalLayout {
 
     private final ReservationService reservationService;
