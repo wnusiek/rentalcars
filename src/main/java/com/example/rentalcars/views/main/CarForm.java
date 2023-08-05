@@ -18,6 +18,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
+import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
 
@@ -34,7 +35,8 @@ public class CarForm extends FormLayout {
     ComboBox<GearboxType> gearbox = new ComboBox<>("Skrzynia biegów");
     TextField price = new TextField("Cena");
     ComboBox<CarStatus> availability = new ComboBox<>("Dostępność");
-
+    TextField mileage = new TextField("Przebieg");
+    TextField productionDate = new TextField("Rok produkcji");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -50,12 +52,15 @@ public class CarForm extends FormLayout {
         availability.setItems(CarStatus.values());
         binder.forField(mark).asRequired("To pole jest wymagane!").bind(CarModel::getMark, CarModel::setMark);
         binder.forField(model).asRequired("To pole jest wymagane!").bind(CarModel::getModel, CarModel::setModel);
-        binder.bind(body,CarModel::getBody, CarModel::setBody);
+        //binder.bind(body,CarModel::getBody, CarModel::setBody);
         binder.forField(color).asRequired("To pole jest wymagane!").bind(CarModel::getColor, CarModel::setColor);
-        binder.bind(fuelType,CarModel::getFuelType, CarModel::setFuelType);
-        binder.bind(gearbox,CarModel::getGearbox, CarModel::setGearbox);
+        //binder.bind(fuelType,CarModel::getFuelType, CarModel::setFuelType);
+        //binder.bind(gearbox,CarModel::getGearbox, CarModel::setGearbox);
         binder.forField(price).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToBigDecimalConverter("zła wartość")).bind(CarModel::getPrice, CarModel::setPrice);
-        binder.bind(availability,CarModel::getAvailability, CarModel::setAvailability);
+        //binder.bind(availability,CarModel::getAvailability, CarModel::setAvailability);
+        binder.forField(productionDate).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToIntegerConverter("tylko liczby!")).bind(CarModel::getProductionDate, CarModel::setProductionDate);
+        binder.forField(mileage).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToIntegerConverter("tylko liczby!")).bind(CarModel::getMileage, CarModel::setMileage);
+        binder.bindInstanceFields(this);
 
         addClassName("car-form");
         add(
@@ -67,6 +72,8 @@ public class CarForm extends FormLayout {
                 gearbox,
                 price,
                 availability,
+                mileage,
+                productionDate,
                 createButtonLayout()
         );
     }

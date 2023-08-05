@@ -134,4 +134,20 @@ public class DepartmentService {
                 .anyMatch(department -> department.getEmployees().stream().anyMatch(employee -> employee.getId().equals(employeeId)));
     }
 
+    public boolean isCarInDepartment(Long carId, Long departmentId){
+        var department = departmentRepository.findById(departmentId);
+        var car = carRepository.findById(carId);
+        if (department.isPresent() && car.isPresent()){
+            var d = department.get();
+            var e = car.get();
+            return d.getCars().stream().anyMatch(carInList -> carInList.getId().equals(e.getId()));
+        }
+        return false;
+    }
+
+    public boolean isCarInAnyDepartment(Long carId){
+        return departmentRepository.findAll().stream()
+                .anyMatch(department -> department.getCars().stream().anyMatch(car -> car.getId().equals(carId)));
+    }
+
 }

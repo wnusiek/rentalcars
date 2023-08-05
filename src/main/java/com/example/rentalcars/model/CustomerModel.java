@@ -46,6 +46,10 @@ public class CustomerModel {
     @Column(name = "zip_code")
     private String zipCode;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
+
     public String getName(){
         return firstName + " " + lastName;
     }

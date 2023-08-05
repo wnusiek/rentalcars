@@ -57,8 +57,8 @@ public class MainLayout extends AppLayout {
         RouterLink employeesView = new RouterLink("Lista pracowników", EmployeesView.class);
         employeesView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink customersView = new RouterLink("Lista klientów", CustomerListView.class);
-        customersView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink customersListView = new RouterLink("Lista klientów", CustomerListView.class);
+        customersListView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink reservationsListView = new RouterLink("Lista rezerwacji", ReservationsView.class);
         reservationsListView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -81,6 +81,12 @@ public class MainLayout extends AppLayout {
         RouterLink departmentsemployeesView = new RouterLink("Lista pracowników oddziałów", DepartmentsEmployeesView.class);
         departmentsemployeesView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink departmentsCarsView = new RouterLink("Lista samochodów oddziałów", DepartmentCarsView.class);
+        departmentsCarsView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink customerView = new RouterLink("Widok klienta", CustomerView.class);
+        customerView.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
                 companyView,
                 carsView,
@@ -91,9 +97,11 @@ public class MainLayout extends AppLayout {
                 addReturnView,
                 returnsView,
                 employeesView,
-                customersView,
+                customersListView,
                 departmentsView,
-                departmentsemployeesView
+                departmentsemployeesView,
+                departmentsCarsView,
+                customerView
         ));
 
     }

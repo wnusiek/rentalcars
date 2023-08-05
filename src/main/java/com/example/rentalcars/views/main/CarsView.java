@@ -16,7 +16,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "", layout =  MainLayout.class)
+@Route(value = "Cars", layout =  MainLayout.class)
 @PageTitle("Gruz Car Rental")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
@@ -103,7 +103,7 @@ public class CarsView extends VerticalLayout {
     private void configureGrid() {
         carGrid.addClassNames("cars-grid");
         carGrid.setSizeFull();
-        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
+        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability", "mileage", "productionDate");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         carGrid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
