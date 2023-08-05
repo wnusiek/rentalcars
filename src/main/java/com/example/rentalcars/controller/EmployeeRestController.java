@@ -17,10 +17,10 @@ public class EmployeeRestController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("employees")
-    public List<EmployeeModel> get() {
-        return employeeService.getEmployeeList();
-    }
+//    @GetMapping("employees")
+//    public List<EmployeeModel> get() {
+//        return employeeService.getEmployeeList();
+//    }
 
 //    @PostMapping("/addEmployee")
 //    public void add(EmployeeModel employee) {

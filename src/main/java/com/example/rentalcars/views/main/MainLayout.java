@@ -78,6 +78,9 @@ public class MainLayout extends AppLayout {
         RouterLink returnsView = new RouterLink("Lista zwrotów", ReturnListView.class);
         returnsView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink departmentsemployeesView = new RouterLink("Lista pracowników oddziałów", DepartmentsEmployeesView.class);
+        departmentsemployeesView.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
                 companyView,
                 carsView,
@@ -89,7 +92,8 @@ public class MainLayout extends AppLayout {
                 returnsView,
                 employeesView,
                 customersView,
-                departmentsView
+                departmentsView,
+                departmentsemployeesView
         ));
 
     }

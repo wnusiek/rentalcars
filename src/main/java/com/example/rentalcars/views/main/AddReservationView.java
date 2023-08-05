@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
@@ -10,9 +11,11 @@ import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.vaadinService.RentalVaadinService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -22,8 +25,9 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
 import java.util.Collections;
+import java.util.InputMismatchException;
 
-@Route(value = "addreservation", layout =  MainLayout.class)
+@Route(value = "addreservation", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
 @PermitAll
 public class AddReservationView extends VerticalLayout {
@@ -37,7 +41,10 @@ public class AddReservationView extends VerticalLayout {
     DatePicker startDate = new DatePicker();
     DatePicker endDate = new DatePicker();
     ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>();
-    Binder<DepartmentModel> departmentModelBinder = new Binder<>(DepartmentModel.class);
+    Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
+
+
+
     ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
     public AddReservationView(RentalVaadinService service, ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
@@ -75,8 +82,7 @@ public class AddReservationView extends VerticalLayout {
     }
 
     private void updateCarList() {
-        carGrid.setItems(service.findAvailableCarsByDates(departmentModelComboBox.getValue() ,startDate.getValue(),endDate.getValue()));
-        //carGrid.setItems(service.findCarsByDepartment(departmentModelComboBox.getValue()));
+            carGrid.setItems(service.findAvailableCarsByDates(carStatusCheckBox.getValue(), departmentModelComboBox.getValue(), startDate.getValue(), endDate.getValue()));
     }
 
     private void configureGrid() {
@@ -90,7 +96,8 @@ public class AddReservationView extends VerticalLayout {
 
     private HorizontalLayout getToolbar() {
         Button addReservationButton = new Button("Add reservation");
-        addReservationButton.addClickListener(e->addReservation());
+        addReservationButton.addClickListener(e -> addReservation());
+        carStatusCheckBox.addValueChangeListener(e -> updateCarList());
         departmentModelComboBox.setPlaceholder("Oddziały");
         departmentModelComboBox.setItems(departmentService.getDepartmentList1());
         departmentModelComboBox.setItemLabelGenerator(DepartmentModel::getCity);
@@ -103,16 +110,17 @@ public class AddReservationView extends VerticalLayout {
         endDate.addValueChangeListener(e -> updateCarList());
         departmentModelComboBox.addValueChangeListener(e -> updateCarList());
 
-        var toolbar = new HorizontalLayout(departmentModelComboBox, startDate, endDate, addReservationButton);
+        var toolbar = new HorizontalLayout(departmentModelComboBox, startDate, endDate, carStatusCheckBox, addReservationButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
-    private void addReservation(){
+    private void addReservation() {
         carGrid.asSingleSelect().clear();
         editReservation(new ReservationModel());
     }
-    private void configureForm(){
+
+    private void configureForm() {
         reservationForm = new ReservationForm(departmentService.getDepartmentList1(), carService.getCarList1(), customerService.getCustomerList());
         reservationForm.setWidth("25em");
 
@@ -120,15 +128,22 @@ public class AddReservationView extends VerticalLayout {
 //        reservationForm.addDeleteListener(this::deleteReservation);
         reservationForm.addCloseListener(event -> closeEditor());
     }
-    private void saveReservation(ReservationForm.SaveEvent event){
-        reservationService.addReservation(event.getReservation());
-        closeEditor();
+
+    private void saveReservation(ReservationForm.SaveEvent event) {
+        try{
+            reservationService.addReservation(event.getReservation());
+            closeEditor();
+        } catch (IllegalArgumentException | InputMismatchException e){
+            Notification notification = Notification
+                    .show(e.getMessage(), 3000, Notification.Position.MIDDLE);
+        }
+
     }
 
-    private void editReservation(ReservationModel reservationModel){
-        if (reservationModel == null){
+    private void editReservation(ReservationModel reservationModel) {
+        if (reservationModel == null) {
             closeEditor();
-        }else {
+        } else {
             reservationForm.setReservation(reservationModel);
             reservationForm.setVisible(true);
             addClassName("editing");

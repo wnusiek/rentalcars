@@ -63,6 +63,13 @@ public class CarService {
                 .toList();
     }
 
+    public List<CarModel> getAvailableCars1(List <CarModel> cars) {
+        return cars.stream()
+                .filter(car -> car.getAvailability() != null)
+                .filter(car -> car.getAvailability().equals(CarStatus.AVAILABLE))
+                .toList();
+    }
+
     public void setCarStatus(Long id, CarStatus carStatus) {
         var car = carRepository.findById(id);
         if (car.isPresent()) {

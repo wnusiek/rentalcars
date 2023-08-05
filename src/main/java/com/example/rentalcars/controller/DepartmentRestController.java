@@ -21,11 +21,11 @@ public class DepartmentRestController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("departments")
-    public List<DepartmentDTO> get() {
-        return departmentService.getDepartmentList();
-
-    }
+//    @GetMapping("departments")
+//    public List<DepartmentDTO> get() {
+//        return departmentService.getDepartmentList();
+//
+//    }
 
     @PostMapping("/addDepartment")
     public void add(DepartmentModel departmentModel) {

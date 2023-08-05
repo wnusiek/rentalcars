@@ -10,7 +10,9 @@ import com.example.rentalcars.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,13 @@ public class DepartmentService {
     }
 
     public DepartmentModel findById(Long id) {
-        return departmentRepository.findById(id).orElse(null);
+        var dep = departmentRepository.findById(id);
+        var d = dep.get();
+        if (dep.isPresent()){
+            return d;
+        } else{
+       return new DepartmentModel();
+        }
     }
 
     public void updateDepartment(DepartmentModel department) {
@@ -65,13 +73,12 @@ public class DepartmentService {
                 .map(DepartmentModel::getCars)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-
     }
+
 
     public void addCarToDepartment(Long carId, Long departmentId){
         var department = departmentRepository.findById(departmentId);
         var car = carRepository.findById(carId);
-
         if(car.isPresent() && department.isPresent()){
             var c = car.get();
             var d = department.get();
@@ -88,6 +95,43 @@ public class DepartmentService {
             d.getCars().removeIf(carInList -> carInList.getId().equals(carId));
             departmentRepository.save(d);
         }
+    }
+
+    public void addEmployeeToDepartment(Long employeeId, Long departmentId){
+        var employee = employeeRepository.findById(employeeId);
+        var department = departmentRepository.findById(departmentId);
+        if (employee.isPresent() && department.isPresent()){
+            var e = employee.get();
+            var d = department.get();
+            d.getEmployees().add(e);
+            departmentRepository.save(d);
+        }
+    }
+
+    public void removeEmployeeFromDepartment(Long employeeId, Long departmentId){
+        var department = departmentRepository.findById(departmentId);
+        var employee = employeeRepository.findById(employeeId);
+        if (employee.isPresent() && department.isPresent()){
+            var d = department.get();
+            d.getEmployees().removeIf(employeeInList -> employeeInList.getId().equals(employeeId));
+            departmentRepository.save(d);
+        }
+    }
+
+    public boolean isEmployeeInDepartment(Long employeeId, Long departmentId){
+        var department = departmentRepository.findById(departmentId);
+        var employee = employeeRepository.findById(employeeId);
+        if (department.isPresent() && employee.isPresent()){
+            var d = department.get();
+            var e = employee.get();
+            return d.getEmployees().stream().anyMatch(employeeInList -> employeeInList.getId().equals(e.getId()));
+        }
+        return false;
+    }
+
+    public boolean isEmployeeInAnyDepartment(Long employeeId){
+        return departmentRepository.findAll().stream()
+                .anyMatch(department -> department.getEmployees().stream().anyMatch(employee -> employee.getId().equals(employeeId)));
     }
 
 }

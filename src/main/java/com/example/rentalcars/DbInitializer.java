@@ -50,11 +50,13 @@ public class DbInitializer implements ApplicationRunner {
         var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
         var car3 = carRepository.save(new CarModel(3l, "BMW", "E3śmieć", BigDecimal.valueOf(124), BigDecimal.valueOf(500), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
         var car4 = carRepository.save(new CarModel(4l, "AUDI", "80", BigDecimal.valueOf(123), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
+        var car5 = carRepository.save(new CarModel(5l, "BMW", "530d", BigDecimal.valueOf(1230), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.HIRED, "Red", 450000, 1999));
 
         departmentService.addCarToDepartment(4l,1l);
         departmentService.addCarToDepartment(3l,2l);
         departmentService.addCarToDepartment(2l,3l);
         departmentService.addCarToDepartment(1l,1l);
+        departmentService.addCarToDepartment(5l,1l);
 
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", EmployeePosition.EMPLOYEE));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "karol", "nowak", EmployeePosition.MANAGER));

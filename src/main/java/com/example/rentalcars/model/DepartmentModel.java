@@ -29,7 +29,7 @@ public class DepartmentModel {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Column(name = "employees")
     private Set<EmployeeModel> employees = new HashSet<>();
 
