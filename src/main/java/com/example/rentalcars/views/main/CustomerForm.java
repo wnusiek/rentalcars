@@ -1,7 +1,6 @@
 package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.EmployeeModel;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -11,7 +10,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -26,10 +24,11 @@ public class CustomerForm extends FormLayout {
     TextField lastName = new TextField("Last name");
     TextField phoneNumber = new TextField("Phone number");
     TextField driverLicenceNumber = new TextField("Driver licence number");
-    TextField email = new TextField("Email");
+    TextField emailField = new TextField("Email");
     TextField pesel = new TextField("Pesel");
     TextField city = new TextField("City");
     TextField zipCode = new TextField("Zip code");
+
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -40,12 +39,13 @@ public class CustomerForm extends FormLayout {
 
     public CustomerForm() {
         binder.bindInstanceFields(this);
+//        binder.forField(emailField).bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
         add(
                 firstName,
                 lastName,
                 phoneNumber,
                 driverLicenceNumber,
-                email,
+                emailField,
                 pesel,
                 city,
                 zipCode,
@@ -69,7 +69,7 @@ public class CustomerForm extends FormLayout {
     }
 
     private void validateAndSave() {
-        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()||email.isEmpty()
+        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()|| emailField.isEmpty()
         ||pesel.isEmpty()||city.isEmpty()||zipCode.isEmpty()){
             Notification.show("Wszystkie pola są wymagane");
             return;
@@ -77,6 +77,7 @@ public class CustomerForm extends FormLayout {
         try {
             binder.writeBean(customerModel);
             fireEvent(new SaveEvent(this, customerModel));
+            Notification.show("Zapisano").setPosition(Notification.Position.MIDDLE);
         } catch (ValidationException e) {
             e.printStackTrace();
         }
