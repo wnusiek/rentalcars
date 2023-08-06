@@ -71,10 +71,15 @@ public class UserService {
     }
 
 
+
     public String getNameOfLoggedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String nameOfLoggedUser = authentication.getName();
         return nameOfLoggedUser;
+    }
+
+    public Long getUserIdByUserName(String username){
+        return findUserByNameModel(username).getId();
     }
 
     public boolean checkIfUserExists(UserModel userModel) {
