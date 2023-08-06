@@ -109,6 +109,7 @@ public class CustomerView extends VerticalLayout {
 //    }
 
     private Component getToolbar() {
+
         Button addCustomerButton = new Button("Wprowadź swoje dane");
 
         Button editCustomerButton = new Button("Edytuj swoje dane");
@@ -124,13 +125,9 @@ public class CustomerView extends VerticalLayout {
     }
 
     private void addCustomer() {
-        try {
-            editCustomer(new CustomerModel());
-        } catch (DataIntegrityViolationException d) {
-            Notification.show("Użytkownik już istnieje");
+        if (customerService.findCustomerByName(userService.getNameOfLoggedUser()) != null)  {
             closeEditor();
-
-        }
+        } else editCustomer(new CustomerModel());
     }
 
     private void editCustomer(CustomerModel customerModel) {

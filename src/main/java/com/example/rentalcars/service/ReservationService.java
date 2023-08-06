@@ -26,6 +26,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CarRepository carRepository;
     private final CarService carService;
+    private final UserService userService;
     public void addReservation(ReservationModel reservation) {
 
         if (beforeAfterDatesValidation(reservation)){
@@ -113,5 +114,9 @@ public class ReservationService {
         }
     }
 
+    public List<ReservationModel> getReservationListLoggedUser(){
+        String loggedUserName = userService.getNameOfLoggedUser();
+        return getReservationList().stream().filter(reservation -> reservation.getCustomer().getUser().getName().equals(loggedUserName)).toList();
+    }
 
 }
