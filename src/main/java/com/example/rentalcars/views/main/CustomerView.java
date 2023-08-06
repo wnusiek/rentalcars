@@ -4,6 +4,7 @@ import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -23,13 +24,15 @@ public class CustomerView extends VerticalLayout {
     private final ReservationService reservationService;
     private final CustomerService customerService;
 
+    private final UserService userService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
 
     CustomerForm form = new CustomerForm();
 
-    public CustomerView(ReservationService reservationService, CustomerService customerService) {
+    public CustomerView(ReservationService reservationService, CustomerService customerService, UserService userService) {
         this.reservationService = reservationService;
         this.customerService = customerService;
+        this.userService = userService;
         setSizeFull();
         configureGrid();
         configureForm();
@@ -77,6 +80,9 @@ public class CustomerView extends VerticalLayout {
 
     private void saveCustomer(CustomerForm.SaveEvent event){
         customerService.saveCustomer(event.getCustomer());
+        CustomerModel customer  = event.getCustomer();
+        customer.setUser(userService.findUserByNameModel(userService.getNameOfLoggedUser()));
+        customerService.saveCustomer(customer);
         closeEditor();
     }
 
