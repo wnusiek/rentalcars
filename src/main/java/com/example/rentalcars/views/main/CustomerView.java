@@ -56,7 +56,7 @@ public class CustomerView extends VerticalLayout {
     }
 
     private void updateReservationList() {
-        grid.setItems(reservationService.getReservationList());
+        grid.setItems(reservationService.getReservationListLoggedUser());
     }
 
     private void configureGrid() {
