@@ -40,32 +40,32 @@ public class CustomerService {
         if (customerModel == null ){
             System.err.println("Employee is null.");
             return;
+        }else {
+            customerRepository.save(customerModel);
         }
-        customerRepository.save(customerModel);
     }
 
     public void deleteCustomer(CustomerModel customerModel){
         customerRepository.delete(customerModel);
     }
 
-//    public CustomerModel findCustomerByName(String name){
-//        var customer = getCustomerList().stream().filter(customerModel -> customerModel.getName().equals(name)).findFirst();
-//        if (customer.isPresent())
-//            return customer.get();
-//        else {
-//            System.err.println("Nie ma takiego klienta");
-//        }
-//        return null;
-//    }
-//
-//    public void bindLoggedUserToCustomer(){
-//        String customerName = userService.getNameOfLoggedUser();
-//        if (customerName != null){
-//            CustomerModel customerModel = findCustomerByName(customerName);
-//            UserModel userModel = userService.findUserByNameModel(customerName);
-//            customerModel.setUser(userModel);
-//            customerRepository.save(customerModel);
-//        }
-//    }
+    public CustomerModel findCustomerByName(String name){
+        var customer = getCustomerList().stream().filter(customerModel -> customerModel.getUser().getName().equals(name)).findFirst();
+        if (customer.isPresent())
+            return customer.get();
+        else {
+            System.err.println("Nie ma takiego klienta");
+            return null;
+        }
+
+    }
+
+    public boolean checkIfCustomerExist(){
+        if(findCustomerByName(userService.getNameOfLoggedUser()).equals(null)){
+            return false;
+        }
+        return true;
+    }
+
 
 }

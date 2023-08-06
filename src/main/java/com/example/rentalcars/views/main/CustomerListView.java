@@ -68,7 +68,7 @@ public class CustomerListView extends VerticalLayout {
     }
 
     private void saveCustomer(CustomerForm.SaveEvent event){
-        customerService.saveCustomer(event.getCustomer());
+        customerService.postAddCustomer(event.getCustomer());
         updateCustomerList();
         closeEditor();
     }
@@ -104,7 +104,7 @@ public class CustomerListView extends VerticalLayout {
                 "firstName",
                 "lastName",
                 "phoneNumber",
-                "driverLicenseNumber",
+                "driverLicenceNumber",
                 "email",
                 "pesel",
                 "city",

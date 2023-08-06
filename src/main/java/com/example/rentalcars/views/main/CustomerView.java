@@ -8,11 +8,13 @@ import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "customerReservations", layout = MainLayout.class)
@@ -46,7 +48,7 @@ public class CustomerView extends VerticalLayout {
 
     private Component getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2,grid);
+        content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassName("content");
         content.setSizeFull();
@@ -78,35 +80,67 @@ public class CustomerView extends VerticalLayout {
         closeEditor();
     }
 
-    private void saveCustomer(CustomerForm.SaveEvent event){
+    private void saveCustomer(CustomerForm.SaveEvent event) {
         customerService.saveCustomer(event.getCustomer());
-        CustomerModel customer  = event.getCustomer();
+        CustomerModel customer = event.getCustomer();
         customer.setUser(userService.findUserByNameModel(userService.getNameOfLoggedUser()));
-        customerService.saveCustomer(customer);
+        userService.syncEmail(customer);
+        customerService.updateCustomer(customer);
         closeEditor();
     }
 
-    private Component getToolbar(){
-        Button addCustomerButton = new Button("Moje dane");
-        addCustomerButton.addClickListener(e->addCustomer());
+//    private Component getToolbar() {
+//        Button addCustomerButton = new Button("Moje dane");
+//
+//        if (customerService.checkIfCustomerExist()) {
+//
+//            addCustomerButton.addClickListener(e -> addCustomer());
+//
+//        } else {
+//
+//            addCustomerButton.addClickListener(e -> editCustomer(customerService.findCustomerByName(userService.getNameOfLoggedUser())));
+//
+//        }
+//
+//
+//        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton);
+//        toolbar.addClassName("toolbar");
+//        return toolbar;
+//    }
 
-        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton);
+    private Component getToolbar() {
+        Button addCustomerButton = new Button("Wprowadź swoje dane");
+
+        Button editCustomerButton = new Button("Edytuj swoje dane");
+
+            editCustomerButton.addClickListener(e -> editCustomer(customerService.findCustomerByName(userService.getNameOfLoggedUser())));
+
+            addCustomerButton.addClickListener(e -> addCustomer());
+
+
+        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton, editCustomerButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
     private void addCustomer() {
-        editCustomer(new CustomerModel());
+        try {
+            editCustomer(new CustomerModel());
+        } catch (DataIntegrityViolationException d) {
+            Notification.show("Użytkownik już istnieje");
+            closeEditor();
+
+        }
     }
 
     private void editCustomer(CustomerModel customerModel) {
-        if(customerModel == null){
+        if (customerModel == null) {
             closeEditor();
-        }else {
+        } else {
             form.setCustomer(customerModel);
             form.setVisible(true);
             addClassName("editing");
-       }
+        }
     }
 
     private void closeEditor() {

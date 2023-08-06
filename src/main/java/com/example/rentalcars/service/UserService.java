@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
@@ -64,7 +65,7 @@ public class UserService {
             user.setName(userModel.getName());
             user.setEmail(userModel.getEmail());
             user.setPassword(userModel.getPassword());
-            user.setRole(roleRepository.findById(1l).orElse(null));
+            user.setRole(roleRepository.findById(2l).orElse(null));
             user.setActive(true);
             userRepository.save(user);
 
@@ -74,8 +75,7 @@ public class UserService {
 
     public String getNameOfLoggedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String nameOfLoggedUser = authentication.getName();
-        return nameOfLoggedUser;
+        return authentication.getName();
     }
 
     public Long getUserIdByUserName(String username){
@@ -87,6 +87,11 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public void syncEmail(CustomerModel customer){
+        UserModel user = findUserByNameModel(getNameOfLoggedUser());
+        customer.setEmail(user.getEmail());
     }
 
 }

@@ -24,7 +24,7 @@ public class CustomerForm extends FormLayout {
     TextField lastName = new TextField("Last name");
     TextField phoneNumber = new TextField("Phone number");
     TextField driverLicenceNumber = new TextField("Driver licence number");
-    TextField emailField = new TextField("Email");
+    TextField email = new TextField("Email");
     TextField pesel = new TextField("Pesel");
     TextField city = new TextField("City");
     TextField zipCode = new TextField("Zip code");
@@ -39,13 +39,13 @@ public class CustomerForm extends FormLayout {
 
     public CustomerForm() {
         binder.bindInstanceFields(this);
-//        binder.forField(emailField).bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
+ //       binder.forField(email).bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
         add(
                 firstName,
                 lastName,
                 phoneNumber,
                 driverLicenceNumber,
-                emailField,
+                email,
                 pesel,
                 city,
                 zipCode,
@@ -69,7 +69,7 @@ public class CustomerForm extends FormLayout {
     }
 
     private void validateAndSave() {
-        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()|| emailField.isEmpty()
+        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()|| email.isEmpty()
         ||pesel.isEmpty()||city.isEmpty()||zipCode.isEmpty()){
             Notification.show("Wszystkie pola są wymagane");
             return;
