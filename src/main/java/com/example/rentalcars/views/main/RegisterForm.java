@@ -17,6 +17,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.shared.Registration;
 import jakarta.validation.constraints.Email;
 import org.apache.catalina.User;
@@ -41,6 +42,8 @@ public class RegisterForm extends FormLayout {
 
     public RegisterForm() {
         binder.bindInstanceFields(this);
+        binder.forField(email).withValidator(new EmailValidator(
+                "Niepoprawny email")).bind(UserModel::getEmail, UserModel::setEmail);
         add(
                 name,
                 password,

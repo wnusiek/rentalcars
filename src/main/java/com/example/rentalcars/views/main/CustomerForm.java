@@ -10,6 +10,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -24,7 +25,7 @@ public class CustomerForm extends FormLayout {
     TextField lastName = new TextField("Last name");
     TextField phoneNumber = new TextField("Phone number");
     TextField driverLicenceNumber = new TextField("Driver licence number");
-    TextField email = new TextField("Email");
+    EmailField email = new EmailField("Email");
     TextField pesel = new TextField("Pesel");
     TextField city = new TextField("City");
     TextField zipCode = new TextField("Zip code");

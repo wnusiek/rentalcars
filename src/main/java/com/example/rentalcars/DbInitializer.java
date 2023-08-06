@@ -45,7 +45,7 @@ public class DbInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         var dep1 = departmentRepository.save((new DepartmentModel(1l, "Lublin")));
-        var dep2 = departmentRepository.save((new DepartmentModel(2l, "kraków")));
+        var dep2 = departmentRepository.save((new DepartmentModel(2l, "Kraków")));
         var dep3 = departmentRepository.save((new DepartmentModel(3l, "Katowice")));
         var dep4 = departmentRepository.save((new DepartmentModel(4l, "Warszawa")));
 
@@ -64,15 +64,15 @@ public class DbInitializer implements ApplicationRunner {
         var role1 = roleRepository.save(new RoleModel(1l, "ADMIN"));
         var role2 = roleRepository.save(new RoleModel(2l, "USER"));
 
-        var admin = userRepository.save(new UserModel(1L, "admin","admin", "dominik@chuj.pl", true, role1));
-        var user1 = userRepository.save(new UserModel(2L, "janusz1234","1234", "janusz@chuj.pl", true, role2));
-        var user2 = userRepository.save(new UserModel(3L, "dżesika1234","1234", "dzesika@chuj.pl", true, role2));
+        var admin = userRepository.save(new UserModel(1L, "admin","admin", "admin@co_ja_nie_potrafie.pl", true, role1));
+//        var user1 = userRepository.save(new UserModel(2L, "janusz1234","1234", "janusz@chuj.pl", true, role2));
+//        var user2 = userRepository.save(new UserModel(3L, "dżesika1234","1234", "dzesika@chuj.pl", true, role2));
 
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", EmployeePosition.EMPLOYEE));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "karol", "nowak", EmployeePosition.MANAGER));
 
-        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432", user1));
-        var customer2 = customerRepository.save(new CustomerModel(2l, "Dżesika", "CoSięGapisz", "123456789", "qwerty", "", "", "", "", user2));
+//        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432", user1));
+//        var customer2 = customerRepository.save(new CustomerModel(2l, "Dżesika", "CoSięGapisz", "123456789", "qwerty", "", "", "", "", user2));
 
 //        var reservation1 = reservationRepository.save(new ReservationModel(1l, car1, LocalDate.of(2023, 7, 20), LocalDate.of(2023, 7, 25), BigDecimal.valueOf(100), dep2, dep2, customer1));
 //        var reservation2 = reservationRepository.save(new ReservationModel(2l, car2, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 8, 25), BigDecimal.valueOf(100), dep1, dep3,customer1));
@@ -82,7 +82,7 @@ public class DbInitializer implements ApplicationRunner {
 //        rentalRepository.save(new RentalModel(1l, employee1, LocalDate.of(2023, 07, 16), reservation1, "blablabla"));
 //        returnRepository.save(new ReturnModel(1l, employee2, LocalDate.of(2023, 07, 16), reservation3, "bez uszkodzeń"));
 
-        companyRepository.save(new CompanyModel(1l, "SDACarRental", "SDACarRentalDomain", "SDACarRentalAddress", "SDACarRentalOwner", "SDACarRentalLogotype"));
+        companyRepository.save(new CompanyModel(1l, "", "", "", "", ""));
 
     }
 }

@@ -10,11 +10,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "returns", layout = MainLayout.class)
 @PageTitle("Lista zwrotów")
-@PermitAll
+@Secured("ROLE_ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class ReturnListView extends VerticalLayout {
     private final ReturnService returnService;
     Grid<ReturnModel> returnGrid = new Grid<>(ReturnModel.class, false);

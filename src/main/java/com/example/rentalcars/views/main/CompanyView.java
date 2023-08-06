@@ -4,6 +4,7 @@ import com.example.rentalcars.model.CompanyModel;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.CompanyService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -81,5 +82,14 @@ public class CompanyView extends VerticalLayout {
             addClassName("editing");
         }
     }
+
+//    private Component getToolbar(){
+//        Button addEmployeeButton = new Button("Ustaw info ");
+//        addEmployeeButton.addClickListener(event -> editCompany(event.getValue()));
+//
+//        HorizontalLayout toolbar = new HorizontalLayout(addEmployeeButton);
+//        toolbar.addClassName("toolbar");
+//        return toolbar;
+//    }
 
 }
