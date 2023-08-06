@@ -27,7 +27,7 @@ import jakarta.annotation.security.PermitAll;
 import java.util.Collections;
 import java.util.InputMismatchException;
 
-@Route(value = "addreservation", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
 @PermitAll
 public class AddReservationView extends VerticalLayout {

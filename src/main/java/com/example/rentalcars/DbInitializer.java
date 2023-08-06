@@ -53,7 +53,7 @@ public class DbInitializer implements ApplicationRunner {
         var car2 = carRepository.save(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(456), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
         var car3 = carRepository.save(new CarModel(3l, "BMW", "E3śmieć", BigDecimal.valueOf(124), BigDecimal.valueOf(500), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
         var car4 = carRepository.save(new CarModel(4l, "AUDI", "80", BigDecimal.valueOf(123), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
-        var car5 = carRepository.save(new CarModel(5l, "BMW", "530d", BigDecimal.valueOf(1230), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.HIRED, "Red", 450000, 1999));
+        //var car5 = carRepository.save(new CarModel(5l, "BMW", "530d", BigDecimal.valueOf(1230), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.HIRED, "Red", 450000, 1999));
 
         departmentService.addCarToDepartment(4l,1l);
         departmentService.addCarToDepartment(3l,2l);
@@ -61,16 +61,18 @@ public class DbInitializer implements ApplicationRunner {
         departmentService.addCarToDepartment(1l,1l);
         departmentService.addCarToDepartment(5l,1l);
 
+        var role1 = roleRepository.save(new RoleModel(1l, "ADMIN"));
+        var role2 = roleRepository.save(new RoleModel(2l, "USER"));
+
+        var admin = userRepository.save(new UserModel(1L, "admin","admin", "dominik@chuj.pl", true, role1));
+        var user1 = userRepository.save(new UserModel(2L, "janusz1234","1234", "janusz@chuj.pl", true, role2));
+        var user2 = userRepository.save(new UserModel(3L, "dżesika1234","1234", "dzesika@chuj.pl", true, role2));
+
         var employee1 = employeeRepository.save(new EmployeeModel(1l, "jan", "kowalski", EmployeePosition.EMPLOYEE));
         var employee2 = employeeRepository.save(new EmployeeModel(2l, "karol", "nowak", EmployeePosition.MANAGER));
 
-        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432"));
-        var customer2 = customerRepository.save(new CustomerModel(2l, "Dżesika", "CoSięGapisz", "123456789", "qwerty", "", "", "", ""));
-
-        var role1 = roleRepository.save(new RoleModel(1l, "ADMIN"));
-        var role2 = new RoleModel(2l, "USER");
-
-        var user1 = userRepository.save(new UserModel(1L, "houseinik","1234", "dominik@chuj.pl", true, role1));
+        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432", user1));
+        var customer2 = customerRepository.save(new CustomerModel(2l, "Dżesika", "CoSięGapisz", "123456789", "qwerty", "", "", "", "", user2));
 
 //        var reservation1 = reservationRepository.save(new ReservationModel(1l, car1, LocalDate.of(2023, 7, 20), LocalDate.of(2023, 7, 25), BigDecimal.valueOf(100), dep2, dep2, customer1));
 //        var reservation2 = reservationRepository.save(new ReservationModel(2l, car2, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 8, 25), BigDecimal.valueOf(100), dep1, dep3,customer1));

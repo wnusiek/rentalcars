@@ -30,8 +30,8 @@ public class CustomerModel {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "driver_license_number")
-    private String driverLicenseNumber;
+    @Column(name = "driver_licence_number")
+    private String driverLicenceNumber;
 
     @Email
     @Column(name = "email")
@@ -45,6 +45,10 @@ public class CustomerModel {
 
     @Column(name = "zip_code")
     private String zipCode;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 
     public String getName(){
         return firstName + " " + lastName;

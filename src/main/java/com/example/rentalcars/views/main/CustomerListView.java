@@ -1,7 +1,6 @@
 package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.CustomerService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -10,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
@@ -70,7 +68,7 @@ public class CustomerListView extends VerticalLayout {
     }
 
     private void saveCustomer(CustomerForm.SaveEvent event){
-        customerService.saveCustomer(event.getCustomer());
+        customerService.postAddCustomer(event.getCustomer());
         updateCustomerList();
         closeEditor();
     }
@@ -106,7 +104,7 @@ public class CustomerListView extends VerticalLayout {
                 "firstName",
                 "lastName",
                 "phoneNumber",
-                "driverLicenseNumber",
+                "driverLicenceNumber",
                 "email",
                 "pesel",
                 "city",

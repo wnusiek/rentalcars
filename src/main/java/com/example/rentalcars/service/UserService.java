@@ -1,16 +1,16 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
-import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class UserService {
         return false;
     }
 
-    public UserModel findByNameModel(String name) {
+    public UserModel findUserByNameModel(String name) {
         for (UserModel user : getUserList()) {
             if (user.getName().equals(name)) {
                 return user;
@@ -65,10 +65,21 @@ public class UserService {
             user.setName(userModel.getName());
             user.setEmail(userModel.getEmail());
             user.setPassword(userModel.getPassword());
-            user.setRole(roleRepository.findById(1l).orElse(null));
+            user.setRole(roleRepository.findById(2l).orElse(null));
             user.setActive(true);
             userRepository.save(user);
 
+    }
+
+
+
+    public String getNameOfLoggedUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    public Long getUserIdByUserName(String username){
+        return findUserByNameModel(username).getId();
     }
 
     public boolean checkIfUserExists(UserModel userModel) {
@@ -76,6 +87,11 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public void syncEmail(CustomerModel customer){
+        UserModel user = findUserByNameModel(getNameOfLoggedUser());
+        customer.setEmail(user.getEmail());
     }
 
 }
