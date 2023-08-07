@@ -7,6 +7,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.cookieconsent.CookieConsent;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -15,6 +16,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
 
@@ -40,7 +42,8 @@ public class CustomerForm extends FormLayout {
 
     public CustomerForm() {
         binder.bindInstanceFields(this);
- //       binder.forField(email).bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
+        binder.forField(email).withValidator(new EmailValidator("Niepoprawny email")).bind(CustomerModel::getEmail, CustomerModel::setEmail);
+        //       binder.forField(email).bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
         add(
                 firstName,
                 lastName,
