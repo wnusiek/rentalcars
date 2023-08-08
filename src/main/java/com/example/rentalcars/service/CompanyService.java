@@ -20,4 +20,8 @@ public class CompanyService {
     public void updateCompany(CompanyModel companyModel) {
         companyRepository.save(companyModel);
     }
+
+    public String getCompanyName(){
+        return getCompanyModelList().get(1).getCompanyName();
+    }
 }
