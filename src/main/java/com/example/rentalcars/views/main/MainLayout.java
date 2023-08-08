@@ -6,6 +6,7 @@ import com.example.rentalcars.security.SecurityUtils;
 import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -73,15 +74,14 @@ public class MainLayout extends AppLayout {
 
 
     private void createHeader() {
-        H1 companyName = new H1(companyService.getCompanyName());
+        H1 companyName = new H1("Wypożyczalnia samochodów " + companyService.getCompanyName());
         companyName.addClassNames("text-l", "m-m");
 
+        Button registerButton = new Button("Zarejestruj się");
+        registerButton.addClickListener(e -> UI.getCurrent().navigate("register"));
 
-        Button logOut = new Button("Log out " + loggedUserName, e -> securityService.logout());
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, logOut);
-
-        //todo
-        Button register = new Button("Register");
+        Button logoutButton = new Button("Log out " + loggedUserName, e -> securityService.logout());
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, registerButton, logoutButton);
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(companyName);

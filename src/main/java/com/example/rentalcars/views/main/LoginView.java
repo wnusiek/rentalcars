@@ -39,7 +39,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
         registerButton.addClickListener(e-> getUI().ifPresent(ui -> ui.navigate("register")));
 
         add(
-                new H1("Wypożyczalnia " + companyService.getCompanyName()),
+                new H1("Wypożyczalnia samochodów " + companyService.getCompanyName()),
                 login,
                 new H1("Nie masz jeszcze konta? Zarejestruj się!"),
                 registerButton
