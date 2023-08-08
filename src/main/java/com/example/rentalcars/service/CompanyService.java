@@ -22,6 +22,6 @@ public class CompanyService {
     }
 
     public String getCompanyName(){
-        return getCompanyModelList().get(1).getCompanyName();
+        return getCompanyModelList().get(0).getCompanyName();
     }
 }
