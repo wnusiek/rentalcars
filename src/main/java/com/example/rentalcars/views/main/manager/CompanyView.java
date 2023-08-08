@@ -13,7 +13,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "configuration", layout = MainLayout.class)
-@PageTitle("Company configuration")
+@PageTitle("Konfiguracja")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
 public class CompanyView extends VerticalLayout {

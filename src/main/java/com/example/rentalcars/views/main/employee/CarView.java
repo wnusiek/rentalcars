@@ -3,7 +3,6 @@ package com.example.rentalcars.views.main.employee;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.example.rentalcars.views.main.employee.CarForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -16,18 +15,18 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "Cars", layout =  MainLayout.class)
-@PageTitle("Gruz Car Rental")
+@Route(value = "car", layout =  MainLayout.class)
+@PageTitle("Samochody")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class CarsView extends VerticalLayout {
+public class CarView extends VerticalLayout {
 
     private final CarService carService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class);
     TextField filterText = new TextField();
     CarForm carForm = new CarForm();
 
-    public CarsView(CarService carService) {
+    public CarView(CarService carService) {
         this.carService = carService;
         addClassName("cars-view");
         setSizeFull();

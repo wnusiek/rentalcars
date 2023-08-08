@@ -9,6 +9,7 @@ import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.vaadinService.RentalVaadinService;
 import com.example.rentalcars.views.main.MainLayout;
+import com.example.rentalcars.views.main.customer.ReservationForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -29,7 +30,7 @@ import java.util.InputMismatchException;
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
 @PermitAll
-public class AddReservationView extends VerticalLayout {
+public class ReservationView extends VerticalLayout {
     private final RentalVaadinService service;
     private final ReservationService reservationService;
     private final DepartmentService departmentService;
@@ -46,7 +47,7 @@ public class AddReservationView extends VerticalLayout {
 
     ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
-    public AddReservationView(RentalVaadinService service, ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
+    public ReservationView(RentalVaadinService service, ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
         this.service = service;
         this.reservationService = reservationService;
         this.departmentService = departmentService;

@@ -17,13 +17,13 @@ import org.springframework.security.access.annotation.Secured;
 @PageTitle("Lista oddziałów")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class DepartmentsView extends VerticalLayout {
+public class DepartmentView extends VerticalLayout {
 
     private final DepartmentService departmentService;
     Grid<DepartmentModel> grid = new Grid<>(DepartmentModel.class, false);
     DepartmentForm form = new DepartmentForm();
 
-    public DepartmentsView(DepartmentService departmentService) {
+    public DepartmentView(DepartmentService departmentService) {
         this.departmentService = departmentService;
         addClassName("departments-view");
         setSizeFull();

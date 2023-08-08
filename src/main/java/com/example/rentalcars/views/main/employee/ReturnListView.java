@@ -14,7 +14,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "returns", layout = MainLayout.class)
+@Route(value = "returnlist", layout = MainLayout.class)
 @PageTitle("Lista zwrotów")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")

@@ -1,8 +1,5 @@
 package com.example.rentalcars.views.main.employee;
 
-import com.example.rentalcars.model.CarModel;
-import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.views.main.MainLayout;
@@ -12,21 +9,20 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "reservations", layout = MainLayout.class)
+@Route(value = "reservationlist", layout = MainLayout.class)
 @PageTitle("Lista rezerwacji")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class ReservationsView extends VerticalLayout {
+public class ReservationListView extends VerticalLayout {
 
     private final ReservationService reservationService;
 
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
 
-    public ReservationsView(ReservationService reservationService) {
+    public ReservationListView(ReservationService reservationService) {
         this.reservationService = reservationService;
         addClassName("reservations-view");
         setSizeFull();

@@ -14,16 +14,16 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "employees", layout = MainLayout.class)
-@PageTitle("Lista pracowników")
+@PageTitle("Pracownicy")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class EmployeesView extends VerticalLayout {
+public class EmployeeView extends VerticalLayout {
 
     private final EmployeeService employeeService;
     Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
     EmployeeForm form = new EmployeeForm();
 
-    public EmployeesView(EmployeeService employeeService) {
+    public EmployeeView(EmployeeService employeeService) {
         this.employeeService = employeeService;
         addClassName("employees-view");
         setSizeFull();

@@ -14,17 +14,17 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "customers", layout = MainLayout.class)
-@PageTitle("Lista klientów")
+@Route(value = "customermanagement", layout = MainLayout.class)
+@PageTitle("Klienci")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class CustomerListView extends VerticalLayout {
+public class CustomerManagementView extends VerticalLayout {
 
     private final CustomerService customerService;
     Grid<CustomerModel> grid = new Grid<>(CustomerModel.class);
     CustomerForm form = new CustomerForm();
 
-    public CustomerListView(CustomerService customerService) {
+    public CustomerManagementView(CustomerService customerService) {
         this.customerService = customerService;
         addClassName("employees-view");
         setSizeFull();
