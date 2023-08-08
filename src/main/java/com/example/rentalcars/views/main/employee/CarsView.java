@@ -1,7 +1,9 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.service.CarService;
+import com.example.rentalcars.views.main.MainLayout;
+import com.example.rentalcars.views.main.employee.CarForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -11,8 +13,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 

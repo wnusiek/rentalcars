@@ -1,6 +1,5 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.customer;
 
-import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
@@ -9,6 +8,7 @@ import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.vaadinService.RentalVaadinService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -19,7 +19,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;

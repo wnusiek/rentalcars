@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReturnModel;
@@ -6,6 +6,7 @@ import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.ReturnService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,7 +14,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 

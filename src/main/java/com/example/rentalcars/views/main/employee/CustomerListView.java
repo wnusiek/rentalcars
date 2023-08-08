@@ -1,7 +1,9 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.service.CustomerService;
+import com.example.rentalcars.views.main.MainLayout;
+import com.example.rentalcars.views.main.customer.CustomerForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;

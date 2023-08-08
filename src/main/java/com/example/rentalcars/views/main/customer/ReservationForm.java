@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
@@ -15,7 +15,6 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;

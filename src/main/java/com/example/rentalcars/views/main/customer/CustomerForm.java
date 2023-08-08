@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CustomerModel;
 import com.vaadin.flow.component.Component;
@@ -7,7 +7,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.cookieconsent.CookieConsent;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

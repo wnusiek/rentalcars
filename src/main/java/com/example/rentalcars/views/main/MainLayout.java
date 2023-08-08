@@ -1,10 +1,16 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.repository.CompanyRepository;
 import com.example.rentalcars.security.SecurityService;
 import com.example.rentalcars.security.SecurityUtils;
 import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
+import com.example.rentalcars.views.main.customer.AddReservationView;
+import com.example.rentalcars.views.main.customer.CustomerView;
+import com.example.rentalcars.views.main.employee.*;
+import com.example.rentalcars.views.main.manager.CompanyView;
+import com.example.rentalcars.views.main.manager.DepartmentsEmployeesView;
+import com.example.rentalcars.views.main.manager.DepartmentsView;
+import com.example.rentalcars.views.main.manager.EmployeesView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;

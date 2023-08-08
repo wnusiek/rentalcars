@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
@@ -6,6 +6,7 @@ import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.EmployeeService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

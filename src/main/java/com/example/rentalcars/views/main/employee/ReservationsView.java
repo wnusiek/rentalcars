@@ -1,10 +1,11 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
