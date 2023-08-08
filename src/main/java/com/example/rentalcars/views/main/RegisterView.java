@@ -2,6 +2,7 @@ package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.service.UserService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -64,6 +65,7 @@ public class RegisterView extends VerticalLayout {
             } else {
                 userService.saveUser(newUser);
                 Notification.show("Rejestracja zakończona sukcesem!").setPosition(Notification.Position.BOTTOM_CENTER);
+                UI.getCurrent().navigate("login");
             }
         }
     }
