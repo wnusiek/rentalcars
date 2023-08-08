@@ -3,6 +3,7 @@ package com.example.rentalcars.views.main;
 import com.example.rentalcars.repository.CompanyRepository;
 import com.example.rentalcars.security.SecurityService;
 import com.example.rentalcars.security.SecurityUtils;
+import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -22,14 +23,14 @@ import java.util.List;
 @PermitAll
 public class MainLayout extends AppLayout {
 
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
     private SecurityService securityService;
     private final UserService userService;
     private String loggedUserName;
     private List<Class<? extends Component>> allowedViews;
 
-    public MainLayout(CompanyRepository companyRepository, SecurityService securityService, UserService userService) {
-        this.companyRepository = companyRepository;
+    public MainLayout(CompanyService companyService, SecurityService securityService, UserService userService) {
+        this.companyService = companyService;
         this.securityService = securityService;
         this.userService = userService;
         loggedUserName = userService.getNameOfLoggedUser();
@@ -72,7 +73,7 @@ public class MainLayout extends AppLayout {
 
 
     private void createHeader() {
-        H1 companyName = new H1(companyRepository.findById(1l).get().getCompanyName());
+        H1 companyName = new H1(companyService.getCompanyName());
         companyName.addClassNames("text-l", "m-m");
 
 
