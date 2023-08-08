@@ -1,4 +1,5 @@
 package com.example.rentalcars.views.main;
+import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -14,6 +15,7 @@ import com.vaadin.flow.router.Route;
 public class LoginView extends VerticalLayout implements BeforeEnterListener {
 
     private final UserService userService;
+    private final CompanyService companyService;
 
     LoginForm login = new LoginForm();
 
@@ -23,8 +25,9 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
 
 
     RegisterForm registerForm = new RegisterForm();
-    public LoginView(UserService userService) {
+    public LoginView(UserService userService, CompanyService companyService) {
         this.userService = userService;
+        this.companyService = companyService;
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
@@ -36,7 +39,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
         registerButton.addClickListener(e-> getUI().ifPresent(ui -> ui.navigate("register")));
 
         add(
-                new H1("Wypożyczalnia Gruz-rental"),
+                new H1("Wypożyczalnia " + companyService.getCompanyName()),
                 login,
                 new H1("Nie masz jeszcze konta? Zarejestruj się!"),
                 registerButton
