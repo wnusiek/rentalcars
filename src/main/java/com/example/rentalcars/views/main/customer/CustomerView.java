@@ -6,7 +6,6 @@ import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.example.rentalcars.views.main.customer.CustomerForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -114,7 +113,7 @@ public class CustomerView extends VerticalLayout {
 
         Button editCustomerButton = new Button("Edytuj swoje dane");
 
-            editCustomerButton.addClickListener(e -> editCustomer(customerService.findCustomerByName(userService.getNameOfLoggedUser())));
+            editCustomerButton.addClickListener(e -> editCustomer(customerService.getCustomerByUserName(userService.getNameOfLoggedUser())));
 
             addCustomerButton.addClickListener(e -> addCustomer());
 
@@ -125,7 +124,7 @@ public class CustomerView extends VerticalLayout {
     }
 
     private void addCustomer() {
-        if (customerService.findCustomerByName(userService.getNameOfLoggedUser()) != null)  {
+        if (customerService.getCustomerByUserName(userService.getNameOfLoggedUser()) != null)  {
             closeEditor();
         } else editCustomer(new CustomerModel());
     }
