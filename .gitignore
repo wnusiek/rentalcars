@@ -38,3 +38,6 @@ build/
 ### Vaadin ###
 frontend/
 node_modules/
+src/main/dev-bundle
+*.json
+*.ts
