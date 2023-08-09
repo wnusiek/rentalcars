@@ -83,11 +83,23 @@ public class MainLayout extends AppLayout {
         H1 companyName = new H1("Wypożyczalnia samochodów " + companyService.getCompanyName());
         companyName.addClassNames("text-l", "m-m");
 
+        Button loginButton = new Button("Zaloguj się", e -> UI.getCurrent().navigate("login"));
         Button registerButton = new Button("Zarejestruj się");
         registerButton.addClickListener(e -> UI.getCurrent().navigate("register"));
+        Button logoutButton = new Button("Wyloguj " + loggedUserName, e -> securityService.logout());
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, loginButton, registerButton, logoutButton);
 
-        Button logoutButton = new Button("Log out " + loggedUserName, e -> securityService.logout());
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, registerButton, logoutButton);
+        if (userService.isUserLogged()){
+            registerButton.setVisible(false);
+            logoutButton.setVisible(true);
+            loginButton.setVisible(false);
+        } else {
+            registerButton.setVisible(true);
+            logoutButton.setVisible(false);
+            loginButton.setVisible(true);
+        }
+
+
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(companyName);
