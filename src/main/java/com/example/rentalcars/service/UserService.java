@@ -71,6 +71,13 @@ public class UserService {
 
     }
 
+    public boolean isUserLogged(){
+        if (!getNameOfLoggedUser().equals("anonymousUser") && !getNameOfLoggedUser().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
 
 
     public String getNameOfLoggedUser(){
