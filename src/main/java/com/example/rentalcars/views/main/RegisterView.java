@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -20,7 +21,7 @@ public class RegisterView extends VerticalLayout {
 
     private TextField name;
     private EmailField email;
-    private TextField password;
+    private PasswordField password;
 
     Button registerButton = new Button("Zarejestruj");
 
@@ -38,7 +39,7 @@ public class RegisterView extends VerticalLayout {
                 new H1("REJESTRACJA"),
                 name = new TextField("Imię"),
                 email = new EmailField("E-mail"),
-                password = new TextField("Hasło"),
+                password = new PasswordField("Hasło"),
                 registerButton
 
         );

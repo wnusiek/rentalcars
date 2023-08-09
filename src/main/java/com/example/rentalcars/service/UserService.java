@@ -91,7 +91,7 @@ public class UserService {
 
     public void syncEmail(CustomerModel customer){
         UserModel user = findUserByNameModel(getNameOfLoggedUser());
-        customer.setEmail(user.getEmail());
+        user.setEmail(customer.getEmail());
     }
 
 }

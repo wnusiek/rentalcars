@@ -10,10 +10,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "departments", layout = MainLayout.class)
 @PageTitle("Lista oddziałów")
-@PermitAll
+@Secured("ROLE_ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class DepartmentsView extends VerticalLayout {
 
     private final DepartmentService departmentService;

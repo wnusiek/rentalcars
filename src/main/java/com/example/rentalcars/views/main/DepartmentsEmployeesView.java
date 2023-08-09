@@ -15,13 +15,16 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collections;
 
 @Route(value = "departmentsEmployees", layout = MainLayout.class)
 @PageTitle("Pracownicy oddziałów")
-@PermitAll
+@Secured("ROLE_ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class DepartmentsEmployeesView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;

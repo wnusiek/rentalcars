@@ -18,11 +18,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collections;
 
 @Route(value = "departmentsCars", layout = MainLayout.class)
 @PageTitle("Samochody oddziałów")
+@Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
 public class DepartmentCarsView extends VerticalLayout {
     private final DepartmentService departmentService;
