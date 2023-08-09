@@ -22,14 +22,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
 
 import java.util.Collections;
 import java.util.InputMismatchException;
 
-@Route(value = "", layout = MainLayout.class)
+@Route(value = "reservation", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
-@PermitAll
+@AnonymousAllowed
 public class ReservationView extends VerticalLayout {
     private final RentalVaadinService service;
     private final ReservationService reservationService;
