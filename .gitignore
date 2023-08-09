@@ -36,9 +36,13 @@ build/
 
 
 ### Vaadin ###
-frontend/
+frontend/*
 node_modules/
 src/main/dev-bundle
-*.json
-*.ts
-*.js
+
+package-lock.json
+package.json
+tsconfig.json
+types.d.ts
+vite.config.ts
+vite.generated.ts
