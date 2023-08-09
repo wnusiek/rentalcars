@@ -22,7 +22,7 @@ import org.springframework.security.access.annotation.Secured;
 public class CarView extends VerticalLayout {
 
     private final CarService carService;
-    Grid<CarModel> carGrid = new Grid<>(CarModel.class);
+    Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
     TextField filterText = new TextField();
     CarForm carForm = new CarForm();
 
@@ -76,10 +76,10 @@ public class CarView extends VerticalLayout {
         closeEditor();
     }
     private HorizontalLayout getToolbar() {
-        Button addCarButton = new Button("Add car");
+        Button addCarButton = new Button("Dodaj samochód");
         addCarButton.addClickListener(e->addCar());
 
-        filterText.setPlaceholder("Filter by mark...");
+        filterText.setPlaceholder("Filtruj po marce...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCarList());
@@ -102,7 +102,22 @@ public class CarView extends VerticalLayout {
     private void configureGrid() {
         carGrid.addClassNames("cars-grid");
         carGrid.setSizeFull();
-        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability", "mileage", "productionDate");
+//        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability", "mileage", "productionDate");
+        carGrid.addColumn("mark").setHeader("Marka");
+        carGrid.addColumn("model").setHeader("Model");
+        carGrid.addColumn("body").setHeader("Nadwozie");
+        carGrid.addColumn("color").setHeader("Kolor");
+        carGrid.addColumn("fuelType").setHeader("Paliwo");
+        carGrid.addColumn("gearbox").setHeader("Skrzynia biegów");
+        carGrid.addColumn("price").setHeader("Cena");
+        carGrid.addColumn("bail").setHeader("Kaucja");
+        carGrid.addColumn("availability").setHeader("Dostępność");
+        carGrid.addColumn("mileage").setHeader("Przebieg");
+        carGrid.addColumn("productionDate").setHeader("Data produkcji");
+        carGrid.addColumn("numberOfSeats").setHeader("Liczba miejsc");
+        carGrid.addColumn("numberOfDoors").setHeader("Liczba drzwi");
+        carGrid.addColumn("trunk").setHeader("Bagażnik");
+
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         carGrid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
