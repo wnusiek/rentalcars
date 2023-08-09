@@ -1,15 +1,12 @@
 package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
-import com.example.rentalcars.service.CarService;
-import com.example.rentalcars.service.CustomerService;
-import com.example.rentalcars.service.DepartmentService;
-import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.service.*;
 import com.example.rentalcars.vaadinService.RentalVaadinService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.example.rentalcars.views.main.customer.ReservationForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -23,7 +20,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.security.PermitAll;
 
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -37,6 +33,7 @@ public class ReservationView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final CarService carService;
     private final CustomerService customerService;
+    private final UserService userService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class);
     TextField filterText = new TextField();
     DatePicker startDate = new DatePicker();
@@ -45,15 +42,15 @@ public class ReservationView extends VerticalLayout {
     Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
 
 
-
     ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
-    public ReservationView(RentalVaadinService service, ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService) {
+    public ReservationView(RentalVaadinService service, ReservationService reservationService, DepartmentService departmentService, CarService carService, CustomerService customerService, UserService userService) {
         this.service = service;
         this.reservationService = reservationService;
         this.departmentService = departmentService;
         this.carService = carService;
         this.customerService = customerService;
+        this.userService = userService;
         addClassName("list-view");
 
         setSizeFull();
@@ -118,7 +115,11 @@ public class ReservationView extends VerticalLayout {
 
     private void addReservation() {
         carGrid.asSingleSelect().clear();
-        editReservation(new ReservationModel());
+        CustomerModel customerModel;
+        customerModel = customerService.getCustomerByUserName(userService.getNameOfLoggedUser());
+        ReservationModel reservationModel = new ReservationModel();
+        reservationModel.setCustomer(customerModel);
+        editReservation(reservationModel);
     }
 
     private void configureForm() {

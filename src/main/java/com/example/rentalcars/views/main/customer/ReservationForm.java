@@ -24,7 +24,7 @@ import java.util.List;
 @PermitAll
 public class ReservationForm extends FormLayout {
     Binder<ReservationModel> binder = new Binder<>(ReservationModel.class);
-    ComboBox<CustomerModel> customer = new ComboBox<>("Klient");
+//    ComboBox<CustomerModel> customer = new ComboBox<>("Klient");
     ComboBox<CarModel> car = new ComboBox<>("Samochód");
     DatePicker dateFrom = new DatePicker("Data od");
     DatePicker dateTo = new DatePicker("Data do");
@@ -38,23 +38,22 @@ public class ReservationForm extends FormLayout {
     private ReservationModel reservationModel;
 
     public ReservationForm(List<DepartmentModel> departments, List<CarModel> cars, List<CustomerModel> customers) {
+        addClassName("reservation-form");
         binder.bindInstanceFields(this);
-        customer.setItems(customers);
-        customer.setItemLabelGenerator(CustomerModel::getName);
+//        customer.setItems(customers);
+//        customer.setItemLabelGenerator(CustomerModel::getName);
         car.setItems(cars);
         car.setItemLabelGenerator(CarModel::getCarInfo);
         receptionVenue.setItems(departments);
         receptionVenue.setItemLabelGenerator(DepartmentModel::getCity);
         returnVenue.setItems(departments);
         returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
-
         binder.forField(dateFrom).asRequired("To pole jest wymagane!").bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
         binder.forField(dateTo).asRequired("To pole jest wymagane!").bind(ReservationModel::getDateTo, ReservationModel::setDateTo);
         binder.forField(receptionVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReceptionVenue, ReservationModel::setReceptionVenue);
         binder.forField(returnVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReturnVenue, ReservationModel::setReturnVenue);
-        addClassName("reservation-form");
         add(
-                customer,
+//                customer,
                 car,
                 dateFrom,
                 dateTo,
