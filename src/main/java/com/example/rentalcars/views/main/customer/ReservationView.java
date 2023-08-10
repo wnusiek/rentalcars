@@ -36,10 +36,12 @@ public class ReservationView extends VerticalLayout {
     private final UserService userService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class);
     TextField filterText = new TextField();
-    DatePicker startDate = new DatePicker();
-    DatePicker endDate = new DatePicker();
-    ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>();
+    DatePicker startDate = new DatePicker("Data odbioru");
+    DatePicker endDate = new DatePicker("Data zwrotu");
+    ComboBox<DepartmentModel> receptionVenueComboBox = new ComboBox<>("Oddział odbioru");
+    ComboBox<DepartmentModel> returnVenueCombobox = new ComboBox<>("Oddział zwrotu");
     Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
+    Button makeReservationButton = new Button("Zarezerwuj");
 
 
     ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
@@ -80,7 +82,7 @@ public class ReservationView extends VerticalLayout {
     }
 
     private void updateCarList() {
-            carGrid.setItems(service.findAvailableCarsByDates(carStatusCheckBox.getValue(), departmentModelComboBox.getValue(), startDate.getValue(), endDate.getValue()));
+            carGrid.setItems(service.findAvailableCarsByDates(carStatusCheckBox.getValue(), receptionVenueComboBox.getValue(), startDate.getValue(), endDate.getValue()));
     }
 
     private void configureGrid() {
@@ -89,36 +91,55 @@ public class ReservationView extends VerticalLayout {
         carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-//        carGrid.asSingleSelect().addValueChangeListener(e ->editReservation(e.getValue()));
+        carGrid.asSingleSelect().addValueChangeListener(e ->addReservation(e.getValue()));
     }
 
     private HorizontalLayout getToolbar() {
-        Button addReservationButton = new Button("Add reservation");
-        addReservationButton.addClickListener(e -> addReservation());
         carStatusCheckBox.addValueChangeListener(e -> updateCarList());
-        departmentModelComboBox.setPlaceholder("Oddziały");
-        departmentModelComboBox.setItems(departmentService.getDepartmentList1());
-        departmentModelComboBox.setItemLabelGenerator(DepartmentModel::getCity);
-        startDate.setPlaceholder("Set start date");
-        endDate.setPlaceholder("Set end date");
+        receptionVenueComboBox.setPlaceholder("wybierz oddział");
+        receptionVenueComboBox.setItems(departmentService.getDepartmentList1());
+        receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
+        startDate.setPlaceholder("Wybierz datę");
+        endDate.setPlaceholder("Wybierz datę");
         startDate.setClearButtonVisible(true);
         endDate.setClearButtonVisible(true);
-        departmentModelComboBox.setClearButtonVisible(true);
+        receptionVenueComboBox.setClearButtonVisible(true);
         startDate.addValueChangeListener(e -> updateCarList());
         endDate.addValueChangeListener(e -> updateCarList());
-        departmentModelComboBox.addValueChangeListener(e -> updateCarList());
+        receptionVenueComboBox.addValueChangeListener(e -> updateCarList());
 
-        var toolbar = new HorizontalLayout(departmentModelComboBox, startDate, endDate, carStatusCheckBox, addReservationButton);
+        returnVenueCombobox.setPlaceholder("Wybierz oddział");
+        returnVenueCombobox.setItems(departmentService.getDepartmentList1());
+        returnVenueCombobox.setItemLabelGenerator(DepartmentModel::getCity);
+        returnVenueCombobox.setClearButtonVisible(true);
+
+        makeReservationButton.setVisible(false);
+
+        var toolbar = new HorizontalLayout(receptionVenueComboBox, returnVenueCombobox,startDate, endDate, carStatusCheckBox, makeReservationButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
-    private void addReservation() {
-        carGrid.asSingleSelect().clear();
+    private void addReservation(CarModel carModel) {
+        if (!startDate.isEmpty() && !endDate.isEmpty() && !receptionVenueComboBox.isEmpty() && !returnVenueCombobox.isEmpty()){
+
+        makeReservationButton.setVisible(true);
+//        makeReservationButton.addClickListener(event -> )
+        }
+        else {
+            Notification.show("Wypełnij wszystkie pola").setPosition(Notification.Position.MIDDLE);
+        }
+
+//        carGrid.asSingleSelect().clear();
         CustomerModel customerModel;
         customerModel = customerService.getCustomerByUserName(userService.getNameOfLoggedUser());
         ReservationModel reservationModel = new ReservationModel();
         reservationModel.setCustomer(customerModel);
+        reservationModel.setCar(carModel);
+        reservationModel.setDateFrom(startDate.getValue());
+        reservationModel.setDateTo(endDate.getValue());
+        reservationModel.setReceptionVenue(receptionVenueComboBox.getValue());
+        reservationModel.setReturnVenue(returnVenueCombobox.getValue());
         editReservation(reservationModel);
     }
 
@@ -127,7 +148,6 @@ public class ReservationView extends VerticalLayout {
         reservationForm.setWidth("25em");
 
         reservationForm.addSaveListener(this::saveReservation);
-//        reservationForm.addDeleteListener(this::deleteReservation);
         reservationForm.addCloseListener(event -> closeEditor());
     }
 
@@ -135,6 +155,7 @@ public class ReservationView extends VerticalLayout {
         try{
             reservationService.addReservation(event.getReservation());
             closeEditor();
+//            makeReservationButton.setVisible(false);
         } catch (IllegalArgumentException | InputMismatchException e){
             Notification notification = Notification
                     .show(e.getMessage(), 3000, Notification.Position.MIDDLE);
@@ -152,4 +173,7 @@ public class ReservationView extends VerticalLayout {
 
         }
     }
+
+
+
 }
