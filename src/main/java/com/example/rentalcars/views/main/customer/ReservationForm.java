@@ -24,7 +24,6 @@ import java.util.List;
 @PermitAll
 public class ReservationForm extends FormLayout {
     Binder<ReservationModel> binder = new Binder<>(ReservationModel.class);
-//    ComboBox<CustomerModel> customer = new ComboBox<>("Klient");
     ComboBox<CarModel> car = new ComboBox<>("Samochód");
     DatePicker dateFrom = new DatePicker("Data od");
     DatePicker dateTo = new DatePicker("Data do");
@@ -40,8 +39,6 @@ public class ReservationForm extends FormLayout {
     public ReservationForm(List<DepartmentModel> departments, List<CarModel> cars, List<CustomerModel> customers) {
         addClassName("reservation-form");
         binder.bindInstanceFields(this);
-//        customer.setItems(customers);
-//        customer.setItemLabelGenerator(CustomerModel::getName);
         car.setItems(cars);
         car.setItemLabelGenerator(CarModel::getCarInfo);
         receptionVenue.setItems(departments);
@@ -53,7 +50,6 @@ public class ReservationForm extends FormLayout {
         binder.forField(receptionVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReceptionVenue, ReservationModel::setReceptionVenue);
         binder.forField(returnVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReturnVenue, ReservationModel::setReturnVenue);
         add(
-//                customer,
                 car,
                 dateFrom,
                 dateTo,
@@ -87,9 +83,9 @@ public class ReservationForm extends FormLayout {
         try {
             binder.writeBean(reservationModel);
             fireEvent(new ReservationForm.SaveEvent(this, reservationModel));
-            Notification.show("Rezerwacja samochodu zakończona sukcesem!");
+            Notification.show("Rezerwacja samochodu zakończona sukcesem!").setPosition(Notification.Position.MIDDLE);
         } catch (ValidationException e) {
-            Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(");
+            Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(").setPosition(Notification.Position.MIDDLE);
             e.printStackTrace();
 
         }
