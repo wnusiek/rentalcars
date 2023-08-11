@@ -35,14 +35,14 @@ public class ReservationView extends VerticalLayout {
     private final CustomerService customerService;
     private final UserService userService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class);
-    TextField filterText = new TextField();
+//    TextField filterText = new TextField();
     DatePicker startDate = new DatePicker("Data odbioru");
     DatePicker endDate = new DatePicker("Data zwrotu");
     ComboBox<DepartmentModel> receptionVenueComboBox = new ComboBox<>("Oddział odbioru");
     ComboBox<DepartmentModel> returnVenueCombobox = new ComboBox<>("Oddział zwrotu");
     Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
     Button makeReservationButton = new Button("Zarezerwuj");
-    CarModel customerChoice;
+    private CarModel customerChoice;
 
     ReservationForm reservationForm = new ReservationForm(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
@@ -82,7 +82,7 @@ public class ReservationView extends VerticalLayout {
     }
 
     private void updateCarList() {
-            carGrid.setItems(service.findAvailableCarsByDates(carStatusCheckBox.getValue(), receptionVenueComboBox.getValue(), startDate.getValue(), endDate.getValue()));
+        carGrid.setItems(service.findAvailableCarsByDates(carStatusCheckBox.getValue(), receptionVenueComboBox.getValue(), startDate.getValue(), endDate.getValue()));
     }
 
     private void configureGrid() {
@@ -90,41 +90,42 @@ public class ReservationView extends VerticalLayout {
         carGrid.setSizeFull();
         carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-        carGrid.asSingleSelect().addValueChangeListener(e-> saveUserCarChoice(e.getValue()));
+        carGrid.asSingleSelect().addValueChangeListener(e -> saveUserCarChoice(e.getValue()));
     }
 
-    private void validateFields(){
-        if (startDate.isEmpty()){
+    private void validateFields() {
+        if (startDate.isEmpty()) {
             Notification.show("Wybierz datę odbioru").setPosition(Notification.Position.MIDDLE);
-        } else if (endDate.isEmpty()){
+        } else if (endDate.isEmpty()) {
             Notification.show("Wybierz datę zwrotu").setPosition(Notification.Position.MIDDLE);
-        } else if (receptionVenueComboBox.isEmpty()){
+        } else if (receptionVenueComboBox.isEmpty()) {
             Notification.show("Wybierz oddział odbioru").setPosition(Notification.Position.MIDDLE);
-        } else if (returnVenueCombobox.isEmpty()){
+        } else if (returnVenueCombobox.isEmpty()) {
             Notification.show("Wybierz oddział zwrotu").setPosition(Notification.Position.MIDDLE);
-        } else if (carGrid.asSingleSelect().isEmpty()){
+        } else if (carGrid.asSingleSelect().isEmpty()) {
             Notification.show("Wybierz auto").setPosition(Notification.Position.MIDDLE);
         } else {
             addReservation(this.customerChoice);
         }
     }
 
-    private void saveUserCarChoice(CarModel customerChoice){
+    private void saveUserCarChoice(CarModel customerChoice) {
         this.customerChoice = customerChoice;
     }
 
     private HorizontalLayout getToolbar() {
-        carStatusCheckBox.addValueChangeListener(e -> updateCarList());
+        startDate.setPlaceholder("Wybierz datę");
+        startDate.setClearButtonVisible(true);
+        startDate.addValueChangeListener(e -> updateCarList());
+
+        endDate.setPlaceholder("Wybierz datę");
+        endDate.setClearButtonVisible(true);
+        endDate.addValueChangeListener(e -> updateCarList());
+
         receptionVenueComboBox.setPlaceholder("wybierz oddział");
         receptionVenueComboBox.setItems(departmentService.getDepartmentList1());
         receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
-        startDate.setPlaceholder("Wybierz datę");
-        endDate.setPlaceholder("Wybierz datę");
-        startDate.setClearButtonVisible(true);
-        endDate.setClearButtonVisible(true);
         receptionVenueComboBox.setClearButtonVisible(true);
-        startDate.addValueChangeListener(e -> updateCarList());
-        endDate.addValueChangeListener(e -> updateCarList());
         receptionVenueComboBox.addValueChangeListener(e -> updateCarList());
 
         returnVenueCombobox.setPlaceholder("Wybierz oddział");
@@ -132,8 +133,11 @@ public class ReservationView extends VerticalLayout {
         returnVenueCombobox.setItemLabelGenerator(DepartmentModel::getCity);
         returnVenueCombobox.setClearButtonVisible(true);
 
-        makeReservationButton.addClickListener(e->validateFields());
-        var toolbar = new HorizontalLayout(receptionVenueComboBox, returnVenueCombobox,startDate, endDate, carStatusCheckBox, makeReservationButton);
+        carStatusCheckBox.addValueChangeListener(e -> updateCarList());
+
+        makeReservationButton.addClickListener(e -> validateFields());
+
+        var toolbar = new HorizontalLayout(startDate, endDate, receptionVenueComboBox, returnVenueCombobox, carStatusCheckBox, makeReservationButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
@@ -162,10 +166,10 @@ public class ReservationView extends VerticalLayout {
     }
 
     private void saveReservation(ReservationForm.SaveEvent event) {
-        try{
+        try {
             reservationService.addReservation(event.getReservation());
             closeEditor();
-        } catch (IllegalArgumentException | InputMismatchException e){
+        } catch (IllegalArgumentException | InputMismatchException e) {
             Notification notification = Notification
                     .show(e.getMessage(), 3000, Notification.Position.MIDDLE);
         }
@@ -179,10 +183,8 @@ public class ReservationView extends VerticalLayout {
             reservationForm.setReservation(reservationModel);
             reservationForm.makeReservationButton.click();
             addClassName("editing");
-
         }
     }
-
 
 
 }
