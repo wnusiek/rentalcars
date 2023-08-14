@@ -4,6 +4,7 @@ import com.example.rentalcars.security.SecurityService;
 import com.example.rentalcars.security.SecurityUtils;
 import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
+import com.example.rentalcars.views.main.customer.CustomerReservationsView;
 import com.example.rentalcars.views.main.customer.ReservationView;
 import com.example.rentalcars.views.main.customer.CustomerView;
 import com.example.rentalcars.views.main.employee.*;
@@ -70,6 +71,7 @@ public class MainLayout extends AppLayout {
         }
         if (SecurityUtils.isUserRegular()){
             allowedViews.add(CustomerView.class);
+            allowedViews.add(CustomerReservationsView.class);
         }
 
     }
@@ -148,8 +150,11 @@ public class MainLayout extends AppLayout {
         RouterLink departmentCarsView = new RouterLink("Samochody oddziałów", DepartmentCarsView.class);
         departmentCarsView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink customerView = new RouterLink("Widok klienta", CustomerView.class);
+        RouterLink customerView = new RouterLink("Moje dane", CustomerView.class);
         customerView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink customerReservationsView = new RouterLink("Moje rezerwacje", CustomerReservationsView.class);
+        customerReservationsView.setHighlightCondition(HighlightConditions.sameLocation());
 
         if (SecurityUtils.isUserAdmin()){
             addToDrawer(new VerticalLayout(
@@ -174,7 +179,8 @@ public class MainLayout extends AppLayout {
         if (SecurityUtils.isUserRegular()){
             addToDrawer(new VerticalLayout(
                     customerView,
-                    reservationView
+                    reservationView,
+                    customerReservationsView
             ));
         }
 

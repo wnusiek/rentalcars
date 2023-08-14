@@ -17,50 +17,33 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "customerView", layout = MainLayout.class)
-@PageTitle("Moje konto")
+@PageTitle("Moje dane")
 @Secured({"ROLE_USER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 public class CustomerView extends VerticalLayout {
 
-    private final ReservationService reservationService;
     private final CustomerService customerService;
     private final UserService userService;
-    Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
     CustomerForm form = new CustomerForm();
 
-    public CustomerView(ReservationService reservationService, CustomerService customerService, UserService userService) {
-        this.reservationService = reservationService;
+    public CustomerView(CustomerService customerService, UserService userService) {
         this.customerService = customerService;
         this.userService = userService;
         setSizeFull();
-        configureGrid();
         configureForm();
         add(
                 getToolbar(),
                 getContent()
         );
-        updateReservationList();
         closeEditor();
     }
 
     private Component getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2, grid);
+        HorizontalLayout content = new HorizontalLayout(form);
         content.setFlexGrow(1, form);
         content.addClassName("content");
         content.setSizeFull();
         return content;
-    }
-
-    private void updateReservationList() {
-        grid.setItems(reservationService.getReservationListLoggedUser());
-    }
-
-    private void configureGrid() {
-        grid.addClassNames("reservations-grid");
-        grid.setSizeFull();
-        grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue.city", "returnVenue.city");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
     private void configureForm() {
@@ -88,34 +71,21 @@ public class CustomerView extends VerticalLayout {
 
 //    private Component getToolbar() {
 //        Button addCustomerButton = new Button("Moje dane");
-//
 //        if (customerService.checkIfCustomerExist()) {
-//
 //            addCustomerButton.addClickListener(e -> addCustomer());
-//
 //        } else {
-//
 //            addCustomerButton.addClickListener(e -> editCustomer(customerService.findCustomerByName(userService.getNameOfLoggedUser())));
-//
 //        }
-//
-//
 //        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton);
 //        toolbar.addClassName("toolbar");
 //        return toolbar;
 //    }
 
     private Component getToolbar() {
-
         Button addCustomerButton = new Button("Wprowadź swoje dane");
-
         Button editCustomerButton = new Button("Edytuj swoje dane");
-
             editCustomerButton.addClickListener(e -> editCustomer(customerService.getCustomerByUserName(userService.getNameOfLoggedUser())));
-
             addCustomerButton.addClickListener(e -> addCustomer());
-
-
         HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton, editCustomerButton);
         toolbar.addClassName("toolbar");
         return toolbar;
