@@ -34,7 +34,7 @@ public class ReservationView extends VerticalLayout {
     private final CarService carService;
     private final CustomerService customerService;
     private final UserService userService;
-    Grid<CarModel> carGrid = new Grid<>(CarModel.class);
+    Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
 //    TextField filterText = new TextField();
     DatePicker startDate = new DatePicker("Data odbioru");
     DatePicker endDate = new DatePicker("Data zwrotu");
@@ -88,7 +88,14 @@ public class ReservationView extends VerticalLayout {
     private void configureGrid() {
         carGrid.addClassNames("cars-grid");
         carGrid.setSizeFull();
-        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability");
+        carGrid.addColumn("mark").setHeader("Marka");
+        carGrid.addColumn("model").setHeader("Model");
+        carGrid.addColumn("body").setHeader("Nadwozie");
+        carGrid.addColumn("color").setHeader("Kolor");
+        carGrid.addColumn("fuelType").setHeader("Paliwo");
+        carGrid.addColumn("gearbox").setHeader("Skrzynia biegów");
+        carGrid.addColumn("price").setHeader("Cena");
+        carGrid.addColumn("availability").setHeader("Dostępność");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         carGrid.asSingleSelect().addValueChangeListener(e -> saveUserCarChoice(e.getValue()));
     }
