@@ -16,18 +16,16 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "customerReservations", layout = MainLayout.class)
-@PageTitle("Moje rezerwacje")
+@Route(value = "customerView", layout = MainLayout.class)
+@PageTitle("Moje konto")
 @Secured({"ROLE_USER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 public class CustomerView extends VerticalLayout {
 
     private final ReservationService reservationService;
     private final CustomerService customerService;
-
     private final UserService userService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
-
     CustomerForm form = new CustomerForm();
 
     public CustomerView(ReservationService reservationService, CustomerService customerService, UserService userService) {
