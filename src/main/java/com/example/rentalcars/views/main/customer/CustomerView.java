@@ -1,34 +1,31 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.UserService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "customerReservations", layout = MainLayout.class)
-@PageTitle("Moje rezerwacje")
+@Route(value = "customerView", layout = MainLayout.class)
+@PageTitle("Moje konto")
 @Secured({"ROLE_USER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 public class CustomerView extends VerticalLayout {
 
     private final ReservationService reservationService;
     private final CustomerService customerService;
-
     private final UserService userService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
-
     CustomerForm form = new CustomerForm();
 
     public CustomerView(ReservationService reservationService, CustomerService customerService, UserService userService) {
@@ -114,7 +111,7 @@ public class CustomerView extends VerticalLayout {
 
         Button editCustomerButton = new Button("Edytuj swoje dane");
 
-            editCustomerButton.addClickListener(e -> editCustomer(customerService.findCustomerByName(userService.getNameOfLoggedUser())));
+            editCustomerButton.addClickListener(e -> editCustomer(customerService.getCustomerByUserName(userService.getNameOfLoggedUser())));
 
             addCustomerButton.addClickListener(e -> addCustomer());
 
@@ -125,7 +122,7 @@ public class CustomerView extends VerticalLayout {
     }
 
     private void addCustomer() {
-        if (customerService.findCustomerByName(userService.getNameOfLoggedUser()) != null)  {
+        if (customerService.getCustomerByUserName(userService.getNameOfLoggedUser()) != null)  {
             closeEditor();
         } else editCustomer(new CustomerModel());
     }

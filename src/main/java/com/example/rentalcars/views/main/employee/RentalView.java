@@ -1,10 +1,12 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.views.main.MainLayout;
+import com.example.rentalcars.views.main.employee.RentalForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -12,7 +14,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
@@ -21,7 +22,7 @@ import org.springframework.security.access.annotation.Secured;
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
 
-public class AddRentalView extends VerticalLayout {
+public class RentalView extends VerticalLayout {
 
     private final ReservationService reservationService;
     private final EmployeeService employeeService;
@@ -29,7 +30,7 @@ public class AddRentalView extends VerticalLayout {
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
     RentalForm form;
 
-    public AddRentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService) {
+    public RentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService) {
         this.rentalService = rentalService;
         this.reservationService = reservationService;
         this.employeeService = employeeService;

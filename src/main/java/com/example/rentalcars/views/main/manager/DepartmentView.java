@@ -1,7 +1,8 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.service.DepartmentService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -9,7 +10,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
@@ -17,13 +17,13 @@ import org.springframework.security.access.annotation.Secured;
 @PageTitle("Lista oddziałów")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class DepartmentsView extends VerticalLayout {
+public class DepartmentView extends VerticalLayout {
 
     private final DepartmentService departmentService;
     Grid<DepartmentModel> grid = new Grid<>(DepartmentModel.class, false);
     DepartmentForm form = new DepartmentForm();
 
-    public DepartmentsView(DepartmentService departmentService) {
+    public DepartmentView(DepartmentService departmentService) {
         this.departmentService = departmentService;
         addClassName("departments-view");
         setSizeFull();

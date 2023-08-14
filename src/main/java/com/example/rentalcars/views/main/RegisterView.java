@@ -1,7 +1,9 @@
 package com.example.rentalcars.views.main;
 
 import com.example.rentalcars.model.UserModel;
+import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -18,6 +20,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout {
     private final UserService userService;
+    private final CompanyService companyService;
 
     private TextField name;
     private EmailField email;
@@ -28,14 +31,16 @@ public class RegisterView extends VerticalLayout {
     // Inicjujemy pola i przycisk (tak jak wcześniej)
 
 
-    public RegisterView(UserService userService) {
+    public RegisterView(UserService userService, CompanyService companyService) {
         this.userService = userService;
+        this.companyService = companyService;
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         registerButton.addClickListener(e -> register());
  //       registerButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("")));
         add(
+                new H1("Wypożyczalnia samochodów " + this.companyService.getCompanyName()),
                 new H1("REJESTRACJA"),
                 name = new TextField("Imię"),
                 email = new EmailField("E-mail"),
@@ -64,6 +69,7 @@ public class RegisterView extends VerticalLayout {
             } else {
                 userService.saveUser(newUser);
                 Notification.show("Rejestracja zakończona sukcesem!").setPosition(Notification.Position.BOTTOM_CENTER);
+                UI.getCurrent().navigate("login");
             }
         }
     }

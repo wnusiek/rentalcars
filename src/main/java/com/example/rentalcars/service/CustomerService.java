@@ -1,7 +1,6 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,8 +48,8 @@ public class CustomerService {
         customerRepository.delete(customerModel);
     }
 
-    public CustomerModel findCustomerByName(String name){
-        var customer = getCustomerList().stream().filter(customerModel -> customerModel.getUser().getName().equals(name)).findFirst();
+    public CustomerModel getCustomerByUserName(String userName){
+        var customer = getCustomerList().stream().filter(customerModel -> customerModel.getUser().getName().equals(userName)).findFirst();
         if (customer.isPresent())
             return customer.get();
         else {
@@ -61,7 +60,7 @@ public class CustomerService {
     }
 
     public boolean checkIfCustomerExist(){
-        if(findCustomerByName(userService.getNameOfLoggedUser()).equals(null)){
+        if(getCustomerByUserName(userService.getNameOfLoggedUser()).equals(null)){
             return false;
         }
         return true;

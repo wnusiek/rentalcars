@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.CompanyModel;
 import com.vaadin.flow.component.Component;
@@ -13,7 +13,6 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 
 @RolesAllowed("ROLE_ADMIN")

@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.DepartmentModel;
 import com.vaadin.flow.component.Component;

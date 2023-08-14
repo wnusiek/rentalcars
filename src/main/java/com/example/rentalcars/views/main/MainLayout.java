@@ -1,10 +1,18 @@
 package com.example.rentalcars.views.main;
 
-import com.example.rentalcars.repository.CompanyRepository;
 import com.example.rentalcars.security.SecurityService;
 import com.example.rentalcars.security.SecurityUtils;
+import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.UserService;
+import com.example.rentalcars.views.main.customer.ReservationView;
+import com.example.rentalcars.views.main.customer.CustomerView;
+import com.example.rentalcars.views.main.employee.*;
+import com.example.rentalcars.views.main.manager.CompanyView;
+import com.example.rentalcars.views.main.manager.DepartmentEmployeesView;
+import com.example.rentalcars.views.main.manager.DepartmentView;
+import com.example.rentalcars.views.main.manager.EmployeeView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -22,14 +30,14 @@ import java.util.List;
 @PermitAll
 public class MainLayout extends AppLayout {
 
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
     private SecurityService securityService;
     private final UserService userService;
     private String loggedUserName;
     private List<Class<? extends Component>> allowedViews;
 
-    public MainLayout(CompanyRepository companyRepository, SecurityService securityService, UserService userService) {
-        this.companyRepository = companyRepository;
+    public MainLayout(CompanyService companyService, SecurityService securityService, UserService userService) {
+        this.companyService = companyService;
         this.securityService = securityService;
         this.userService = userService;
         loggedUserName = userService.getNameOfLoggedUser();
@@ -39,24 +47,24 @@ public class MainLayout extends AppLayout {
         allowedViews = new ArrayList<>();
 
         //Widoki dostępne dla wszystkich
-        allowedViews.add(AddReservationView.class);
+        allowedViews.add(ReservationView.class);
 //        allowedViews.add();
 //        allowedViews.add();
 
 
         //Widoki dla admina
         if (SecurityUtils.isUserAdmin()){
-            allowedViews.add(AddRentalView.class);
-            allowedViews.add(AddReturnView.class);
-            allowedViews.add(CarsView.class);
-            allowedViews.add(CompanyView.class);
-            allowedViews.add(CustomerListView.class);
-            allowedViews.add(DepartmentCarsView.class);
-            allowedViews.add(DepartmentsEmployeesView.class);
-            allowedViews.add(DepartmentsView.class);
-            allowedViews.add(EmployeesView.class);
             allowedViews.add(RentalView.class);
-            allowedViews.add(ReservationsView.class);
+            allowedViews.add(ReturnView.class);
+            allowedViews.add(CarView.class);
+            allowedViews.add(CompanyView.class);
+            allowedViews.add(CustomerManagementView.class);
+            allowedViews.add(DepartmentCarsView.class);
+            allowedViews.add(DepartmentEmployeesView.class);
+            allowedViews.add(DepartmentView.class);
+            allowedViews.add(EmployeeView.class);
+            allowedViews.add(RentalListView.class);
+            allowedViews.add(ReservationListView.class);
             allowedViews.add(ReturnListView.class);
 
         }
@@ -72,15 +80,26 @@ public class MainLayout extends AppLayout {
 
 
     private void createHeader() {
-        H1 companyName = new H1(companyRepository.findById(1l).get().getCompanyName());
+        H1 companyName = new H1("Wypożyczalnia samochodów " + companyService.getCompanyName());
         companyName.addClassNames("text-l", "m-m");
 
+        Button loginButton = new Button("Zaloguj się", e -> UI.getCurrent().navigate("login"));
+        Button registerButton = new Button("Zarejestruj się");
+        registerButton.addClickListener(e -> UI.getCurrent().navigate("register"));
+        Button logoutButton = new Button("Wyloguj " + loggedUserName, e -> securityService.logout());
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, loginButton, registerButton, logoutButton);
 
-        Button logOut = new Button("Log out " + loggedUserName, e -> securityService.logout());
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), companyName, logOut);
+        if (userService.isUserLogged()){
+            registerButton.setVisible(false);
+            logoutButton.setVisible(true);
+            loginButton.setVisible(false);
+        } else {
+            registerButton.setVisible(true);
+            logoutButton.setVisible(false);
+            loginButton.setVisible(true);
+        }
 
-        //todo
-        Button register = new Button("Register");
+
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(companyName);
@@ -90,44 +109,44 @@ public class MainLayout extends AppLayout {
         addToNavbar(header);
     }
     private void createDrawer() {
-        RouterLink carsView = new RouterLink("Lista samochodów", CarsView.class);
-        carsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink carView = new RouterLink("Samochody", CarView.class);
+        carView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink addRentalView = new RouterLink("Wypożyczanie", AddRentalView.class);
-        addRentalView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink rentalView = new RouterLink("Wypożycz", RentalView.class);
+        rentalView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink companyView = new RouterLink("Konfiguracja", CompanyView.class);
         companyView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink employeesView = new RouterLink("Lista pracowników", EmployeesView.class);
-        employeesView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink employeeView = new RouterLink("Pracownicy", EmployeeView.class);
+        employeeView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink customersListView = new RouterLink("Lista klientów", CustomerListView.class);
-        customersListView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink customerListView = new RouterLink("Klienci", CustomerManagementView.class);
+        customerListView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink reservationsListView = new RouterLink("Lista rezerwacji", ReservationsView.class);
-        reservationsListView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink reservationListView = new RouterLink("Pokaż rezerwacje", ReservationListView.class);
+        reservationListView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink addReservationView = new RouterLink("Rezerwowanie", AddReservationView.class);
-        addReservationView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink reservationView = new RouterLink("Zarezerwuj", ReservationView.class);
+        reservationView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentsView = new RouterLink("Oddziały", DepartmentsView.class);
-        departmentsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink departmentView = new RouterLink("Oddziały", DepartmentView.class);
+        departmentView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink rentalsView = new RouterLink("Lista wypożyczeń", RentalView.class);
-        rentalsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink rentalListView = new RouterLink("Wypożyczenia", RentalListView.class);
+        rentalListView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink addReturnView = new RouterLink("Zwroty", AddReturnView.class);
-        addReturnView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink returnView = new RouterLink("Zwróć", ReturnView.class);
+        returnView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink returnsView = new RouterLink("Lista zwrotów", ReturnListView.class);
-        returnsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink returnListView = new RouterLink("Zwroty", ReturnListView.class);
+        returnListView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentsemployeesView = new RouterLink("Lista pracowników oddziałów", DepartmentsEmployeesView.class);
-        departmentsemployeesView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink departmentEmployeesView = new RouterLink("Pracownicy oddziałów", DepartmentEmployeesView.class);
+        departmentEmployeesView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentsCarsView = new RouterLink("Lista samochodów oddziałów", DepartmentCarsView.class);
-        departmentsCarsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink departmentCarsView = new RouterLink("Samochody oddziałów", DepartmentCarsView.class);
+        departmentCarsView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink customerView = new RouterLink("Widok klienta", CustomerView.class);
         customerView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -135,27 +154,27 @@ public class MainLayout extends AppLayout {
         if (SecurityUtils.isUserAdmin()){
             addToDrawer(new VerticalLayout(
 
-                    addReservationView,
-                    companyView,
-                    carsView,
-                    reservationsListView,
-                    addRentalView,
-                    rentalsView,
-                    addReturnView,
-                    returnsView,
-                    employeesView,
-                    customersListView,
-                    departmentsView,
-                    departmentsemployeesView,
-                    departmentsCarsView,
-                    customerView
-            ));
+                    carView,
+                    reservationView,
+                    reservationListView,
+                    rentalView,
+                    rentalListView,
+                    returnView,
+                    returnListView,
+                    employeeView,
+                    customerListView,
+                    departmentView,
+                    departmentEmployeesView,
+                    departmentCarsView,
+                    customerView,
+                    companyView
+                    ));
         }
 
         if (SecurityUtils.isUserRegular()){
             addToDrawer(new VerticalLayout(
                     customerView,
-                    addReservationView
+                    reservationView
             ));
         }
 

@@ -1,11 +1,10 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
-import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.service.DepartmentService;
-import com.example.rentalcars.service.EmployeeService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,13 +15,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collections;
 
-@Route(value = "departmentsCars", layout = MainLayout.class)
+@Route(value = "departmentcars", layout = MainLayout.class)
 @PageTitle("Samochody oddziałów")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
@@ -36,7 +34,7 @@ public class DepartmentCarsView extends VerticalLayout {
     Button removeButton = new Button("Usuń samochód z oddziału");
 
 
-    public DepartmentCarsView(DepartmentService departmentService,  CarService carService) {
+    public DepartmentCarsView(DepartmentService departmentService, CarService carService) {
         this.departmentService = departmentService;
         this.carService = carService;
         setSizeFull();

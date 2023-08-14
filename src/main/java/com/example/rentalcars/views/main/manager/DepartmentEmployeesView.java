@@ -1,9 +1,10 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.EmployeeService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -14,9 +15,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collections;
@@ -25,7 +24,7 @@ import java.util.Collections;
 @PageTitle("Pracownicy oddziałów")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class DepartmentsEmployeesView extends VerticalLayout {
+public class DepartmentEmployeesView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;
     Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
@@ -35,7 +34,7 @@ public class DepartmentsEmployeesView extends VerticalLayout {
     Button removeButton = new Button("Usuń pracownika z oddziału");
 
 
-    public DepartmentsEmployeesView(DepartmentService departmentService, EmployeeService employeeService) {
+    public DepartmentEmployeesView(DepartmentService departmentService, EmployeeService employeeService) {
         this.departmentService = departmentService;
         this.employeeService = employeeService;
         setSizeFull();

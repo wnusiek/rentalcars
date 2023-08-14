@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReturnModel;
@@ -6,6 +6,8 @@ import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.ReturnService;
+import com.example.rentalcars.views.main.MainLayout;
+import com.example.rentalcars.views.main.employee.ReturnForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,16 +15,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "addreturn", layout = MainLayout.class)
+@Route(value = "return", layout = MainLayout.class)
 @PageTitle("Zwroty")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
 
-public class AddReturnView extends VerticalLayout {
+public class ReturnView extends VerticalLayout {
     private final ReservationService reservationService;
     private final EmployeeService employeeService;
     private final ReturnService returnService;
@@ -30,7 +31,7 @@ public class AddReturnView extends VerticalLayout {
     Grid<RentalModel> grid = new Grid<>(RentalModel.class, false);
     ReturnForm form;
 
-    public AddReturnView(ReservationService reservationService, EmployeeService employeeService, ReturnService returnService, RentalService rentalService) {
+    public ReturnView(ReservationService reservationService, EmployeeService employeeService, ReturnService returnService, RentalService rentalService) {
         this.reservationService = reservationService;
         this.employeeService = employeeService;
         this.returnService = returnService;

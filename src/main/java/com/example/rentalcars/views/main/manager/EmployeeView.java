@@ -1,7 +1,8 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.service.EmployeeService;
+import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -9,21 +10,20 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "employees", layout = MainLayout.class)
-@PageTitle("Lista pracowników")
+@PageTitle("Pracownicy")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class EmployeesView extends VerticalLayout {
+public class EmployeeView extends VerticalLayout {
 
     private final EmployeeService employeeService;
     Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
     EmployeeForm form = new EmployeeForm();
 
-    public EmployeesView(EmployeeService employeeService) {
+    public EmployeeView(EmployeeService employeeService) {
         this.employeeService = employeeService;
         addClassName("employees-view");
         setSizeFull();

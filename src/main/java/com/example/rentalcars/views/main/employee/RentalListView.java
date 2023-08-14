@@ -1,9 +1,11 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.views.main.MainLayout;
+import com.example.rentalcars.views.main.employee.RentalForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -11,17 +13,16 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collections;
 
-@Route(value = "rentals", layout = MainLayout.class)
+@Route(value = "rentallist", layout = MainLayout.class)
 @PageTitle("Lista wypożyczeń")
 @Secured("ROLE_ADMIN")
 @RolesAllowed("ROLE_ADMIN")
-public class RentalView extends VerticalLayout {
+public class RentalListView extends VerticalLayout {
 
     private final RentalService rentalService;
     private final EmployeeService employeeService;
@@ -29,7 +30,7 @@ public class RentalView extends VerticalLayout {
     Grid<RentalModel> rentalGrid = new Grid<>(RentalModel.class);
     RentalForm rentalForm = new RentalForm(Collections.emptyList(), Collections.emptyList());
 
-    public RentalView(RentalService rentalService, EmployeeService employeeService, ReservationService reservationService) {
+    public RentalListView(RentalService rentalService, EmployeeService employeeService, ReservationService reservationService) {
         this.rentalService = rentalService;
         this.employeeService = employeeService;
         this.reservationService = reservationService;

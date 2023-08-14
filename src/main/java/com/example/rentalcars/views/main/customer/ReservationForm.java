@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main;
+package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
@@ -15,7 +15,6 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
@@ -25,7 +24,6 @@ import java.util.List;
 @PermitAll
 public class ReservationForm extends FormLayout {
     Binder<ReservationModel> binder = new Binder<>(ReservationModel.class);
-    ComboBox<CustomerModel> customer = new ComboBox<>("Klient");
     ComboBox<CarModel> car = new ComboBox<>("Samochód");
     DatePicker dateFrom = new DatePicker("Data od");
     DatePicker dateTo = new DatePicker("Data do");
@@ -39,23 +37,19 @@ public class ReservationForm extends FormLayout {
     private ReservationModel reservationModel;
 
     public ReservationForm(List<DepartmentModel> departments, List<CarModel> cars, List<CustomerModel> customers) {
+        addClassName("reservation-form");
         binder.bindInstanceFields(this);
-        customer.setItems(customers);
-        customer.setItemLabelGenerator(CustomerModel::getName);
         car.setItems(cars);
         car.setItemLabelGenerator(CarModel::getCarInfo);
         receptionVenue.setItems(departments);
         receptionVenue.setItemLabelGenerator(DepartmentModel::getCity);
         returnVenue.setItems(departments);
         returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
-
         binder.forField(dateFrom).asRequired("To pole jest wymagane!").bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
         binder.forField(dateTo).asRequired("To pole jest wymagane!").bind(ReservationModel::getDateTo, ReservationModel::setDateTo);
         binder.forField(receptionVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReceptionVenue, ReservationModel::setReceptionVenue);
         binder.forField(returnVenue).asRequired("To pole jest wymagane!").bind(ReservationModel::getReturnVenue, ReservationModel::setReturnVenue);
-        addClassName("reservation-form");
         add(
-                customer,
                 car,
                 dateFrom,
                 dateTo,
@@ -89,9 +83,9 @@ public class ReservationForm extends FormLayout {
         try {
             binder.writeBean(reservationModel);
             fireEvent(new ReservationForm.SaveEvent(this, reservationModel));
-            Notification.show("Rezerwacja samochodu zakończona sukcesem!");
+            Notification.show("Rezerwacja samochodu zakończona sukcesem!").setPosition(Notification.Position.MIDDLE);
         } catch (ValidationException e) {
-            Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(");
+            Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(").setPosition(Notification.Position.MIDDLE);
             e.printStackTrace();
 
         }
