@@ -36,7 +36,7 @@ public class RentalView extends VerticalLayout {
     Button rentACarButton = new Button("Wypożycz");
     TextField comments = new TextField("Komentarz");
     RentalForm form;
-    ReservationModel employeeChoice;
+    private ReservationModel employeeChoice;
 
     public RentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService, UserService userService) {
         this.rentalService = rentalService;
