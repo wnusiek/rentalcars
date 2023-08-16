@@ -1,6 +1,7 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.DTO.EmployeeDto;
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,17 @@ public class EmployeeService {
 
     public void deleteEmployee(EmployeeModel employeeModel){
         employeeRepository.delete(employeeModel);
+    }
+
+    public EmployeeModel getEmployeeByUserName(String userName){
+        var employee = getEmployeeList().stream().filter(employeeModel -> employeeModel.getUser().getName().equals(userName)).findFirst();
+        if (employee.isPresent())
+            return employee.get();
+        else {
+            System.err.println("Nie ma takiego pracownika");
+            return null;
+        }
+
     }
 
 
