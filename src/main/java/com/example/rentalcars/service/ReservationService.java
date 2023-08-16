@@ -24,6 +24,7 @@ public class ReservationService {
     private final CarRepository carRepository;
     private final CarService carService;
     private final UserService userService;
+    private final RentalService rentalService;
     public void addReservation(ReservationModel reservation) {
 
         if (beforeAfterDatesValidation(reservation)){
@@ -41,6 +42,20 @@ public class ReservationService {
 //    public List<ReservationDto> getReservationList() {
 //        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
 //    }
+
+    public List<ReservationModel> getReservationListOfNotRentedCars(){
+        List<Long> rentedReservationsIds = rentalService.getRentalList()
+                .stream()
+                .map(rentalModel -> rentalModel.getReservation().getId())
+                .toList();
+
+        return getReservationList()
+                .stream()
+                .filter(reservationModel -> !rentedReservationsIds.contains(reservationModel.getId()))
+                .toList();
+    }
+
+
 
     public void editReservation(ReservationModel editReservation) {
         reservationRepository.save(editReservation);
