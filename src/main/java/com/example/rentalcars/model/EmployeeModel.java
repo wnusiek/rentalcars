@@ -27,6 +27,10 @@ public class EmployeeModel {
     @Column(name = "position")
     private EmployeePosition position;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
+
     public String getName(){
         return firstName + " " + lastName;
     }
