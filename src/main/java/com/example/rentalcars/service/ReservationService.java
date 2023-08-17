@@ -44,14 +44,14 @@ public class ReservationService {
 //    }
 
     public List<ReservationModel> getReservationListOfNotRentedCars(){
-        List<Long> rentedReservationsIds = rentalService.getRentalList()
+        List<Long> rentedCarsReservationsIds = rentalService.getRentalList()
                 .stream()
                 .map(rentalModel -> rentalModel.getReservation().getId())
                 .toList();
 
         return getReservationList()
                 .stream()
-                .filter(reservationModel -> !rentedReservationsIds.contains(reservationModel.getId()))
+                .filter(reservationModel -> !rentedCarsReservationsIds.contains(reservationModel.getId()))
                 .toList();
     }
 
