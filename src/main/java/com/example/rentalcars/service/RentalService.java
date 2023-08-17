@@ -17,6 +17,7 @@ public class RentalService {
     private final RentalRepository rentalRepository;
     private final DepartmentService departmentService;
     private final CarService carService;
+    private final ReturnService returnService;
 
     public void postAddRental(RentalModel rental) {
         if(!rental.getDateOfRental().isEqual(LocalDate.now())){
@@ -31,6 +32,17 @@ public class RentalService {
 
     public List<RentalModel> getRentalList() {
         return rentalRepository.findAll();
+    }
+
+    public List<RentalModel> getRentalListOfNotReturnedCars(){
+        List<Long> returnedCarsReservationsIds = returnService.getReturnModelList()
+                .stream()
+                .map(returnModel -> returnModel.getReservation().getId())
+                .toList();
+        return getRentalList()
+                .stream()
+                .filter(rentalModel -> !returnedCarsReservationsIds.contains(rentalModel.getId()))
+                .toList();
     }
 
     public RentalModel findById(Long id) {
