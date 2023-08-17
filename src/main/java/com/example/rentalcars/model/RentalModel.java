@@ -28,7 +28,7 @@ public class RentalModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfRental;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private ReservationModel reservation;
 
     @Column(name = "comments")
