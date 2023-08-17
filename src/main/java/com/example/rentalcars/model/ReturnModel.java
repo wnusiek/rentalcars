@@ -30,7 +30,7 @@ public class ReturnModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfReturn;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private ReservationModel reservation;
 
     @Column(name = "supplement")
