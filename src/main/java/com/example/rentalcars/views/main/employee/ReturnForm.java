@@ -33,6 +33,7 @@ public class ReturnForm extends FormLayout {
 
     public ReturnForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("return-form");
+        returnBinder.bindInstanceFields(this);
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
         reservation.setItems(reservations);
@@ -53,7 +54,7 @@ public class ReturnForm extends FormLayout {
 
     public void setReturn(ReturnModel returnModel) {
         this.returnModel = returnModel;
-//        returnBinder.readBean(returnModel);
+        returnBinder.readBean(returnModel);
     }
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
