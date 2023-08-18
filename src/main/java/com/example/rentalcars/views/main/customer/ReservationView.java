@@ -8,6 +8,7 @@ import com.example.rentalcars.service.*;
 import com.example.rentalcars.vaadinService.RentalVaadinService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -101,7 +102,10 @@ public class ReservationView extends VerticalLayout {
     }
 
     private void validateFields() {
-        if (startDate.isEmpty()) {
+        if (customerService.getCustomerByUserName(userService.getNameOfLoggedUser()) == null) {
+            Notification.show("Przed rezerwacją uzupełnij swoje dane").setPosition(Notification.Position.MIDDLE);
+            UI.getCurrent().navigate("customerView");
+        } else if (startDate.isEmpty()) {
             Notification.show("Wybierz datę odbioru").setPosition(Notification.Position.MIDDLE);
         } else if (endDate.isEmpty()) {
             Notification.show("Wybierz datę zwrotu").setPosition(Notification.Position.MIDDLE);
@@ -176,6 +180,7 @@ public class ReservationView extends VerticalLayout {
         try {
             reservationService.addReservation(event.getReservation());
             closeEditor();
+            updateCarList();
         } catch (IllegalArgumentException | InputMismatchException e) {
             Notification notification = Notification
                     .show(e.getMessage(), 3000, Notification.Position.MIDDLE);
