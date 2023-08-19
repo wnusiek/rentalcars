@@ -3,9 +3,7 @@ package com.example.rentalcars.views.main.employee;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -19,37 +17,28 @@ import org.springframework.security.access.annotation.Secured;
 public class ReservationListView extends VerticalLayout {
 
     private final ReservationService reservationService;
-
-    Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
+    Grid<ReservationModel> grid = new Grid<>(ReservationModel.class, false);
 
     public ReservationListView(ReservationService reservationService) {
         this.reservationService = reservationService;
-        addClassName("reservations-view");
         setSizeFull();
         configureGrid();
-        add(
-                getContent()
-        );
-        updateReservationList();
-    }
-
-    private Component getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid);
-        content.setSizeFull();
-        return content;
-    }
-
-    private void updateReservationList() {
+        add(grid);
         grid.setItems(reservationService.getReservationList());
     }
 
     private void configureGrid() {
-        grid.addClassNames("reservations-grid");
         grid.setSizeFull();
-        grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue.city", "returnVenue.city", "customer.firstName", "customer.lastName");
+        grid.addColumn("car.mark").setHeader("Marka");
+        grid.addColumn("car.model").setHeader("Model");
+        grid.addColumn("dateFrom").setHeader("Data od");
+        grid.addColumn("dateTo").setHeader("Data do");
+        grid.addColumn("price").setHeader("Cena");
+        grid.addColumn("receptionVenue.city").setHeader("Miejsce odbioru");
+        grid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
+        grid.addColumn("customer.firstName").setHeader("Imię klienta");
+        grid.addColumn("customer.lastName").setHeader("Nazwisko klienta");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
-
-
 
 }

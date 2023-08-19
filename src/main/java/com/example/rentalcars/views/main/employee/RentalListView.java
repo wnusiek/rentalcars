@@ -1,22 +1,14 @@
 package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.model.RentalModel;
-import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
-import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.example.rentalcars.views.main.employee.RentalForm;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
-
-import java.util.Collections;
 
 @Route(value = "rentallist", layout = MainLayout.class)
 @PageTitle("Lista wypożyczeń")
@@ -25,98 +17,25 @@ import java.util.Collections;
 public class RentalListView extends VerticalLayout {
 
     private final RentalService rentalService;
-    private final EmployeeService employeeService;
-    private final ReservationService reservationService;
-    Grid<RentalModel> rentalGrid = new Grid<>(RentalModel.class);
-    RentalForm rentalForm = new RentalForm(Collections.emptyList(), Collections.emptyList());
+    Grid<RentalModel> rentalGrid = new Grid<>(RentalModel.class, false);
 
-    public RentalListView(RentalService rentalService, EmployeeService employeeService, ReservationService reservationService) {
+    public RentalListView(RentalService rentalService) {
         this.rentalService = rentalService;
-        this.employeeService = employeeService;
-        this.reservationService = reservationService;
-        addClassName("rentals-view");
         setSizeFull();
         configureGrid();
-        configureForm();
-        add(
-//                getToolbar(),
-                getContent()
-        );
-        updateRentalList();
-        closeEditor();
-    }
-
-    private void closeEditor() {
-        rentalForm.setRental(null);
-        rentalForm.setVisible(false);
-        removeClassName("editing");
-    }
-
-    private Component getContent() {
-        HorizontalLayout content = new HorizontalLayout(rentalGrid, rentalForm);
-        content.setFlexGrow(2, rentalGrid);
-        content.setFlexGrow(1, rentalForm);
-        content.addClassName("content");
-        content.setSizeFull();
-        return content;
-    }
-
-    private void updateRentalList(){
+        add(rentalGrid);
         rentalGrid.setItems(rentalService.getRentalList());
     }
 
     private void configureGrid(){
-        rentalGrid.addClassNames("rentals-grid");
         rentalGrid.setSizeFull();
-        rentalGrid.setColumns("employee.firstName", "employee.lastName", "dateOfRental", "reservation.customer.firstName", "reservation.customer.lastName", "comments");
+        rentalGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
+        rentalGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
+        rentalGrid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
+        rentalGrid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
+        rentalGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
+        rentalGrid.addColumn("comments").setHeader("Komentarz");
         rentalGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-
-//        rentalGrid.asSingleSelect().addValueChangeListener(event -> editRental(event.getValue()));
-    }
-
-    private HorizontalLayout getToolbar() {
-        Button addRentalButton = new Button("Add rental");
-        addRentalButton.addClickListener(e->addRental());
-
-        var toolbar = new HorizontalLayout(addRentalButton);
-        toolbar.addClassName("toolbar");
-        return toolbar;
-    }
-
-    private void addRental() {
-        rentalGrid.asSingleSelect().clear();
-        editRental(new RentalModel());
-    }
-
-    private void configureForm(){
-        rentalForm = new RentalForm(employeeService.getEmployeeList(), reservationService.getReservationList());
-        rentalForm.setWidth("25em");
-
-        rentalForm.addSaveListener(this::saveRental);
-//        rentalForm.addDeleteListener(this::deleteRental);
-        rentalForm.addCloseListener(event -> closeEditor());
-
-
-    }
-
-//    private void deleteRental(RentalForm.DeleteEvent event){
-//        rentalService.deleteRental(event.getRental());
-//        updateRentalList();
-//        closeEditor();
-//    }
-
-    private void saveRental(RentalForm.SaveEvent event){
-        rentalService.postAddRental(event.getRental());
-    }
-
-    private void editRental(RentalModel rentalModel) {
-        if (rentalModel == null){
-            closeEditor();
-        }else {
-            rentalForm.setRental(rentalModel);
-            rentalForm.setVisible(true);
-            addClassName("editing");
-        }
     }
 
 }
