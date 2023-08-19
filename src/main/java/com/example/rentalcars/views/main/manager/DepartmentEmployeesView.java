@@ -27,7 +27,7 @@ import java.util.Collections;
 public class DepartmentEmployeesView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;
-    Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
+    Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class, false);
     ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>("Wybierz oddział: ");
     ComboBox<EmployeeModel> employeeComboBox = new ComboBox<>("Wybierz pracownika");
     Button addButton = new Button("Dodaj pracownika do oddziału");
@@ -56,7 +56,9 @@ public class DepartmentEmployeesView extends VerticalLayout {
 
     private void configureGrid() {
         grid.setSizeFull();
-        grid.setColumns("firstName", "lastName", "position");
+        grid.addColumn("firstName").setHeader("Imię");
+        grid.addColumn("lastName").setHeader("Nazwisko");
+        grid.addColumn("position").setHeader("Stanowisko");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 

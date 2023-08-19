@@ -100,7 +100,7 @@ public class ReturnView extends VerticalLayout {
         dateOfReturn.setPlaceholder("Wybierz datę");
         dateOfReturn.setClearButtonVisible(true);
         returnACarButton.addClickListener(event -> validateFields());
-
+        comments.setPlaceholder("Dodaj komentarz");
         var toolbar = new HorizontalLayout(dateOfReturn, comments, returnACarButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);

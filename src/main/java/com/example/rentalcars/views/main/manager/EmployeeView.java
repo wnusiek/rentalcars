@@ -20,7 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 public class EmployeeView extends VerticalLayout {
 
     private final EmployeeService employeeService;
-    Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class);
+    Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class, false);
     EmployeeForm form = new EmployeeForm();
 
     public EmployeeView(EmployeeService employeeService) {
@@ -74,7 +74,7 @@ public class EmployeeView extends VerticalLayout {
     }
 
     private Component getToolbar(){
-        Button addEmployeeButton = new Button("Add employee");
+        Button addEmployeeButton = new Button("Dodaj pracownika");
         addEmployeeButton.addClickListener(e->addEmployee());
 
         HorizontalLayout toolbar = new HorizontalLayout(addEmployeeButton);
@@ -94,7 +94,9 @@ public class EmployeeView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("employees-grid");
         grid.setSizeFull();
-        grid.setColumns("firstName", "lastName", "position");
+        grid.addColumn("firstName").setHeader("Imię");
+        grid.addColumn("lastName").setHeader("Nazwisko");
+        grid.addColumn("position").setHeader("Stanowisko");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> editEmployee(event.getValue()));

@@ -11,6 +11,8 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -31,7 +33,7 @@ public class RentalView extends VerticalLayout {
     private final EmployeeService employeeService;
     private final RentalService rentalService;
     private final UserService userService;
-    Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
+    Grid<ReservationModel> grid = new Grid<>(ReservationModel.class, false);
     DatePicker dateOfRental = new DatePicker("Data wypożyczenia");
     Button rentACarButton = new Button("Wypożycz");
     TextField comments = new TextField("Komentarz");
@@ -78,7 +80,15 @@ public class RentalView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("reservations-grid");
         grid.setSizeFull();
-        grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue.city", "returnVenue.city", "customer.firstName", "customer.lastName");
+        grid.addColumn("car.mark").setHeader("Marka");
+        grid.addColumn("car.model").setHeader("Model");
+        grid.addColumn("dateFrom").setHeader("Od");
+        grid.addColumn("dateTo").setHeader("Do");
+        grid.addColumn("price").setHeader("Cena");
+        grid.addColumn("receptionVenue.city").setHeader("Miejsce odbioru");
+        grid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
+        grid.addColumn("customer.firstName").setHeader("Imię klienta");
+        grid.addColumn("customer.lastName").setHeader("Nazwisko klienta");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(e-> saveEmployeeChoice(e.getValue()));
@@ -93,6 +103,7 @@ public class RentalView extends VerticalLayout {
         dateOfRental.setPlaceholder("Wybierz datę");
         dateOfRental.setClearButtonVisible(true);
         rentACarButton.addClickListener(event -> validateFields());
+        comments.setPlaceholder("Dodaj komentarz");
         var toolbar = new HorizontalLayout(dateOfRental, comments, rentACarButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);

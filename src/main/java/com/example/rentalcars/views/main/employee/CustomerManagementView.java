@@ -21,7 +21,7 @@ import org.springframework.security.access.annotation.Secured;
 public class CustomerManagementView extends VerticalLayout {
 
     private final CustomerService customerService;
-    Grid<CustomerModel> grid = new Grid<>(CustomerModel.class);
+    Grid<CustomerModel> grid = new Grid<>(CustomerModel.class, false);
     CustomerForm form = new CustomerForm();
 
     public CustomerManagementView(CustomerService customerService) {
@@ -76,7 +76,7 @@ public class CustomerManagementView extends VerticalLayout {
     }
 
     private Component getToolbar(){
-        Button addCustomerButton = new Button("Add customer");
+        Button addCustomerButton = new Button("Dodaj klienta");
         addCustomerButton.addClickListener(e->addCustomer());
 
         HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton);
@@ -102,16 +102,14 @@ public class CustomerManagementView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("employees-grid");
         grid.setSizeFull();
-        grid.setColumns(
-                "firstName",
-                "lastName",
-                "phoneNumber",
-                "driverLicenceNumber",
-                "email",
-                "pesel",
-                "city",
-                "zipCode"
-        );
+        grid.addColumn("firstName").setHeader("Imię");
+        grid.addColumn("lastName").setHeader("Nazwisko");
+        grid.addColumn("phoneNumber").setHeader("Telefon");
+        grid.addColumn("driverLicenceNumber").setHeader("Nr prawa jazdy");
+        grid.addColumn("email").setHeader("Email");
+        grid.addColumn("pesel").setHeader("Pesel");
+        grid.addColumn("city").setHeader("Miasto");
+        grid.addColumn("zipCode").setHeader("Kod pocztowy");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editCustomer(event.getValue()));
     }
