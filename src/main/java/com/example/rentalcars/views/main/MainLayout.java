@@ -48,7 +48,7 @@ public class MainLayout extends AppLayout {
         allowedViews = new ArrayList<>();
 
         //Widoki dostępne dla wszystkich
-        allowedViews.add(ReservationView.class);
+//        allowedViews.add(ReservationView.class);
 //        allowedViews.add();
 //        allowedViews.add();
 
@@ -70,8 +70,9 @@ public class MainLayout extends AppLayout {
 
         }
         if (SecurityUtils.isUserRegular()){
-            allowedViews.add(CustomerView.class);
+            allowedViews.add(ReservationView.class);
             allowedViews.add(CustomerReservationsView.class);
+            allowedViews.add(CustomerView.class);
         }
 
     }
@@ -126,7 +127,7 @@ public class MainLayout extends AppLayout {
         RouterLink customerListView = new RouterLink("Klienci", CustomerManagementView.class);
         customerListView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink reservationListView = new RouterLink("Pokaż rezerwacje", ReservationListView.class);
+        RouterLink reservationListView = new RouterLink("Rezerwacje", ReservationListView.class);
         reservationListView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink reservationView = new RouterLink("Zarezerwuj", ReservationView.class);
@@ -160,28 +161,27 @@ public class MainLayout extends AppLayout {
             addToDrawer(new VerticalLayout(
 
                     carView,
-                    reservationView,
-                    reservationListView,
                     rentalView,
-                    rentalListView,
                     returnView,
-                    returnListView,
                     employeeView,
                     customerListView,
                     departmentView,
                     departmentEmployeesView,
                     departmentCarsView,
-                    customerView,
-                    companyView
+                    companyView,
+                    reservationListView,
+                    rentalListView,
+                    returnListView,
+                    customerView
                     ));
         }
 
         if (SecurityUtils.isUserRegular()){
             addToDrawer(new VerticalLayout(
-                    customerView,
                     reservationView,
-                    customerReservationsView
-            ));
+                    customerReservationsView,
+                    customerView
+                    ));
         }
 
 
