@@ -55,7 +55,15 @@ public class ReservationService {
                 .toList();
     }
 
-
+    public List<ReservationModel> getReservationListByCustomerLastName(String lastName){
+        if (lastName == null || lastName.isEmpty()){
+            return getReservationList();
+        }
+        return getReservationList()
+                .stream()
+                .filter(reservation -> reservation.getCustomer().getLastName().equals(lastName))
+                .toList();
+    }
 
     public void editReservation(ReservationModel editReservation) {
         reservationRepository.save(editReservation);
