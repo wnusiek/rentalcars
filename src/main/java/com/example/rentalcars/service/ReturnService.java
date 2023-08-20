@@ -43,6 +43,16 @@ public class ReturnService {
         return returnRepository.findAll();
     }
 
+    public List<ReturnModel> getReturnListByCustomerLastName(String lastName){
+        if (lastName == null || lastName.isEmpty()){
+            return getReturnModelList();
+        }
+        return getReturnModelList()
+                .stream()
+                .filter(returnModel -> returnModel.getReservation().getCustomer().getLastName().equals(lastName))
+                .toList();
+    }
+
     public void updateReturn(ReturnModel returnModel) {
         returnRepository.save(returnModel);
     }
