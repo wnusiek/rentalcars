@@ -45,6 +45,16 @@ public class RentalService {
                 .toList();
     }
 
+    public List<RentalModel> getRentalListByCustomerLastName(String lastName){
+        if (lastName == null || lastName.isEmpty()){
+            return getRentalList();
+        }
+        return getRentalList()
+                .stream()
+                .filter(rental -> rental.getReservation().getCustomer().getLastName().equals(lastName))
+                .toList();
+    }
+
     public RentalModel findById(Long id) {
         return rentalRepository.findById(id).orElse(null);
     }
