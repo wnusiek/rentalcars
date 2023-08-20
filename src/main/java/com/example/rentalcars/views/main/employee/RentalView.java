@@ -140,6 +140,7 @@ public class RentalView extends VerticalLayout {
     private void saveRental(RentalForm.SaveEvent event){
         rentalService.postAddRental(event.getRental());
         closeEditor();
+        updateReservationList();
     }
 
     private void editRental(RentalModel rentalModel){
