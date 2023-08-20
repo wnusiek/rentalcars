@@ -49,8 +49,6 @@ public class MainLayout extends AppLayout {
 
         //Widoki dostępne dla wszystkich
 //        allowedViews.add(ReservationView.class);
-//        allowedViews.add();
-//        allowedViews.add();
 
 
         //Widoki dla admina
@@ -64,9 +62,7 @@ public class MainLayout extends AppLayout {
             allowedViews.add(DepartmentEmployeesView.class);
             allowedViews.add(DepartmentView.class);
             allowedViews.add(EmployeeView.class);
-            allowedViews.add(RentalListView.class);
-            allowedViews.add(ReservationListView.class);
-            allowedViews.add(ReturnListView.class);
+            allowedViews.add(HistoryView.class);
 
         }
         if (SecurityUtils.isUserRegular()){
@@ -80,7 +76,6 @@ public class MainLayout extends AppLayout {
     public void navigateTo(Class<? extends Component> viewClass){
         getUI().ifPresent(ui->ui.navigate(viewClass));
     }
-
 
     private void createHeader() {
         H1 companyName = new H1("Wypożyczalnia samochodów " + companyService.getCompanyName());
@@ -101,8 +96,6 @@ public class MainLayout extends AppLayout {
             logoutButton.setVisible(false);
             loginButton.setVisible(true);
         }
-
-
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(companyName);
@@ -127,23 +120,14 @@ public class MainLayout extends AppLayout {
         RouterLink customerListView = new RouterLink("Klienci", CustomerManagementView.class);
         customerListView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink reservationListView = new RouterLink("Rezerwacje", ReservationListView.class);
-        reservationListView.setHighlightCondition(HighlightConditions.sameLocation());
-
         RouterLink reservationView = new RouterLink("Zarezerwuj", ReservationView.class);
         reservationView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink departmentView = new RouterLink("Oddziały", DepartmentView.class);
         departmentView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink rentalListView = new RouterLink("Wypożyczenia", RentalListView.class);
-        rentalListView.setHighlightCondition(HighlightConditions.sameLocation());
-
         RouterLink returnView = new RouterLink("Zwróć", ReturnView.class);
         returnView.setHighlightCondition(HighlightConditions.sameLocation());
-
-        RouterLink returnListView = new RouterLink("Zwroty", ReturnListView.class);
-        returnListView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink departmentEmployeesView = new RouterLink("Pracownicy oddziałów", DepartmentEmployeesView.class);
         departmentEmployeesView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -157,6 +141,9 @@ public class MainLayout extends AppLayout {
         RouterLink customerReservationsView = new RouterLink("Moje rezerwacje", CustomerReservationsView.class);
         customerReservationsView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink historyView = new RouterLink("Rezerwacje, wypożyczenia i zwroty", HistoryView.class);
+        historyView.setHighlightCondition(HighlightConditions.sameLocation());
+
         if (SecurityUtils.isUserAdmin()){
             addToDrawer(new VerticalLayout(
 
@@ -169,9 +156,7 @@ public class MainLayout extends AppLayout {
                     departmentEmployeesView,
                     departmentCarsView,
                     companyView,
-                    reservationListView,
-                    rentalListView,
-                    returnListView,
+                    historyView,
                     customerView
                     ));
         }
