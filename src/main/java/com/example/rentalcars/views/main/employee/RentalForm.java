@@ -11,6 +11,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -23,7 +24,6 @@ import java.util.List;
 public class RentalForm extends FormLayout {
 
     Binder<RentalModel> rentalBinder = new Binder<>(RentalModel.class);
-    Binder<ReservationModel> reservationBinder = new Binder<>(ReservationModel.class);
     ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
     DatePicker dateOfRental = new DatePicker("Date of rental");
@@ -35,8 +35,7 @@ public class RentalForm extends FormLayout {
 
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("rental-form");
-//        rentalBinder.bindInstanceFields(this);
-//        reservationBinder.forField(dateOfRental).bind(ReservationModel::getDateFrom, ReservationModel::setDateFrom);
+        rentalBinder.bindInstanceFields(this);
 
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
@@ -58,7 +57,7 @@ public class RentalForm extends FormLayout {
 
     public void setRental(RentalModel rentalModel) {
         this.rentalModel = rentalModel;
-//        rentalBinder.readBean(rentalModel);
+        rentalBinder.readBean(rentalModel);
     }
 
     private Component createButtonLayout(){
@@ -66,7 +65,7 @@ public class RentalForm extends FormLayout {
         cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         save.addClickListener(event -> validateAndSave());
-        cancel.addClickListener(event -> fireEvent(new CloseEvent(this)));
+        cancel.addClickListener(event -> fireEvent(new RentalForm.CloseEvent(this)));
 
         return new HorizontalLayout(save, cancel);
     }
@@ -74,8 +73,10 @@ public class RentalForm extends FormLayout {
     private void validateAndSave() {
         try{
             rentalBinder.writeBean(rentalModel);
-            fireEvent(new SaveEvent(this, rentalModel));
+            fireEvent(new RentalForm.SaveEvent(this, rentalModel));
+            Notification.show("Wypożyczono samochód").setPosition(Notification.Position.MIDDLE);
         } catch (ValidationException e){
+            Notification.show("Samochód jest już wypożyczony").setPosition(Notification.Position.MIDDLE);
             e.printStackTrace();
         }
     }
@@ -111,11 +112,11 @@ public class RentalForm extends FormLayout {
 //    public Registration addDeleteListener(ComponentEventListener<DeleteEvent> listener){
 //        return addListener(DeleteEvent.class, listener);
 //    }
-    public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
-        return addListener(SaveEvent.class, listener);
+    public Registration addSaveListener(ComponentEventListener<RentalForm.SaveEvent> listener) {
+        return addListener(RentalForm.SaveEvent.class, listener);
     }
-    public Registration addCloseListener(ComponentEventListener<CloseEvent> listener) {
-        return addListener(CloseEvent.class, listener);
+    public Registration addCloseListener(ComponentEventListener<RentalForm.CloseEvent> listener) {
+        return addListener(RentalForm.CloseEvent.class, listener);
     }
 
 }

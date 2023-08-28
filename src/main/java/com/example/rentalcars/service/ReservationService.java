@@ -1,7 +1,5 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.DTO.CarDto;
-import com.example.rentalcars.DTO.ReservationDto;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.CarRepository;
@@ -11,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ public class ReservationService {
     private final CarRepository carRepository;
     private final CarService carService;
     private final UserService userService;
+    private final RentalService rentalService;
     public void addReservation(ReservationModel reservation) {
 
         if (beforeAfterDatesValidation(reservation)){
@@ -45,12 +43,30 @@ public class ReservationService {
 //        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
 //    }
 
+    public List<ReservationModel> getReservationListOfNotRentedCars(){
+        List<Long> rentedCarsReservationsIds = rentalService.getRentalList()
+                .stream()
+                .map(rentalModel -> rentalModel.getReservation().getId())
+                .toList();
+
+        return getReservationList()
+                .stream()
+                .filter(reservationModel -> !rentedCarsReservationsIds.contains(reservationModel.getId()))
+                .toList();
+    }
+
+
+
     public void editReservation(ReservationModel editReservation) {
         reservationRepository.save(editReservation);
     }
 
     public void removeReservation(Long id) {
         reservationRepository.deleteById(id);
+    }
+
+    public void removeReservation(ReservationModel reservationModel){
+        reservationRepository.deleteById(reservationModel.getId());
     }
 
     public ReservationModel findById(Long id) {
@@ -119,4 +135,20 @@ public class ReservationService {
         return getReservationList().stream().filter(reservation -> reservation.getCustomer().getUser().getName().equals(loggedUserName)).toList();
     }
 
+    public void cancelReservation(ReservationModel reservationModel){
+        LocalDate reservationStartDate = reservationModel.getDateFrom();
+        LocalDate today = LocalDate.now();
+        Long difference = ChronoUnit.DAYS.between(today, reservationStartDate);
+
+        if (today.isBefore(reservationStartDate) && difference >= 2) {
+            removeReservation(reservationModel);
+            Notification.show("Rezerwacja anulowana bez opłat").setPosition(Notification.Position.MIDDLE);
+        }
+        else if (difference < 2 && difference >= 0){
+            Notification.show("Zostanie pobrana opłata 20% ceny rezerwacji").setPosition(Notification.Position.MIDDLE);
+            removeReservation(reservationModel);
+        } else {
+            Notification.show("Nie można anulować tej rezerwacji").setPosition(Notification.Position.MIDDLE);
+        }
+    }
 }

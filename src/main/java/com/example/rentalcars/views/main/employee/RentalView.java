@@ -5,13 +5,16 @@ import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.example.rentalcars.views.main.employee.RentalForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
@@ -27,13 +30,19 @@ public class RentalView extends VerticalLayout {
     private final ReservationService reservationService;
     private final EmployeeService employeeService;
     private final RentalService rentalService;
+    private final UserService userService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class);
+    DatePicker dateOfRental = new DatePicker("Data wypożyczenia");
+    Button rentACarButton = new Button("Wypożycz");
+    TextField comments = new TextField("Komentarz");
     RentalForm form;
+    ReservationModel employeeChoice;
 
-    public RentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService) {
+    public RentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService, UserService userService) {
         this.rentalService = rentalService;
         this.reservationService = reservationService;
         this.employeeService = employeeService;
+        this.userService = userService;
         addClassName("rental-view");
         setSizeFull();
         configureGrid();
@@ -63,7 +72,7 @@ public class RentalView extends VerticalLayout {
     }
 
     private void updateReservationList() {
-        grid.setItems(reservationService.getReservationList());
+        grid.setItems(reservationService.getReservationListOfNotRentedCars());
     }
 
     private void configureGrid() {
@@ -72,23 +81,45 @@ public class RentalView extends VerticalLayout {
         grid.setColumns("car.mark", "car.model", "dateFrom", "dateTo", "price", "receptionVenue.city", "returnVenue.city", "customer.firstName", "customer.lastName");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
+        grid.asSingleSelect().addValueChangeListener(e-> saveEmployeeChoice(e.getValue()));
+    }
+
+    private void saveEmployeeChoice(ReservationModel employeeChoice) {
+        this.employeeChoice = employeeChoice;
     }
 
     private HorizontalLayout getToolbar() {
-        Button addRentalButton = new Button("Add rental");
-        addRentalButton.addClickListener(e->addRental());
 
-        var toolbar = new HorizontalLayout(addRentalButton);
+        dateOfRental.setPlaceholder("Wybierz datę");
+        dateOfRental.setClearButtonVisible(true);
+        rentACarButton.addClickListener(event -> validateFields());
+        var toolbar = new HorizontalLayout(dateOfRental, comments, rentACarButton);
         toolbar.addClassName("toolbar");
+        toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
     }
+
+    private void validateFields() {
+        if (dateOfRental.isEmpty()){
+            Notification.show("Wybierz datę wypożyczenia").setPosition(Notification.Position.MIDDLE);
+        } else if (grid.asSingleSelect().isEmpty()) {
+            Notification.show("Wybierz rezerwację").setPosition(Notification.Position.MIDDLE);
+        } else {
+            addRental();
+        }
+    }
+
     private void addRental() {
-        grid.asSingleSelect().clear();
-        editRental(new RentalModel());
+        RentalModel rentalModel = new RentalModel();
+        rentalModel.setEmployee(employeeService.getEmployeeByUserName(userService.getNameOfLoggedUser()));
+        rentalModel.setReservation(employeeChoice);
+        rentalModel.setDateOfRental(dateOfRental.getValue());
+        rentalModel.setComments(comments.getValue());
+        editRental(rentalModel);
     }
 
     private void configureForm() {
-        form = new RentalForm(employeeService.getEmployeeList(), reservationService.getReservationList());
+        form = new RentalForm(employeeService.getEmployeeList(), reservationService.getReservationListOfNotRentedCars());
         form.setWidth("25em");
 
         form.addSaveListener(this::saveRental);
@@ -105,7 +136,8 @@ public class RentalView extends VerticalLayout {
             closeEditor();
         }else {
             form.setRental(rentalModel);
-            form.setVisible(true);
+//            form.setVisible(true);
+            form.save.click();
             addClassName("editing");
         }
     }

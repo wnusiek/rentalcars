@@ -68,8 +68,8 @@ public class DbInitializer implements ApplicationRunner {
         var user1 = userRepository.save(new UserModel(2L, "kowalski","1234", "kowalski@rentalcars.pl", true, role1));
         var user2 = userRepository.save(new UserModel(3L, "nowak","1234", "nowak@rentalcars.pl", true, role1));
 
-        var employee1 = employeeRepository.save(new EmployeeModel(1l, "Jan", "Kowalski", EmployeePosition.EMPLOYEE));
-        var employee2 = employeeRepository.save(new EmployeeModel(2l, "Karol", "Nowak", EmployeePosition.MANAGER));
+        var employee1 = employeeRepository.save(new EmployeeModel(1l, "Jan", "Kowalski", EmployeePosition.EMPLOYEE, user1));
+        var employee2 = employeeRepository.save(new EmployeeModel(2l, "Karol", "Nowak", EmployeePosition.MANAGER, user2));
 
 //        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432", user1));
 //        var customer2 = customerRepository.save(new CustomerModel(2l, "Dżesika", "CoSięGapisz", "123456789", "qwerty", "", "", "", "", user2));
