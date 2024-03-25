@@ -1,7 +1,7 @@
 # rentalcars - Wypożyczalnia samochodów
 
 ## Główne funkcje systemu
-- Rezerwacja samochodu
+- Rezerwacja samochodu (przez konkretnego klienta na konkretny termin)
 - Wypożyczanie samochodu
 - Zwrot samochodu
 - Zarządzanie listą siedzi
