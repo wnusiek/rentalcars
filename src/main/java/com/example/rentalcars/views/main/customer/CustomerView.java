@@ -1,14 +1,11 @@
 package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.CustomerService;
-import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -63,7 +60,7 @@ public class CustomerView extends VerticalLayout {
     private void saveCustomer(CustomerForm.SaveEvent event) {
         customerService.saveCustomer(event.getCustomer());
         CustomerModel customer = event.getCustomer();
-        customer.setUser(userService.findUserByNameModel(userService.getNameOfLoggedUser()));
+        customer.setUser(userService.findUserByName(userService.getNameOfLoggedUser()));
         userService.syncEmail(customer);
         customerService.updateCustomer(customer);
         closeEditor();

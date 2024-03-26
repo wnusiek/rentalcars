@@ -3,6 +3,7 @@ package com.example.rentalcars.service;
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.UserRepository;
+import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,22 +42,40 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public UserModel findUserByNameModel(String name) {
-        for (UserModel user : getUserList()) {
-            if (user.getName().equals(name)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public UserModel saveUser(UserModel userModel) {
+    public boolean saveUser(UserModel userModel) {
         var savedUser = userRepository.findByEmail(userModel.getEmail());
         if (savedUser.isPresent()) {
-            throw new RuntimeException("User istnieje");
+            Notification.show("User o emailu " + userModel.getEmail() + " już istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
+            return false;
         } else {
-                return userRepository.save(userModel);
-            }
+            userRepository.save(userModel);
+            return true;
+        }
+    }
+
+    public UserModel findUserByName(String name) {
+        var user = userRepository.findByName(name);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        else {
+            System.err.println("Nie ma takiego użytkownika");
+            return null;
+        }
+    }
+
+    public boolean checkIfUserExists(UserModel userModel) {
+        var name = userRepository.findByName(userModel.getName());
+        var email = userRepository.findByEmail(userModel.getEmail());
+        if (name.isPresent()) {
+            Notification.show("Podaj inną nazwę użytkownika niż " + name.get().getName()).setPosition(Notification.Position.BOTTOM_CENTER);
+            return true;
+        }
+        if (email.isPresent()) {
+            Notification.show("Podaj inny email niż " + email.get().getEmail()).setPosition(Notification.Position.BOTTOM_CENTER);
+            return true;
+        }
+        return false;
     }
 
     public boolean isUserLogged(){
@@ -65,27 +85,16 @@ public class UserService {
         return false;
     }
 
-
     public String getNameOfLoggedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
 
-    public Long getUserIdByUserName(String username){
-        return findUserByNameModel(username).getId();
-    }
-
-    public boolean checkIfUserExists(UserModel userModel) {
-        var user = userRepository.findByName(userModel.getName());
-        if (user.isPresent()) {
-            return true;
-        }
-        return false;
-    }
-
     public void syncEmail(CustomerModel customer){
-        UserModel user = findUserByNameModel(getNameOfLoggedUser());
-        user.setEmail(customer.getEmail());
+        Optional<UserModel> user = userRepository.findByName(getNameOfLoggedUser());
+        if (user.isPresent()){
+            user.get().setEmail(customer.getEmail());
+        }
     }
 
 }
