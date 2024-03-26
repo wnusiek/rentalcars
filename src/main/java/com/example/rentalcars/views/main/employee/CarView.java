@@ -102,7 +102,6 @@ public class CarView extends VerticalLayout {
     private void configureGrid() {
         carGrid.addClassNames("cars-grid");
         carGrid.setSizeFull();
-//        carGrid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "price", "availability", "mileage", "productionDate");
         carGrid.addColumn("mark").setHeader("Marka");
         carGrid.addColumn("model").setHeader("Model");
         carGrid.addColumn("body").setHeader("Nadwozie");

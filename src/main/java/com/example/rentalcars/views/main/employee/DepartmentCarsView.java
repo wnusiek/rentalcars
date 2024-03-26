@@ -27,7 +27,7 @@ import java.util.Collections;
 public class DepartmentCarsView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final CarService carService;
-    Grid<CarModel> grid = new Grid<>(CarModel.class);
+    Grid<CarModel> grid = new Grid<>(CarModel.class, false);
     ComboBox<DepartmentModel> departmentModelComboBox = new ComboBox<>("Wybierz oddział: ");
     ComboBox<CarModel> carComboBox = new ComboBox<>("Wybierz samochód");
     Button addButton = new Button("Dodaj samochód do oddziału");
@@ -56,7 +56,20 @@ public class DepartmentCarsView extends VerticalLayout {
 
     private void configureGrid() {
         grid.setSizeFull();
-        grid.setColumns("mark", "model", "body", "color", "fuelType", "gearbox", "mileage", "productionDate");
+        grid.addColumn("mark").setHeader("Marka");
+        grid.addColumn("model").setHeader("Model");
+        grid.addColumn("body").setHeader("Nadwozie");
+        grid.addColumn("color").setHeader("Kolor");
+        grid.addColumn("fuelType").setHeader("Paliwo");
+        grid.addColumn("gearbox").setHeader("Skrzynia biegów");
+        grid.addColumn("price").setHeader("Cena");
+        grid.addColumn("bail").setHeader("Kaucja");
+        grid.addColumn("availability").setHeader("Dostępność");
+        grid.addColumn("mileage").setHeader("Przebieg");
+        grid.addColumn("productionDate").setHeader("Data produkcji");
+        grid.addColumn("numberOfSeats").setHeader("Liczba miejsc");
+        grid.addColumn("numberOfDoors").setHeader("Liczba drzwi");
+        grid.addColumn("trunk").setHeader("Bagażnik");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 

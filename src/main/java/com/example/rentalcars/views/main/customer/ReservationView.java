@@ -133,7 +133,7 @@ public class ReservationView extends VerticalLayout {
         endDate.setClearButtonVisible(true);
         endDate.addValueChangeListener(e -> updateCarList());
 
-        receptionVenueComboBox.setPlaceholder("wybierz oddział");
+        receptionVenueComboBox.setPlaceholder("Wybierz oddział");
         receptionVenueComboBox.setItems(departmentService.getDepartmentList1());
         receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         receptionVenueComboBox.setClearButtonVisible(true);
