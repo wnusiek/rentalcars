@@ -2,7 +2,6 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.UserModel;
-import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private PasswordEncoder passwordEncoder;
 
     public void addUser(UserModel userModel) {
@@ -41,15 +40,6 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public boolean findByName(String name) {
-        for (UserModel user : getUserList()) {
-            if (user.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public UserModel findUserByNameModel(String name) {
         for (UserModel user : getUserList()) {
             if (user.getName().equals(name)) {
@@ -59,16 +49,13 @@ public class UserService {
         return null;
     }
 
-    public void saveUser(UserModel userModel) {
-
-            UserModel user = new UserModel();
-            user.setName(userModel.getName());
-            user.setEmail(userModel.getEmail());
-            user.setPassword(userModel.getPassword());
-            user.setRole(roleRepository.findById(2l).orElse(null));
-            user.setActive(true);
-            userRepository.save(user);
-
+    public UserModel saveUser(UserModel userModel) {
+        var savedUser = userRepository.findByEmail(userModel.getEmail());
+        if (savedUser.isPresent()) {
+            throw new RuntimeException("User istnieje");
+        } else {
+                return userRepository.save(userModel);
+            }
     }
 
     public boolean isUserLogged(){
@@ -77,7 +64,6 @@ public class UserService {
         }
         return false;
     }
-
 
 
     public String getNameOfLoggedUser(){
@@ -90,7 +76,8 @@ public class UserService {
     }
 
     public boolean checkIfUserExists(UserModel userModel) {
-        if (findByName(userModel.getName())) {
+        var user = userRepository.findByName(userModel.getName());
+        if (user.isPresent()) {
             return true;
         }
         return false;

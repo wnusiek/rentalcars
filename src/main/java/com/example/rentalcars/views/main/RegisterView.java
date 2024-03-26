@@ -1,7 +1,9 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.service.CompanyService;
+import com.example.rentalcars.service.RoleService;
 import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -21,6 +23,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class RegisterView extends VerticalLayout {
     private final UserService userService;
     private final CompanyService companyService;
+    private final RoleService roleService;
 
     private TextField name;
     private EmailField email;
@@ -31,9 +34,11 @@ public class RegisterView extends VerticalLayout {
     // Inicjujemy pola i przycisk (tak jak wcześniej)
 
 
-    public RegisterView(UserService userService, CompanyService companyService) {
+    public RegisterView(UserService userService, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
         this.companyService = companyService;
+        this.roleService = roleService;
+
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -58,11 +63,14 @@ public class RegisterView extends VerticalLayout {
             String firstName = name.getValue();
             String userEmail = email.getValue();
             String userPassword = password.getValue();
+            RoleModel roleModel = roleService.getRoleByName("USER");
 
             UserModel newUser = new UserModel();
             newUser.setName(firstName);
             newUser.setEmail(userEmail);
             newUser.setPassword(userPassword);
+            newUser.setRole(roleModel);
+            newUser.setActive(true);
 
             if (userService.checkIfUserExists(newUser)) {
                 Notification.show("User istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
