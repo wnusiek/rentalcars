@@ -47,7 +47,7 @@ public class RegisterView extends VerticalLayout {
         add(
                 new H1("Wypożyczalnia samochodów " + this.companyService.getCompanyName()),
                 new H1("REJESTRACJA"),
-                name = new TextField("Imię"),
+                name = new TextField("Nazwa użytkownika"),
                 email = new EmailField("E-mail"),
                 password = new PasswordField("Hasło"),
                 registerButton
