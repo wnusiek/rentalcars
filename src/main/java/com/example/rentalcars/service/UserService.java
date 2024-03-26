@@ -43,24 +43,11 @@ public class UserService {
     }
 
     public boolean saveUser(UserModel userModel) {
-        var savedUser = userRepository.findByEmail(userModel.getEmail());
-        if (savedUser.isPresent()) {
-            Notification.show("User o emailu " + userModel.getEmail() + " już istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
+        if (userModel == null) {
             return false;
         } else {
             userRepository.save(userModel);
             return true;
-        }
-    }
-
-    public UserModel findUserByName(String name) {
-        var user = userRepository.findByName(name);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        else {
-            System.err.println("Nie ma takiego użytkownika");
-            return null;
         }
     }
 
@@ -76,6 +63,17 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public UserModel findUserByName(String name) {
+        var user = userRepository.findByName(name);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        else {
+            System.err.println("Nie ma takiego użytkownika");
+            return null;
+        }
     }
 
     public boolean isUserLogged(){
