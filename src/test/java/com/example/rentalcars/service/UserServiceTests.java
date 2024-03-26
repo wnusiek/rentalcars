@@ -93,12 +93,12 @@ public class UserServiceTests {
                 .willReturn(userModel);
 
         // when
-        UserModel savedUser = userService.saveUser(userModel);
+        Boolean savedUser = userService.saveUser(userModel);
 
         System.out.println(savedUser);
 
         // then
-        assertThat(savedUser).isNotNull();
+        assertThat(savedUser).isTrue();
 
     }
 }
