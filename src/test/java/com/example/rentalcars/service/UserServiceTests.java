@@ -89,14 +89,8 @@ public class UserServiceTests {
     public void givenUserObject_whenSaveUser_thenReturnUserObject(){
 
         // given
-        given(userRepository.findByEmail(userModel.getEmail()))
-                .willReturn(Optional.empty());
-
         given(userRepository.save(userModel))
                 .willReturn(userModel);
-
-        System.out.println(userRepository);
-        System.out.println(userService);
 
         // when
         UserModel savedUser = userService.saveUser(userModel);
