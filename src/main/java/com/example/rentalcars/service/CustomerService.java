@@ -38,7 +38,6 @@ public class CustomerService {
     public void saveCustomer(CustomerModel customerModel){
         if (customerModel == null ){
             System.err.println("Employee is null.");
-            return;
         }else {
             customerRepository.save(customerModel);
         }
