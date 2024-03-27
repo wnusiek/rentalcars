@@ -22,16 +22,8 @@ public class UserService {
     private final RoleService roleService;
     private PasswordEncoder passwordEncoder;
 
-    public void addUser(UserModel userModel) {
-        userRepository.save(userModel);
-    }
-
-    public List<UserModel> getUserList() {
+    public List<UserModel> getAllUsers() {
         return userRepository.findAll();
-    }
-
-    public void updateUser(UserModel userToUpdate) {
-        userRepository.save(userToUpdate);
     }
 
     public void deleteUser(Long id) {
@@ -42,7 +34,7 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public boolean saveUser(UserModel userModel) {
+    public boolean addUser(UserModel userModel) {
         if (userModel == null) {
             return false;
         } else {
@@ -71,16 +63,13 @@ public class UserService {
             return user.get();
         }
         else {
-            System.err.println("Nie ma takiego użytkownika");
+            Notification.show("Nie ma takiego użytkownika").setPosition(Notification.Position.BOTTOM_CENTER);
             return null;
         }
     }
 
     public boolean isUserLogged(){
-        if (!getNameOfLoggedUser().equals("anonymousUser") && !getNameOfLoggedUser().isEmpty()){
-            return true;
-        }
-        return false;
+        return !getNameOfLoggedUser().equals("anonymousUser") && !getNameOfLoggedUser().isEmpty();
     }
 
     public String getNameOfLoggedUser(){

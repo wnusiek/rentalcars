@@ -43,14 +43,28 @@ public class UserServiceTests {
     }
 
     @Test
-    public void givenUserList_whenGetUserList_thenReturnUserList(){
+    public void givenUserId_whenFindById_thenReturnUser(){
+
+        // given
+        given(userRepository.findById(1L)).willReturn(Optional.of(userModel));
+
+        // when
+        UserModel savedUser = userService.findById(userModel.getId());
+
+        // then
+        assertThat(savedUser).isNotNull();
+
+    }
+
+    @Test
+    public void givenUsersList_whenGetAllUsers_thenReturnUsersList(){
 
         // given
         UserModel userModel1 = new UserModel(2L, "JimiHendrix", "jimi123", "jhendrix@gmail.com", true, roleModel);
         given(userRepository.findAll()).willReturn(List.of(userModel,userModel1));
 
         // when
-        List<UserModel> userModelList = userService.getUserList();
+        List<UserModel> userModelList = userService.getAllUsers();
 
         // then
         assertThat(userModelList).isNotNull();
@@ -64,7 +78,7 @@ public class UserServiceTests {
         given(userRepository.findAll()).willReturn(Collections.emptyList());
 
         // when
-        List<UserModel> userModelList = userService.getUserList();
+        List<UserModel> userModelList = userService.getAllUsers();
 
         // then
         assertThat(userModelList).isEmpty();
@@ -86,14 +100,14 @@ public class UserServiceTests {
     }
 
     @Test
-    public void givenUserObject_whenSaveUser_thenReturnUserObject(){
+    public void givenUserObject_whenAddUser_thenReturnUserObject(){
 
         // given
         given(userRepository.save(userModel))
                 .willReturn(userModel);
 
         // when
-        Boolean savedUser = userService.saveUser(userModel);
+        Boolean savedUser = userService.addUser(userModel);
 
         System.out.println(savedUser);
 
