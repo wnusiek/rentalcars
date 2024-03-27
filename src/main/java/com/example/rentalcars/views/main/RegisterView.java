@@ -75,7 +75,7 @@ public class RegisterView extends VerticalLayout {
             if (userService.checkIfUserExists(newUser)) {
                 Notification.show("User istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
             } else {
-                userService.saveUser(newUser);
+                userService.addUser(newUser);
                 Notification.show("Rejestracja zakończona sukcesem!").setPosition(Notification.Position.BOTTOM_CENTER);
                 UI.getCurrent().navigate("login");
             }
