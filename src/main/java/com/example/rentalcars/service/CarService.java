@@ -90,7 +90,7 @@ public class CarService {
     public List<CarModel> getCarsByMark(String mark) {
         return getCarList1().stream()
                 .filter(car -> car.getMark() != null)
-                .filter(car -> car.getMark().equals(mark))
+                .filter(car -> car.getMark().toLowerCase().startsWith(mark.toLowerCase()))
                 .toList();
     }
 
