@@ -7,7 +7,7 @@ import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.customer.CustomerReservationsView;
 import com.example.rentalcars.views.main.customer.ReservationView;
 import com.example.rentalcars.views.main.customer.CustomerView;
-import com.example.rentalcars.views.main.customer.SettlementsView;
+import com.example.rentalcars.views.main.customer.SettlementView;
 import com.example.rentalcars.views.main.employee.*;
 import com.example.rentalcars.views.main.manager.CompanyView;
 import com.example.rentalcars.views.main.manager.DepartmentEmployeesView;
@@ -23,7 +23,6 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import jakarta.annotation.security.PermitAll;
 
@@ -71,7 +70,7 @@ public class MainLayout extends AppLayout {
             allowedViews.add(ReservationView.class);
             allowedViews.add(CustomerReservationsView.class);
             allowedViews.add(CustomerView.class);
-            allowedViews.add(SettlementsView.class);
+            allowedViews.add(SettlementView.class);
         }
 
     }
@@ -147,7 +146,7 @@ public class MainLayout extends AppLayout {
         RouterLink historyView = new RouterLink("Rezerwacje, wypożyczenia i zwroty", HistoryView.class);
         historyView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink settlementsView = new RouterLink("Rozliczenia", SettlementsView.class);
+        RouterLink settlementsView = new RouterLink("Rozliczenia", SettlementView.class);
         settlementsView.setHighlightCondition((HighlightConditions.sameLocation()));
 
         if (SecurityUtils.isUserAdmin()){
