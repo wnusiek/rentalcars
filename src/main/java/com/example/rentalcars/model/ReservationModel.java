@@ -1,6 +1,7 @@
 package com.example.rentalcars.model;
 
 import com.example.rentalcars.DTO.ReservationDto;
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.service.ReservationService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,9 @@ public class ReservationModel {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
+
+    @Column(name = "status")
+    private ReservationStatus reservationStatus;
 
     public String getReservationInfo(){
         return car.getMark() + " " + car.getModel() + " | " + dateFrom.toString() + " - " + dateTo.toString();
