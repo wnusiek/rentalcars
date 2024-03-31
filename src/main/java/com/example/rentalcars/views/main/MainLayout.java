@@ -7,7 +7,6 @@ import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.customer.CustomerReservationsView;
 import com.example.rentalcars.views.main.customer.ReservationView;
 import com.example.rentalcars.views.main.customer.CustomerView;
-import com.example.rentalcars.views.main.customer.SettlementView;
 import com.example.rentalcars.views.main.employee.*;
 import com.example.rentalcars.views.main.manager.CompanyView;
 import com.example.rentalcars.views.main.manager.DepartmentEmployeesView;
@@ -70,7 +69,6 @@ public class MainLayout extends AppLayout {
             allowedViews.add(ReservationView.class);
             allowedViews.add(CustomerReservationsView.class);
             allowedViews.add(CustomerView.class);
-            allowedViews.add(SettlementView.class);
         }
 
     }
@@ -146,9 +144,6 @@ public class MainLayout extends AppLayout {
         RouterLink historyView = new RouterLink("Rezerwacje, wypożyczenia i zwroty", HistoryView.class);
         historyView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink settlementsView = new RouterLink("Rozliczenia", SettlementView.class);
-        settlementsView.setHighlightCondition((HighlightConditions.sameLocation()));
-
         if (SecurityUtils.isUserAdmin()){
             addToDrawer(new VerticalLayout(
 
@@ -170,8 +165,7 @@ public class MainLayout extends AppLayout {
             addToDrawer(new VerticalLayout(
                     reservationView,
                     customerReservationsView,
-                    customerView,
-                    settlementsView
+                    customerView
                     ));
         }
 

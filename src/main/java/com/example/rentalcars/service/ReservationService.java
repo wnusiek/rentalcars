@@ -22,9 +22,6 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final CarRepository carRepository;
-    private final CarService carService;
-    private final SettlementService settlementService;
     private final UserService userService;
     private final RentalService rentalService;
     public void addReservation(ReservationModel reservation) {
