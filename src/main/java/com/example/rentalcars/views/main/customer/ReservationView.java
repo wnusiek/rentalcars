@@ -23,6 +23,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.InputMismatchException;
 
@@ -128,11 +129,14 @@ public class ReservationView extends VerticalLayout {
     private HorizontalLayout getToolbar() {
         startDate.setPlaceholder("Wybierz datę");
         startDate.setClearButtonVisible(true);
+        startDate.setMin(LocalDate.now());
         startDate.addValueChangeListener(e -> updateCarList());
 
         endDate.setPlaceholder("Wybierz datę");
         endDate.setClearButtonVisible(true);
         endDate.addValueChangeListener(e -> updateCarList());
+        endDate.setMin(LocalDate.now());
+
 
         receptionVenueComboBox.setPlaceholder("Wybierz oddział");
         receptionVenueComboBox.setItems(departmentService.getDepartmentList1());
