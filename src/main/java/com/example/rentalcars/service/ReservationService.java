@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.CarRepository;
@@ -23,6 +24,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CarRepository carRepository;
     private final CarService carService;
+    private final SettlementService settlementService;
     private final UserService userService;
     private final RentalService rentalService;
     public void addReservation(ReservationModel reservation) {
@@ -97,6 +99,9 @@ public class ReservationService {
             || (dateFrom.isBefore(r.getDateFrom()) && dateTo.isAfter(r.getDateTo()))) {
                 return false;
             }
+            if (r.getReservationStatus().equals(ReservationStatus.RESERVED)) {
+                return false;
+            }
         }
         return true;
     }
@@ -113,7 +118,7 @@ public class ReservationService {
     }
 
     public Boolean beforeAfterDatesValidation(ReservationModel reservation) {
-        if (reservation.getDateFrom().isBefore(reservation.getDateTo())){
+        if (reservation.getDateFrom().isBefore(reservation.getDateTo()) || reservation.getDateFrom().equals(reservation.getDateTo())){
             return true;
         }
         return false;
@@ -149,12 +154,23 @@ public class ReservationService {
         Long difference = ChronoUnit.DAYS.between(today, reservationStartDate);
 
         if (today.isBefore(reservationStartDate) && difference >= 2) {
-            removeReservation(reservationModel);
-            Notification.show("Rezerwacja anulowana bez opłat").setPosition(Notification.Position.MIDDLE);
+            if (reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED)) {
+                Notification.show("Rezerwacja anulowana bez opłat").setPosition(Notification.Position.MIDDLE);
+                reservationModel.setReservationStatus(ReservationStatus.CANCELLED);
+                reservationModel.setPrice(BigDecimal.valueOf(0));
+                editReservation(reservationModel);
+            }
         }
         else if (difference < 2 && difference >= 0){
-            Notification.show("Zostanie pobrana opłata 20% ceny rezerwacji").setPosition(Notification.Position.MIDDLE);
-            removeReservation(reservationModel);
+            if (reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED)){
+                Notification.show("Zostanie pobrana opłata 20% ceny rezerwacji").setPosition(Notification.Position.MIDDLE);
+                reservationModel.setReservationStatus(ReservationStatus.CANCELLED);
+                BigDecimal handlingFee = reservationModel.getPrice().multiply(BigDecimal.valueOf(0.2));
+                reservationModel.setPrice(handlingFee);
+                editReservation(reservationModel);
+            } else {
+                Notification.show("Ta rezerwacja została już anulowana").setPosition(Notification.Position.MIDDLE);
+            }
         } else {
             Notification.show("Nie można anulować tej rezerwacji").setPosition(Notification.Position.MIDDLE);
         }
