@@ -74,6 +74,7 @@ public class CustomerReservationsView extends VerticalLayout {
         grid.addColumn("price").setHeader("Koszt");
         grid.addColumn("receptionVenue.city").setHeader("Miejsce wypożyczenia");
         grid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
+        grid.addColumn("reservationStatus").setHeader("Status");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> setCancel(event.getValue()));
