@@ -37,20 +37,18 @@ public class SettlementView extends VerticalLayout {
     }
 
     private void updateSettlementsList() {
-        grid.setItems(settlementService.getSettlementByCustomer());
+        grid.setItems(settlementService.getSettlementByReservationCustomer());
     }
 
     private void configureGrid() {
         grid.addClassNames("settlements-grid");
         grid.setSizeFull();
-        grid.addColumn("car.mark").setHeader("Marka");
-        grid.addColumn("car.model").setHeader("Model");
-        grid.addColumn("price").setHeader("Cena");
-        grid.addColumn("dateFrom").setHeader("Od");
-        grid.addColumn("dateTo").setHeader("Do");
-        grid.addColumn("receptionVenue.city").setHeader("Miejsce odbioru");
-        grid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
-        grid.addColumn("status").setHeader("Status");
+        grid.addColumn("reservation.car.mark").setHeader("Marka");
+        grid.addColumn("reservation.car.model").setHeader("Model");
+        grid.addColumn("reservation.dateFrom").setHeader("Od");
+        grid.addColumn("reservation.dateTo").setHeader("Do");
+        grid.addColumn("reservation.price").setHeader("Cena");
+        grid.addColumn("reservation.reservationStatus").setHeader("Status");
         grid.addColumn("comments").setHeader("Uwagi");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
