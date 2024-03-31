@@ -1,12 +1,13 @@
 package com.example.rentalcars.enums;
 
-public enum OrderStatus {
+public enum ReservationStatus {
 
-    CANCELLED("Anulowane");
+    RESERVED("Auto zarezerwowane"),
+    CANCELLED("Rezerwacja anulowana");
 
     private String name;
 
-    OrderStatus(String name) {
+    ReservationStatus(String name) {
         this.name = name;
     }
 
