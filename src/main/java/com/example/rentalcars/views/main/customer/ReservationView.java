@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main.customer;
 
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.DepartmentModel;
@@ -165,6 +166,7 @@ public class ReservationView extends VerticalLayout {
         reservationModel.setDateTo(endDate.getValue());
         reservationModel.setReceptionVenue(receptionVenueComboBox.getValue());
         reservationModel.setReturnVenue(returnVenueCombobox.getValue());
+        reservationModel.setReservationStatus(ReservationStatus.RESERVED);
         editReservation(reservationModel);
     }
 
