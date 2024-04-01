@@ -41,8 +41,10 @@ public class CustomerForm extends FormLayout {
 
     public CustomerForm() {
         binder.bindInstanceFields(this);
-        binder.forField(email).withValidator(new EmailValidator("Niepoprawny email")).bind(CustomerModel::getEmail, CustomerModel::setEmail);
-        //       binder.forField(email).bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
+//        binder.forField(email).withValidator(new EmailValidator("Niepoprawny email"))
+//                .bind(CustomerModel::getEmail, CustomerModel::setEmail);
+        binder.forField(email).withValidator(new EmailValidator("Niepoprawny email"))
+                .bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
         add(
                 firstName,
                 lastName,
@@ -126,26 +128,5 @@ public class CustomerForm extends FormLayout {
     public Registration addCloseListener(ComponentEventListener<CustomerForm.CloseEvent> listener) {
         return addListener(CustomerForm.CloseEvent.class, listener);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
