@@ -31,18 +31,13 @@ public class CustomerForm extends FormLayout {
     TextField city = new TextField("City");
     TextField zipCode = new TextField("Zip code");
 
-
     Button save = new Button("Save");
-    Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
 
     private CustomerModel customerModel;
 
-
     public CustomerForm() {
         binder.bindInstanceFields(this);
-//        binder.forField(email).withValidator(new EmailValidator("Niepoprawny email"))
-//                .bind(CustomerModel::getEmail, CustomerModel::setEmail);
         binder.forField(email).withValidator(new EmailValidator("Niepoprawny email"))
                 .bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
         add(
@@ -60,17 +55,15 @@ public class CustomerForm extends FormLayout {
 
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event ->  fireEvent(new CustomerForm.DeleteEvent(this, customerModel)));
         cancel.addClickListener(event -> fireEvent(new CustomerForm.CloseEvent(this)));
 
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
-        return new HorizontalLayout(save, delete, cancel);
+        return new HorizontalLayout(save, cancel);
     }
 
     private void validateAndSave() {
@@ -109,19 +102,13 @@ public class CustomerForm extends FormLayout {
             super(source, customerModel);
         }
     }
-    public static class DeleteEvent extends CustomerForm.CustomerFormEvent {
-        DeleteEvent(CustomerForm source, CustomerModel customerModel) {
-            super(source, customerModel);
-        }
-    }
+
     public static class CloseEvent extends CustomerForm.CustomerFormEvent {
         CloseEvent(CustomerForm source) {
             super(source, null);
         }
     }
-    public Registration addDeleteListener(ComponentEventListener<CustomerForm.DeleteEvent> listener) {
-        return addListener(CustomerForm.DeleteEvent.class, listener);
-    }
+
     public Registration addSaveListener(ComponentEventListener<CustomerForm.SaveEvent> listener) {
         return addListener(CustomerForm.SaveEvent.class, listener);
     }
