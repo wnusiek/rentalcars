@@ -59,15 +59,9 @@ public class CustomerManagementView extends VerticalLayout {
         form.setWidth("25em");
 
         form.addSaveListener(this::saveCustomer);
-        form.addDeleteListener(this::deleteCustomer);
         form.addCloseListener(event -> closeEditor());
     }
 
-    private void deleteCustomer(CustomerForm.DeleteEvent event) {
-        customerService.deleteCustomer(event.getCustomer());
-        updateCustomerList();
-        closeEditor();
-    }
 
     private void saveCustomer(CustomerForm.SaveEvent event){
         customerService.postAddCustomer(event.getCustomer());

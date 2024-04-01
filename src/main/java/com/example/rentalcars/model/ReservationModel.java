@@ -40,12 +40,10 @@ public class ReservationModel {
     @Column(name = "price")
     private BigDecimal price;
 
-//    @Column(name = "reception_venue")
     @ManyToOne
     @JoinColumn(name = "receptionVenue_id")
     private DepartmentModel receptionVenue;
 
-//    @Column(name = "return_venue")
     @ManyToOne
     @JoinColumn(name = "returnVenue_id")
     private DepartmentModel returnVenue;

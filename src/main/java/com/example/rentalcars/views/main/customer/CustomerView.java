@@ -1,6 +1,7 @@
 package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.CustomerModel;
+import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
@@ -12,6 +13,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
+
+import java.util.NoSuchElementException;
 
 @Route(value = "customerView", layout = MainLayout.class)
 @PageTitle("Moje dane")
@@ -48,50 +51,23 @@ public class CustomerView extends VerticalLayout {
         form.setWidth("25em");
 
         form.addSaveListener(this::saveCustomer);
-        form.addDeleteListener(this::deleteCustomer);
         form.addCloseListener(event -> closeEditor());
-    }
-
-    private void deleteCustomer(CustomerForm.DeleteEvent event) {
-        customerService.deleteCustomer(event.getCustomer());
-        closeEditor();
     }
 
     private void saveCustomer(CustomerForm.SaveEvent event) {
         customerService.saveCustomer(event.getCustomer());
-        CustomerModel customer = event.getCustomer();
-        customer.setUser(userService.findUserByName(userService.getNameOfLoggedUser()));
-        userService.syncEmail(customer);
-        customerService.updateCustomer(customer);
-        closeEditor();
+//        closeEditor();
     }
-
-//    private Component getToolbar() {
-//        Button addCustomerButton = new Button("Moje dane");
-//        if (customerService.checkIfCustomerExist()) {
-//            addCustomerButton.addClickListener(e -> addCustomer());
-//        } else {
-//            addCustomerButton.addClickListener(e -> editCustomer(customerService.findCustomerByName(userService.getNameOfLoggedUser())));
-//        }
-//        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton);
-//        toolbar.addClassName("toolbar");
-//        return toolbar;
-//    }
 
     private Component getToolbar() {
-        Button addCustomerButton = new Button("Wprowadź swoje dane");
+
         Button editCustomerButton = new Button("Edytuj swoje dane");
-            editCustomerButton.addClickListener(e -> editCustomer(customerService.getCustomerByUserName(userService.getNameOfLoggedUser())));
-            addCustomerButton.addClickListener(e -> addCustomer());
-        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton, editCustomerButton);
+        CustomerModel customer = customerService.getCustomerByUserName(userService.getNameOfLoggedUser());
+        editCustomerButton.addClickListener(e -> editCustomer(customer));
+
+        HorizontalLayout toolbar = new HorizontalLayout(editCustomerButton);
         toolbar.addClassName("toolbar");
         return toolbar;
-    }
-
-    private void addCustomer() {
-        if (customerService.getCustomerByUserName(userService.getNameOfLoggedUser()) != null)  {
-            closeEditor();
-        } else editCustomer(new CustomerModel());
     }
 
     private void editCustomer(CustomerModel customerModel) {

@@ -1,8 +1,10 @@
 package com.example.rentalcars.views.main;
 
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.service.CompanyService;
+import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.service.RoleService;
 import com.example.rentalcars.service.UserService;
 import com.vaadin.flow.component.UI;
@@ -22,6 +24,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout {
     private final UserService userService;
+    private final CustomerService customerService;
     private final CompanyService companyService;
     private final RoleService roleService;
 
@@ -34,8 +37,9 @@ public class RegisterView extends VerticalLayout {
     // Inicjujemy pola i przycisk (tak jak wcześniej)
 
 
-    public RegisterView(UserService userService, CompanyService companyService, RoleService roleService) {
+    public RegisterView(UserService userService, CustomerService customerService, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
+        this.customerService = customerService;
         this.companyService = companyService;
         this.roleService = roleService;
 
@@ -76,6 +80,9 @@ public class RegisterView extends VerticalLayout {
                 Notification.show("User istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
             } else {
                 userService.addUser(newUser);
+                CustomerModel newCustomer = new CustomerModel(1L,"","","","","","","",newUser);
+                customerService.postAddCustomer(newCustomer);
+
                 Notification.show("Rejestracja zakończona sukcesem!").setPosition(Notification.Position.BOTTOM_CENTER);
                 UI.getCurrent().navigate("login");
             }

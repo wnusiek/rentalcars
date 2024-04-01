@@ -77,12 +77,12 @@ public class UserService {
         return authentication.getName();
     }
 
-    public void syncEmail(CustomerModel customer){
-        Optional<UserModel> user = userRepository.findByName(getNameOfLoggedUser());
-        if (user.isPresent()){
-            user.get().setEmail(customer.getEmail());
-        }
-    }
+//    public void syncEmail(CustomerModel customer){
+//        Optional<UserModel> user = userRepository.findByName(getNameOfLoggedUser());
+//        if (user.isPresent()){
+//            user.get().setEmail(customer.getEmail());
+//        }
+//    }
 
 }
 
