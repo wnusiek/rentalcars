@@ -2,6 +2,7 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.repository.CustomerRepository;
+import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,6 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-
     public void saveCustomer(CustomerModel customerModel){
         if (customerModel == null ){
             System.err.println("Employee is null.");
@@ -53,6 +53,7 @@ public class CustomerService {
             return customer.get();
         else {
             System.err.println("Nie ma takiego klienta");
+            Notification.show("Nie ma takiego klienta").setPosition(Notification.Position.MIDDLE);
             return null;
         }
 
