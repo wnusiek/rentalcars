@@ -29,7 +29,6 @@ public class UserModel {
     @Column
     private Boolean active;
 
-
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleModel role;
