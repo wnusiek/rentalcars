@@ -83,6 +83,7 @@ public class HistoryView extends VerticalLayout {
         reservationGrid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
         reservationGrid.addColumn("customer.firstName").setHeader("Imię klienta");
         reservationGrid.addColumn("customer.lastName").setHeader("Nazwisko klienta");
+        reservationGrid.addColumn("reservationStatus").setHeader("Status rezerwacji");
         reservationGrid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
