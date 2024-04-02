@@ -22,6 +22,8 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
+import java.time.LocalDate;
+
 @Route(value = "addrental", layout = MainLayout.class)
 @PageTitle("Wypożyczanie")
 @Secured("ROLE_ADMIN")
@@ -89,6 +91,7 @@ public class RentalView extends VerticalLayout {
         grid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
         grid.addColumn("customer.firstName").setHeader("Imię klienta");
         grid.addColumn("customer.lastName").setHeader("Nazwisko klienta");
+        grid.addColumn("reservationStatus").setHeader("Status rezerwacji");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(e-> saveEmployeeChoice(e.getValue()));
@@ -102,6 +105,7 @@ public class RentalView extends VerticalLayout {
 
         dateOfRental.setPlaceholder("Wybierz datę");
         dateOfRental.setClearButtonVisible(true);
+        dateOfRental.setMin(LocalDate.now());
         rentACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
         var toolbar = new HorizontalLayout(dateOfRental, comments, rentACarButton);
