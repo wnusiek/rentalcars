@@ -9,6 +9,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
@@ -23,6 +25,7 @@ public class CustomerManagementView extends VerticalLayout {
     private final CustomerService customerService;
     Grid<CustomerModel> grid = new Grid<>(CustomerModel.class, false);
     CustomerForm form = new CustomerForm();
+    TextField filterText = new TextField();
 
     public CustomerManagementView(CustomerService customerService) {
         this.customerService = customerService;
@@ -43,7 +46,7 @@ public class CustomerManagementView extends VerticalLayout {
         removeClassName("editing");
     }
     private void updateCustomerList() {
-        grid.setItems(customerService.getCustomerList());
+        grid.setItems(customerService.findWithFilter(filterText.getValue()));
     }
 
     private Component getContent() {
@@ -70,10 +73,15 @@ public class CustomerManagementView extends VerticalLayout {
     }
 
     private Component getToolbar(){
+        filterText.setPlaceholder("Filtruj po imieniu / nazwisku...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateCustomerList());
+
         Button addCustomerButton = new Button("Dodaj klienta");
         addCustomerButton.addClickListener(e->addCustomer());
 
-        HorizontalLayout toolbar = new HorizontalLayout(addCustomerButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addCustomerButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

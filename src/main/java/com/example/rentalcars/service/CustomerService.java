@@ -23,6 +23,14 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    public List<CustomerModel> findWithFilter(String filterText) {
+        if (filterText == null || filterText.isEmpty()){
+            return getCustomerList();
+        } else {
+            return customerRepository.search(filterText);
+        }
+    }
+
     public CustomerModel findById(Long id) {
         return customerRepository.findById(id).orElse(null);
     }
