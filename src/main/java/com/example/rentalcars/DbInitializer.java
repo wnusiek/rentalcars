@@ -61,28 +61,18 @@ public class DbInitializer implements ApplicationRunner {
         departmentService.addCarToDepartment(1l,1l);
         departmentService.addCarToDepartment(5l,1l);
 
-        var role1 = roleRepository.save(new RoleModel(1l, "ADMIN"));
-        var role2 = roleRepository.save(new RoleModel(2l, "USER"));
+        var roleAdmin = roleRepository.save(new RoleModel(1l, "ADMIN"));
+        var roleUser = roleRepository.save(new RoleModel(2l, "USER"));
 
-        var admin = userRepository.save(new UserModel(1L, "admin","admin", "admin@co_ja_nie_potrafie.pl", true, role1));
-        var user1 = userRepository.save(new UserModel(2L, "kowalski","1234", "kowalski@rentalcars.pl", true, role1));
-        var user2 = userRepository.save(new UserModel(3L, "nowak","1234", "nowak@rentalcars.pl", true, role1));
+        var userAdmin = userRepository.save(new UserModel(1L, "admin","admin", "admin@wylacziwlacz.pl", true, roleAdmin));
+        var userUser = userRepository.save(new UserModel(2L, "kowalski","kowalski", "jan@kowalski.pl", true, roleUser));
 
-        var employee1 = employeeRepository.save(new EmployeeModel(1l, "Jan", "Kowalski", EmployeePosition.EMPLOYEE, user1));
-        var employee2 = employeeRepository.save(new EmployeeModel(2l, "Karol", "Nowak", EmployeePosition.MANAGER, user2));
+        employeeRepository.save(new EmployeeModel(1l, "Jan", "Kowalski", EmployeePosition.EMPLOYEE, userAdmin));
 
-//        var customer1 = customerRepository.save(new CustomerModel(1l, "Janusz", "ChceszWMorde", "123456789", "qwerty", "janusz@gmail.com", "99122402212", "Pcim", "32-432", user1));
-//        var customer2 = customerRepository.save(new CustomerModel(2l, "Dżesika", "CoSięGapisz", "123456789", "qwerty", "", "", "", "", user2));
+        customerRepository.save(new CustomerModel(1l, "admin", "admin", "000000000", "qwerty","99999999999", "Warszawa", "00-001", userAdmin));
+        customerRepository.save(new CustomerModel(2l, "Jan", "Kowalski", "000000000", "qwerty","99999999999", "Warszawa", "00-001", userUser));
 
-//        var reservation1 = reservationRepository.save(new ReservationModel(1l, car1, LocalDate.of(2023, 7, 20), LocalDate.of(2023, 7, 25), BigDecimal.valueOf(100), dep2, dep2, customer1));
-//        var reservation2 = reservationRepository.save(new ReservationModel(2l, car2, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 8, 25), BigDecimal.valueOf(100), dep1, dep3,customer1));
-//        var reservation3 = reservationRepository.save(new ReservationModel(3l, car3, LocalDate.of(2023, 6, 20), LocalDate.of(2023, 6, 25), BigDecimal.valueOf(100), dep2, dep4,customer1));
-//        var reservation4 = reservationRepository.save(new ReservationModel(4l, car4, LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), BigDecimal.valueOf(100), dep3, dep3,customer1));
-
-//        rentalRepository.save(new RentalModel(1l, employee1, LocalDate.of(2023, 07, 16), reservation1, "blablabla"));
-//        returnRepository.save(new ReturnModel(1l, employee2, LocalDate.of(2023, 07, 16), reservation3, "bez uszkodzeń"));
-
-        companyRepository.save(new CompanyModel(1l, "Gruz-rental", "", "", "", ""));
+        companyRepository.save(new CompanyModel(1l, "Gruz-rental", "gruz-rental.com", "", "", ""));
 
     }
 }

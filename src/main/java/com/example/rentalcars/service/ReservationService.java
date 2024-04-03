@@ -50,6 +50,7 @@ public class ReservationService {
 
         return getReservationList()
                 .stream()
+                .filter(reservationModel -> reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED))
                 .filter(reservationModel -> !rentedCarsReservationsIds.contains(reservationModel.getId()))
                 .toList();
     }

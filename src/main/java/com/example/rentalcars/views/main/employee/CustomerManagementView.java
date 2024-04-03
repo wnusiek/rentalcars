@@ -100,7 +100,7 @@ public class CustomerManagementView extends VerticalLayout {
         grid.addColumn("lastName").setHeader("Nazwisko");
         grid.addColumn("phoneNumber").setHeader("Telefon");
         grid.addColumn("driverLicenceNumber").setHeader("Nr prawa jazdy");
-        grid.addColumn("email").setHeader("Email");
+        grid.addColumn("user.email").setHeader("Email");
         grid.addColumn("pesel").setHeader("Pesel");
         grid.addColumn("city").setHeader("Miasto");
         grid.addColumn("zipCode").setHeader("Kod pocztowy");
