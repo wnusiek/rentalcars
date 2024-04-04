@@ -8,10 +8,7 @@ import com.example.rentalcars.views.main.customer.CustomerReservationsView;
 import com.example.rentalcars.views.main.customer.ReservationView;
 import com.example.rentalcars.views.main.customer.CustomerView;
 import com.example.rentalcars.views.main.employee.*;
-import com.example.rentalcars.views.main.manager.CompanyView;
-import com.example.rentalcars.views.main.manager.DepartmentEmployeesView;
-import com.example.rentalcars.views.main.manager.DepartmentView;
-import com.example.rentalcars.views.main.manager.EmployeeView;
+import com.example.rentalcars.views.main.manager.*;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -63,6 +60,7 @@ public class MainLayout extends AppLayout {
             allowedViews.add(DepartmentView.class);
             allowedViews.add(EmployeeView.class);
             allowedViews.add(HistoryView.class);
+            allowedViews.add(DashboardView.class);
 
         }
         if (SecurityUtils.isUserRegular()){
@@ -144,6 +142,9 @@ public class MainLayout extends AppLayout {
         RouterLink historyView = new RouterLink("Rezerwacje, wypożyczenia i zwroty", HistoryView.class);
         historyView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink dashboardView = new RouterLink("Dashboard", DashboardView.class);
+        dashboardView.setHighlightCondition(HighlightConditions.sameLocation());
+
         if (SecurityUtils.isUserAdmin()){
             addToDrawer(new VerticalLayout(
 
@@ -157,7 +158,8 @@ public class MainLayout extends AppLayout {
                     departmentCarsView,
                     companyView,
                     historyView,
-                    customerView
+                    customerView,
+                    dashboardView
                     ));
         }
 
