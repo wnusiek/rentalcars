@@ -79,7 +79,7 @@ public class CarView extends VerticalLayout {
         Button addCarButton = new Button("Dodaj samochód");
         addCarButton.addClickListener(e->addCar());
 
-        filterText.setPlaceholder("Filtruj po marce...");
+        filterText.setPlaceholder("Filtruj po marce lub modelu...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCarList());
@@ -96,7 +96,8 @@ public class CarView extends VerticalLayout {
 
     private void updateCarList() {
 //        carGrid.setItems(carService.getCarList1());
-        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
+//        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
+        carGrid.setItems(carService.findWithFilter(filterText.getValue()));
     }
 
     private void configureGrid() {
