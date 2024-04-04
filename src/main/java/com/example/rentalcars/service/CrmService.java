@@ -38,4 +38,8 @@ public class CrmService {
     public long countReturns(){
         return returnRepository.count();
     }
+
+    public long countDepartments(){
+        return departmentRepository.count();
+    }
 }
