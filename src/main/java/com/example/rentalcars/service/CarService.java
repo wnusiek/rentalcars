@@ -94,4 +94,12 @@ public class CarService {
                 .toList();
     }
 
+    public List<CarModel> findWithFilter(String filterText){
+        if (filterText == null || filterText.isEmpty()){
+            return getCarList1();
+        } else {
+            return carRepository.search(filterText);
+        }
+    }
+
 }
