@@ -23,8 +23,9 @@ public class DashboardView extends VerticalLayout {
     private CrmService crmService;
     private DepartmentService departmentService;
 
-    public DashboardView(CrmService crmService) {
+    public DashboardView(CrmService crmService, DepartmentService departmentService) {
         this.crmService = crmService;
+        this.departmentService = departmentService;
         addClassName("dashboard-view");
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(
@@ -34,7 +35,9 @@ public class DashboardView extends VerticalLayout {
                 getReservationsStats(),
                 getRentalsStats(),
                 getReturnsStats(),
-                getReservationsChart()
+                getDepartmentsStats(),
+                getEmployeesInDepartmentsChart(),
+                getCarsInDepartmentsChart()
         );
     }
 
@@ -74,13 +77,30 @@ public class DashboardView extends VerticalLayout {
         return stats;
     }
 
-    private Component getReservationsChart(){
+    private Component getDepartmentsStats() {
+        Span stats = new Span("Liczba oddziałów: " + crmService.countDepartments());
+        stats.addClassNames("text-xl", "mt-m");
+        return stats;
+    }
+
+
+    private Component getEmployeesInDepartmentsChart(){
         Chart chart = new Chart(ChartType.PIE);
-//        DataSeries dataSeries = new DataSeries();
-//        departmentService.getDepartmentList1().forEach(department -> {
-//            dataSeries.add(new DataSeriesItem(department.getCity(), department.getEmployeeCount()));
-//        });
-//        chart.getConfiguration().setSeries(dataSeries);
+        DataSeries dataSeries = new DataSeries();
+        departmentService.getDepartmentList1().forEach(department -> {
+            dataSeries.add(new DataSeriesItem(department.getCity(), department.getEmployees().stream().count()));
+        });
+        chart.getConfiguration().setSeries(dataSeries);
+        return chart;
+    }
+
+    private Component getCarsInDepartmentsChart() {
+        Chart chart = new Chart(ChartType.PIE);
+        DataSeries dataSeries = new DataSeries();
+        departmentService.getDepartmentList1().forEach(department -> {
+            dataSeries.add(new DataSeriesItem(department.getCity(), department.getCars().stream().count()));
+        });
+        chart.getConfiguration().setSeries(dataSeries);
         return chart;
     }
 }
