@@ -67,6 +67,10 @@ public class DepartmentService {
                 .collect(Collectors.toSet());
     }
 
+    public Long countEmployeesInDepartment(Long departmentId){
+        return getDepartmentEmployees(departmentId).stream().count();
+    }
+
     public List<CarModel> getAllCarsByDepartment(Long departmentId) {
         return departmentRepository.findAll().stream()
                 .filter(department -> department.getId() != null && department.getId().equals(departmentId))
