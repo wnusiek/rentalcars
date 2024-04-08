@@ -77,18 +77,9 @@ public class CustomerManagementView extends VerticalLayout {
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCustomerList());
-
-        Button addCustomerButton = new Button("Dodaj klienta");
-        addCustomerButton.addClickListener(e->addCustomer());
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addCustomerButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText);
         toolbar.addClassName("toolbar");
         return toolbar;
-    }
-
-    private void addCustomer() {
-        grid.asSingleSelect().clear();
-        editCustomer(new CustomerModel());
     }
 
     private void editCustomer(CustomerModel customerModel) {
@@ -106,9 +97,10 @@ public class CustomerManagementView extends VerticalLayout {
         grid.setSizeFull();
         grid.addColumn("firstName").setHeader("Imię");
         grid.addColumn("lastName").setHeader("Nazwisko");
+        grid.addColumn("user.name").setHeader("Username");
         grid.addColumn("phoneNumber").setHeader("Telefon");
-        grid.addColumn("driverLicenceNumber").setHeader("Nr prawa jazdy");
         grid.addColumn("user.email").setHeader("Email");
+        grid.addColumn("driverLicenceNumber").setHeader("Nr prawa jazdy");
         grid.addColumn("pesel").setHeader("Pesel");
         grid.addColumn("city").setHeader("Miasto");
         grid.addColumn("zipCode").setHeader("Kod pocztowy");
