@@ -34,7 +34,6 @@ public class CustomerModel {
     @Column(name = "driver_licence_number")
     private String driverLicenceNumber;
 
-    @PESEL
     @Column(name = "pesel")
     private String pesel;
 
