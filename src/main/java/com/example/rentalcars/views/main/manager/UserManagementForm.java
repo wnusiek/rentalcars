@@ -23,9 +23,10 @@ import java.util.List;
 @PermitAll
 public class UserManagementForm extends FormLayout {
     Binder<UserModel> binder = new Binder<>(UserModel.class);
-    TextField name = new TextField("Username");
+    TextField name = new TextField("Nazwa użytkownika");
     EmailField email = new EmailField("Email");
-    ComboBox<RoleModel> role = new ComboBox<>("Rola");
+    ComboBox<RoleModel> role = new ComboBox<>("Rola użytkownika");
+    ComboBox<Boolean> state = new ComboBox<>("Czy aktywny");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -33,13 +34,16 @@ public class UserManagementForm extends FormLayout {
     private UserModel userModel;
 
     public UserManagementForm(List<RoleModel> roleModelList) {
+        state.setItems(List.of(true, false));
         role.setItems(roleModelList);
         role.setItemLabelGenerator(RoleModel::getName);
+        binder.forField(state).bind(UserModel::getState, UserModel::setState);
         binder.bindInstanceFields(this);
         addClassName("user-form");
         add(
                 name,
                 email,
+                state,
                 role,
                 createButtonLayout()
         );
