@@ -35,7 +35,8 @@ public class CustomerManagementView extends VerticalLayout {
         configureForm();
         add(
                 getToolbar(),
-                getContent());
+                getContent()
+        );
         updateCustomerList();
         closeEditor();
 
