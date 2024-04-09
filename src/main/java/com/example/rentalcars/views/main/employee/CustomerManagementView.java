@@ -78,18 +78,9 @@ public class CustomerManagementView extends VerticalLayout {
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCustomerList());
-
-        Button addCustomerButton = new Button("Dodaj klienta");
-        addCustomerButton.addClickListener(e->addCustomer());
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addCustomerButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText);
         toolbar.addClassName("toolbar");
         return toolbar;
-    }
-
-    private void addCustomer() {
-        grid.asSingleSelect().clear();
-        editCustomer(new CustomerModel());
     }
 
     private void editCustomer(CustomerModel customerModel) {
