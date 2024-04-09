@@ -19,8 +19,8 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "return", layout = MainLayout.class)
 @PageTitle("Zwroty")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 
 public class ReturnView extends VerticalLayout {
     private final ReservationService reservationService;

@@ -16,8 +16,8 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "customerReservations", layout = MainLayout.class)
 @PageTitle("Moje rezerwacje")
-@Secured({"ROLE_USER", "ROLE_ADMIN"})
-@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+@Secured({"ROLE_CUSTOMER", "ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_CUSTOMER", "ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class CustomerReservationsView extends VerticalLayout {
 
     private final ReservationService reservationService;

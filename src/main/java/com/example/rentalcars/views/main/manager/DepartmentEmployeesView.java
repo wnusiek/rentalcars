@@ -22,8 +22,8 @@ import java.util.Collections;
 
 @Route(value = "departmentsEmployees", layout = MainLayout.class)
 @PageTitle("Pracownicy oddziałów")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
 public class DepartmentEmployeesView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;

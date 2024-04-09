@@ -14,8 +14,8 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "configuration", layout = MainLayout.class)
 @PageTitle("Konfiguracja")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
 public class CompanyView extends VerticalLayout {
 
     private final CompanyService companyService;
