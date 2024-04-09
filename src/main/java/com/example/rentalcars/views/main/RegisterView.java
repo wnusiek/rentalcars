@@ -36,7 +36,6 @@ public class RegisterView extends VerticalLayout {
 
     // Inicjujemy pola i przycisk (tak jak wcześniej)
 
-
     public RegisterView(UserService userService, CustomerService customerService, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
         this.customerService = customerService;
@@ -67,7 +66,7 @@ public class RegisterView extends VerticalLayout {
             String firstName = name.getValue();
             String userEmail = email.getValue();
             String userPassword = password.getValue();
-            RoleModel roleModel = roleService.getRoleByName("USER");
+            RoleModel roleModel = roleService.getRoleByName("CUSTOMER");
 
             UserModel newUser = new UserModel();
             newUser.setName(firstName);
