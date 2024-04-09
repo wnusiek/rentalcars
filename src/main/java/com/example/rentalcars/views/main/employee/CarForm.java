@@ -52,12 +52,8 @@ public class CarForm extends FormLayout {
         availability.setItems(CarStatus.values());
         binder.forField(mark).asRequired("To pole jest wymagane!").bind(CarModel::getMark, CarModel::setMark);
         binder.forField(model).asRequired("To pole jest wymagane!").bind(CarModel::getModel, CarModel::setModel);
-        //binder.bind(body,CarModel::getBody, CarModel::setBody);
         binder.forField(color).asRequired("To pole jest wymagane!").bind(CarModel::getColor, CarModel::setColor);
-        //binder.bind(fuelType,CarModel::getFuelType, CarModel::setFuelType);
-        //binder.bind(gearbox,CarModel::getGearbox, CarModel::setGearbox);
         binder.forField(price).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToBigDecimalConverter("zła wartość")).bind(CarModel::getPrice, CarModel::setPrice);
-        //binder.bind(availability,CarModel::getAvailability, CarModel::setAvailability);
         binder.forField(productionDate).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToIntegerConverter("tylko liczby!")).bind(CarModel::getProductionDate, CarModel::setProductionDate);
         binder.forField(mileage).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToIntegerConverter("tylko liczby!")).bind(CarModel::getMileage, CarModel::setMileage);
         binder.bindInstanceFields(this);
