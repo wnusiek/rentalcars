@@ -1,11 +1,13 @@
 package com.example.rentalcars.views.main.manager;
 
+import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -18,8 +20,8 @@ import java.util.List;
 
 @Route(value = "usermanagement", layout = MainLayout.class)
 @PageTitle("Użytkownicy")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
 public class UserManagementView extends VerticalLayout {
     private final UserService userService;
     Grid<UserModel> grid = new Grid<>(UserModel.class, false);
@@ -34,6 +36,7 @@ public class UserManagementView extends VerticalLayout {
         configureGrid();
         configureForm();
         add(
+                getToolbar(),
                 getContent()
         );
         updateUserList();
@@ -48,6 +51,14 @@ public class UserManagementView extends VerticalLayout {
 
     private void updateUserList() {
         grid.setItems(userService.getAllUsers());
+    }
+
+    private Component getToolbar(){
+        Button addUserButton = new Button("Dodaj użytkownika");
+        addUserButton.addClickListener(e->addUser());
+        HorizontalLayout toolbar = new HorizontalLayout(addUserButton);
+        toolbar.addClassName("toolbar");
+        return toolbar;
     }
 
     private Component getContent() {
@@ -72,6 +83,11 @@ public class UserManagementView extends VerticalLayout {
         closeEditor();
     }
 
+    private void addUser() {
+        grid.asSingleSelect().clear();
+        editUser(new UserModel());
+    }
+
     private void editUser(UserModel userModel){
         if (userModel == null){
             closeEditor();
@@ -85,10 +101,10 @@ public class UserManagementView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("users-grid");
         grid.setSizeFull();
-        grid.addColumn("name").setHeader("Username");
+        grid.addColumn("name").setHeader("Nazwa użytkownika");
         grid.addColumn("email").setHeader("Email");
-        grid.addColumn("active").setHeader("Czy aktywny");
-        grid.addColumn("role.name").setHeader("Rola");
+        grid.addColumn("state").setHeader("Czy aktywny");
+        grid.addColumn("role.name").setHeader("Rola użytkownika");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editUser(event.getValue()));
     }
