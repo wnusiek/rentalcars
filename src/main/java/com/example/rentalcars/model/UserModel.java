@@ -33,12 +33,7 @@ public class UserModel {
     @JoinColumn(name = "role_id")
     private RoleModel role;
 
-
     public Boolean isEnabled(){
         return active;
-//        if (active){
-//            return true;
-//        }
-//        return false;
     }
 }
