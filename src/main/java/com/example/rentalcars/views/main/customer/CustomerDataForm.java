@@ -20,7 +20,7 @@ import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
 
 @PermitAll
-public class CustomerForm extends FormLayout {
+public class CustomerDataForm extends FormLayout {
     Binder<CustomerModel> binder = new BeanValidationBinder<>(CustomerModel.class);
     TextField firstName = new TextField("First name");
     TextField lastName = new TextField("Last name");
@@ -36,7 +36,7 @@ public class CustomerForm extends FormLayout {
 
     private CustomerModel customerModel;
 
-    public CustomerForm() {
+    public CustomerDataForm() {
         binder.bindInstanceFields(this);
         binder.forField(email).withValidator(new EmailValidator("Niepoprawny email"))
                 .bind(customer -> customer.getUser().getEmail(), (customer, email) -> customer.getUser().setEmail(email));
@@ -58,7 +58,7 @@ public class CustomerForm extends FormLayout {
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickListener(event -> validateAndSave());
-        cancel.addClickListener(event -> fireEvent(new CustomerForm.CloseEvent(this)));
+        cancel.addClickListener(event -> fireEvent(new CustomerDataForm.CloseEvent(this)));
 
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
@@ -67,11 +67,11 @@ public class CustomerForm extends FormLayout {
     }
 
     private void validateAndSave() {
-        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()|| email.isEmpty()
-        ||pesel.isEmpty()||city.isEmpty()||zipCode.isEmpty()){
-            Notification.show("Wszystkie pola są wymagane");
-            return;
-        }
+//        if(firstName.isEmpty()|| lastName.isEmpty()||phoneNumber.isEmpty()||driverLicenceNumber.isEmpty()|| email.isEmpty()
+//        ||pesel.isEmpty()||city.isEmpty()||zipCode.isEmpty()){
+//            Notification.show("Wszystkie pola są wymagane");
+//            return;
+//        }
         try {
             binder.writeBean(customerModel);
             fireEvent(new SaveEvent(this, customerModel));
@@ -87,9 +87,9 @@ public class CustomerForm extends FormLayout {
     }
 
     //Events
-    public static abstract class CustomerFormEvent extends ComponentEvent<CustomerForm> {
+    public static abstract class CustomerFormEvent extends ComponentEvent<CustomerDataForm> {
         private CustomerModel customerModel;
-        protected CustomerFormEvent(CustomerForm source, CustomerModel customerModel) {
+        protected CustomerFormEvent(CustomerDataForm source, CustomerModel customerModel) {
             super(source, false);
             this.customerModel = customerModel;
         }
@@ -97,23 +97,23 @@ public class CustomerForm extends FormLayout {
             return customerModel;
         }
     }
-    public static class SaveEvent extends CustomerForm.CustomerFormEvent {
-        SaveEvent(CustomerForm source, CustomerModel customerModel) {
+    public static class SaveEvent extends CustomerDataForm.CustomerFormEvent {
+        SaveEvent(CustomerDataForm source, CustomerModel customerModel) {
             super(source, customerModel);
         }
     }
 
-    public static class CloseEvent extends CustomerForm.CustomerFormEvent {
-        CloseEvent(CustomerForm source) {
+    public static class CloseEvent extends CustomerDataForm.CustomerFormEvent {
+        CloseEvent(CustomerDataForm source) {
             super(source, null);
         }
     }
 
-    public Registration addSaveListener(ComponentEventListener<CustomerForm.SaveEvent> listener) {
-        return addListener(CustomerForm.SaveEvent.class, listener);
+    public Registration addSaveListener(ComponentEventListener<CustomerDataForm.SaveEvent> listener) {
+        return addListener(CustomerDataForm.SaveEvent.class, listener);
     }
-    public Registration addCloseListener(ComponentEventListener<CustomerForm.CloseEvent> listener) {
-        return addListener(CustomerForm.CloseEvent.class, listener);
+    public Registration addCloseListener(ComponentEventListener<CustomerDataForm.CloseEvent> listener) {
+        return addListener(CustomerDataForm.CloseEvent.class, listener);
     }
 
 }
