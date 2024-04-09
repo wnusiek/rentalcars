@@ -3,10 +3,11 @@ package com.example.rentalcars.views.main;
 import com.example.rentalcars.security.SecurityService;
 import com.example.rentalcars.security.SecurityUtils;
 import com.example.rentalcars.service.CompanyService;
+import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.customer.CustomerReservationsView;
 import com.example.rentalcars.views.main.customer.ReservationView;
-import com.example.rentalcars.views.main.customer.CustomerView;
+import com.example.rentalcars.views.main.customer.CustomerDataView;
 import com.example.rentalcars.views.main.employee.*;
 import com.example.rentalcars.views.main.manager.*;
 import com.vaadin.flow.component.Component;
@@ -29,44 +30,60 @@ import java.util.List;
 public class MainLayout extends AppLayout {
 
     private final CompanyService companyService;
-    private SecurityService securityService;
+    private final SecurityService securityService;
     private final UserService userService;
     private String loggedUserName;
     private List<Class<? extends Component>> allowedViews;
 
-    public MainLayout(CompanyService companyService, SecurityService securityService, UserService userService) {
+    public MainLayout(CompanyService companyService, SecurityService securityService, UserService userService, EmployeeService employeeService) {
         this.companyService = companyService;
         this.securityService = securityService;
         this.userService = userService;
         loggedUserName = userService.getNameOfLoggedUser();
+        this.allowedViews = new ArrayList<>();
         createHeader();
         createDrawer();
+        addAllowedViews();
 
-        allowedViews = new ArrayList<>();
+    }
 
+    private void addAllowedViews() {
         //Widoki dostępne dla wszystkich
-//        allowedViews.add(ReservationView.class);
+        //
 
-
-        //Widoki dla admina
-        if (SecurityUtils.isUserAdmin()){
-            allowedViews.add(RentalView.class);
-            allowedViews.add(ReturnView.class);
-            allowedViews.add(CarView.class);
-            allowedViews.add(CompanyView.class);
-            allowedViews.add(CustomerManagementView.class);
-            allowedViews.add(DepartmentCarsView.class);
-            allowedViews.add(DepartmentEmployeesView.class);
-            allowedViews.add(DepartmentView.class);
-            allowedViews.add(EmployeeView.class);
-            allowedViews.add(HistoryView.class);
-            allowedViews.add(DashboardView.class);
-
+        //Widoki dla Managera
+        if (SecurityUtils.isUserAdmin() || SecurityUtils.isUserManager()){
+                allowedViews.add(RentalView.class);
+                allowedViews.add(ReturnView.class);
+                allowedViews.add(CarView.class);
+                allowedViews.add(CompanyManagementView.class);
+                allowedViews.add(CustomerManagementView.class);
+                allowedViews.add(DepartmentCarsManagementView.class);
+                allowedViews.add(DepartmentEmployeesManagementView.class);
+                allowedViews.add(DepartmentManagementView.class);
+                allowedViews.add(EmployeeManagementView.class);
+                allowedViews.add(HistoryView.class);
+                allowedViews.add(DashboardView.class);
+                allowedViews.add(UserManagementView.class);
+                allowedViews.add(EmployeeDataView.class);
         }
-        if (SecurityUtils.isUserRegular()){
+
+        //Widoki dla Pracownika
+        if (SecurityUtils.isUserEmployee()){
+                allowedViews.add(RentalView.class);
+                allowedViews.add(ReturnView.class);
+                allowedViews.add(CarView.class);
+                allowedViews.add(CustomerManagementView.class);
+                allowedViews.add(DepartmentCarsManagementView.class);
+                allowedViews.add(HistoryView.class);
+                allowedViews.add(EmployeeDataView.class);
+        }
+
+        //Widoki dla Klienta
+        if (SecurityUtils.isUserCustomer()){
             allowedViews.add(ReservationView.class);
             allowedViews.add(CustomerReservationsView.class);
-            allowedViews.add(CustomerView.class);
+            allowedViews.add(CustomerDataView.class);
         }
 
     }
@@ -109,10 +126,10 @@ public class MainLayout extends AppLayout {
         RouterLink rentalView = new RouterLink("Wypożycz", RentalView.class);
         rentalView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink companyView = new RouterLink("Konfiguracja", CompanyView.class);
+        RouterLink companyView = new RouterLink("Konfiguracja", CompanyManagementView.class);
         companyView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink employeeView = new RouterLink("Pracownicy", EmployeeView.class);
+        RouterLink employeeView = new RouterLink("Pracownicy", EmployeeManagementView.class);
         employeeView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink customerListView = new RouterLink("Klienci", CustomerManagementView.class);
@@ -121,20 +138,23 @@ public class MainLayout extends AppLayout {
         RouterLink reservationView = new RouterLink("Zarezerwuj", ReservationView.class);
         reservationView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentView = new RouterLink("Oddziały", DepartmentView.class);
+        RouterLink departmentView = new RouterLink("Oddziały", DepartmentManagementView.class);
         departmentView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink returnView = new RouterLink("Zwróć", ReturnView.class);
         returnView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentEmployeesView = new RouterLink("Pracownicy oddziałów", DepartmentEmployeesView.class);
+        RouterLink departmentEmployeesView = new RouterLink("Pracownicy oddziałów", DepartmentEmployeesManagementView.class);
         departmentEmployeesView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentCarsView = new RouterLink("Samochody oddziałów", DepartmentCarsView.class);
+        RouterLink departmentCarsView = new RouterLink("Samochody oddziałów", DepartmentCarsManagementView.class);
         departmentCarsView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink customerView = new RouterLink("Moje dane", CustomerView.class);
-        customerView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink customerDataView = new RouterLink("Moje dane", CustomerDataView.class);
+        customerDataView.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink employeeDataView = new RouterLink("Moje dane", EmployeeDataView.class);
+        employeeDataView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink customerReservationsView = new RouterLink("Moje rezerwacje", CustomerReservationsView.class);
         customerReservationsView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -145,35 +165,47 @@ public class MainLayout extends AppLayout {
         RouterLink dashboardView = new RouterLink("Dashboard", DashboardView.class);
         dashboardView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        if (SecurityUtils.isUserAdmin()){
-            addToDrawer(new VerticalLayout(
+        RouterLink userManagementView = new RouterLink("Użytkownicy", UserManagementView.class);
+        userManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
-                    carView,
-                    rentalView,
-                    returnView,
-                    employeeView,
-                    customerListView,
-                    departmentView,
-                    departmentEmployeesView,
-                    departmentCarsView,
-                    companyView,
-                    historyView,
-                    customerView,
-                    dashboardView
-                    ));
+        if (SecurityUtils.isUserAdmin() || SecurityUtils.isUserManager()){
+            addToDrawer(new VerticalLayout(
+                carView,
+                rentalView,
+                returnView,
+                employeeView,
+                customerListView,
+                departmentView,
+                departmentEmployeesView,
+                departmentCarsView,
+                companyView,
+                historyView,
+                dashboardView,
+                userManagementView,
+                employeeDataView
+            ));
         }
 
-        if (SecurityUtils.isUserRegular()){
+        if (SecurityUtils.isUserEmployee()){
             addToDrawer(new VerticalLayout(
-                    reservationView,
-                    customerReservationsView,
-                    customerView
-                    ));
+                carView,
+                rentalView,
+                returnView,
+                customerListView,
+                departmentCarsView,
+                historyView,
+                employeeDataView
+            ));
         }
 
-
+        if (SecurityUtils.isUserCustomer()){
+            addToDrawer(new VerticalLayout(
+                reservationView,
+                customerReservationsView,
+                customerDataView
+            ));
+        }
 
     }
-
 
 }
