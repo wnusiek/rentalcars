@@ -13,17 +13,17 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "userView", layout = MainLayout.class)
+@Route(value = "customerDataView", layout = MainLayout.class)
 @PageTitle("Moje dane")
-@Secured({"ROLE_USER", "ROLE_ADMIN"})
-@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
-public class UserView extends VerticalLayout {
+@Secured("ROLE_CUSTOMER")
+@RolesAllowed("ROLE_CUSTOMER")
+public class CustomerDataView extends VerticalLayout {
 
     private final CustomerService customerService;
     private final UserService userService;
-    CustomerForm form = new CustomerForm();
+    CustomerDataForm form = new CustomerDataForm();
 
-    public UserView(CustomerService customerService, UserService userService) {
+    public CustomerDataView(CustomerService customerService, UserService userService) {
         this.customerService = customerService;
         this.userService = userService;
         setSizeFull();
@@ -44,16 +44,15 @@ public class UserView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new CustomerForm();
+        form = new CustomerDataForm();
         form.setWidth("25em");
-
         form.addSaveListener(this::saveCustomer);
         form.addCloseListener(event -> closeEditor());
     }
 
-    private void saveCustomer(CustomerForm.SaveEvent event) {
+    private void saveCustomer(CustomerDataForm.SaveEvent event) {
         customerService.saveCustomer(event.getCustomer());
-//        closeEditor();
+        closeEditor();
     }
 
     private Component getToolbar() {
