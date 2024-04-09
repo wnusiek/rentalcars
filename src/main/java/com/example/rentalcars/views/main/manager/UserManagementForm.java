@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main.employee;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
@@ -21,7 +21,7 @@ import jakarta.annotation.security.PermitAll;
 import java.util.List;
 
 @PermitAll
-public class UserForm extends FormLayout {
+public class UserManagementForm extends FormLayout {
     Binder<UserModel> binder = new Binder<>(UserModel.class);
     TextField name = new TextField("Username");
     EmailField email = new EmailField("Email");
@@ -32,7 +32,7 @@ public class UserForm extends FormLayout {
     Button cancel = new Button("Cancel");
     private UserModel userModel;
 
-    public UserForm(List<RoleModel> roleModelList) {
+    public UserManagementForm(List<RoleModel> roleModelList) {
         role.setItems(roleModelList);
         role.setItemLabelGenerator(RoleModel::getName);
         binder.bindInstanceFields(this);
@@ -51,8 +51,8 @@ public class UserForm extends FormLayout {
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event ->  fireEvent(new UserForm.DeleteEvent(this, userModel)));
-        cancel.addClickListener(event -> fireEvent(new UserForm.CloseEvent(this)));
+        delete.addClickListener(event ->  fireEvent(new UserManagementForm.DeleteEvent(this, userModel)));
+        cancel.addClickListener(event -> fireEvent(new UserManagementForm.CloseEvent(this)));
 
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
@@ -63,7 +63,7 @@ public class UserForm extends FormLayout {
     private void validateAndSave() {
         try {
             binder.writeBean(userModel);
-            fireEvent(new UserForm.SaveEvent(this, userModel));
+            fireEvent(new UserManagementForm.SaveEvent(this, userModel));
         } catch (ValidationException e) {
             e.printStackTrace();
         }
@@ -76,9 +76,9 @@ public class UserForm extends FormLayout {
 
 
     //Events
-    public static abstract class UserFormEvent extends ComponentEvent<UserForm> {
+    public static abstract class UserFormEvent extends ComponentEvent<UserManagementForm> {
         private UserModel userModel;
-        protected UserFormEvent(UserForm source, UserModel userModel) {
+        protected UserFormEvent(UserManagementForm source, UserModel userModel) {
             super(source, false);
             this.userModel = userModel;
         }
@@ -86,29 +86,29 @@ public class UserForm extends FormLayout {
             return userModel;
         }
     }
-    public static class SaveEvent extends UserForm.UserFormEvent {
-        SaveEvent(UserForm source, UserModel userModel) {
+    public static class SaveEvent extends UserManagementForm.UserFormEvent {
+        SaveEvent(UserManagementForm source, UserModel userModel) {
             super(source, userModel);
         }
     }
-    public static class DeleteEvent extends UserForm.UserFormEvent {
-        DeleteEvent(UserForm source, UserModel userModel) {
+    public static class DeleteEvent extends UserManagementForm.UserFormEvent {
+        DeleteEvent(UserManagementForm source, UserModel userModel) {
             super(source, userModel);
         }
     }
-    public static class CloseEvent extends UserForm.UserFormEvent {
-        CloseEvent(UserForm source) {
+    public static class CloseEvent extends UserManagementForm.UserFormEvent {
+        CloseEvent(UserManagementForm source) {
             super(source, null);
         }
     }
-    public Registration addDeleteListener(ComponentEventListener<UserForm.DeleteEvent> listener) {
-        return addListener(UserForm.DeleteEvent.class, listener);
+    public Registration addDeleteListener(ComponentEventListener<UserManagementForm.DeleteEvent> listener) {
+        return addListener(UserManagementForm.DeleteEvent.class, listener);
     }
-    public Registration addSaveListener(ComponentEventListener<UserForm.SaveEvent> listener) {
-        return addListener(UserForm.SaveEvent.class, listener);
+    public Registration addSaveListener(ComponentEventListener<UserManagementForm.SaveEvent> listener) {
+        return addListener(UserManagementForm.SaveEvent.class, listener);
     }
-    public Registration addCloseListener(ComponentEventListener<UserForm.CloseEvent> listener) {
-        return addListener(UserForm.CloseEvent.class, listener);
+    public Registration addCloseListener(ComponentEventListener<UserManagementForm.CloseEvent> listener) {
+        return addListener(UserManagementForm.CloseEvent.class, listener);
     }
 
 }
