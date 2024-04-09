@@ -1,4 +1,4 @@
-package com.example.rentalcars.views.main.employee;
+package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
@@ -14,7 +14,6 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-import java.util.Collections;
 import java.util.List;
 
 @Route(value = "usermanagement", layout = MainLayout.class)
@@ -24,7 +23,7 @@ import java.util.List;
 public class UserManagementView extends VerticalLayout {
     private final UserService userService;
     Grid<UserModel> grid = new Grid<>(UserModel.class, false);
-    UserForm form;
+    UserManagementForm form;
     List<RoleModel> roleModelList;
 
     public UserManagementView(UserService userService, RoleRepository roleRepository) {
@@ -60,14 +59,14 @@ public class UserManagementView extends VerticalLayout {
         return content;
     }
     private void configureForm() {
-        form = new UserForm(roleModelList);
+        form = new UserManagementForm(roleModelList);
         form.setWidth("25em");
 
         form.addSaveListener(this::saveUser);
         form.addCloseListener(event -> closeEditor());
     }
 
-    private void saveUser(UserForm.SaveEvent event){
+    private void saveUser(UserManagementForm.SaveEvent event){
         userService.addUser(event.getUser());
         updateUserList();
         closeEditor();
