@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "departments", layout = MainLayout.class)
+@Route(value = "departmentManagementView", layout = MainLayout.class)
 @PageTitle("Lista oddziałów")
 @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})

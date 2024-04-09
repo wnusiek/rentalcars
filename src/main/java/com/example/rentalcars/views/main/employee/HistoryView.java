@@ -19,7 +19,7 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "history", layout = MainLayout.class)
+@Route(value = "historyView", layout = MainLayout.class)
 @PageTitle("Rezerwacje, wypożyczenia i zwroty")
 @Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})

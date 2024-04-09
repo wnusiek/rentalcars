@@ -27,7 +27,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.InputMismatchException;
 
-@Route(value = "reservation", layout = MainLayout.class)
+@Route(value = "reservationView", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
 @AnonymousAllowed
 public class ReservationView extends VerticalLayout {

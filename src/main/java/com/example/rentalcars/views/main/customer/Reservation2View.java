@@ -17,7 +17,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import java.util.List;
 
-@Route(value = "reservation2", layout = MainLayout.class)
+@Route(value = "reservation2View", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
 @AnonymousAllowed
 public class Reservation2View extends Div {

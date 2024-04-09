@@ -126,29 +126,29 @@ public class MainLayout extends AppLayout {
         RouterLink rentalView = new RouterLink("Wypożycz", RentalView.class);
         rentalView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink companyView = new RouterLink("Konfiguracja", CompanyManagementView.class);
-        companyView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink companyManagementView = new RouterLink("Konfiguracja", CompanyManagementView.class);
+        companyManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink employeeView = new RouterLink("Pracownicy", EmployeeManagementView.class);
-        employeeView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink employeeManagementView = new RouterLink("Pracownicy", EmployeeManagementView.class);
+        employeeManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink customerListView = new RouterLink("Klienci", CustomerManagementView.class);
-        customerListView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink customerManagementView = new RouterLink("Klienci", CustomerManagementView.class);
+        customerManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink reservationView = new RouterLink("Zarezerwuj", ReservationView.class);
         reservationView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentView = new RouterLink("Oddziały", DepartmentManagementView.class);
-        departmentView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink departmentManagementView = new RouterLink("Oddziały", DepartmentManagementView.class);
+        departmentManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink returnView = new RouterLink("Zwróć", ReturnView.class);
         returnView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentEmployeesView = new RouterLink("Pracownicy oddziałów", DepartmentEmployeesManagementView.class);
-        departmentEmployeesView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink departmentEmployeesManagementView = new RouterLink("Pracownicy oddziałów", DepartmentEmployeesManagementView.class);
+        departmentEmployeesManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink departmentCarsView = new RouterLink("Samochody oddziałów", DepartmentCarsManagementView.class);
-        departmentCarsView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink departmentCarsManagementView = new RouterLink("Samochody oddziałów", DepartmentCarsManagementView.class);
+        departmentCarsManagementView.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink customerDataView = new RouterLink("Moje dane", CustomerDataView.class);
         customerDataView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -173,12 +173,12 @@ public class MainLayout extends AppLayout {
                 carView,
                 rentalView,
                 returnView,
-                employeeView,
-                customerListView,
-                departmentView,
-                departmentEmployeesView,
-                departmentCarsView,
-                companyView,
+                employeeManagementView,
+                customerManagementView,
+                departmentManagementView,
+                departmentEmployeesManagementView,
+                departmentCarsManagementView,
+                companyManagementView,
                 historyView,
                 dashboardView,
                 userManagementView,
@@ -191,8 +191,8 @@ public class MainLayout extends AppLayout {
                 carView,
                 rentalView,
                 returnView,
-                customerListView,
-                departmentCarsView,
+                customerManagementView,
+                departmentCarsManagementView,
                 historyView,
                 employeeDataView
             ));

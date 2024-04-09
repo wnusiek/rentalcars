@@ -27,7 +27,7 @@ import org.springframework.security.access.annotation.Secured;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Route(value = "dashboard", layout = MainLayout.class)
+@Route(value = "dashboardView", layout = MainLayout.class)
 @PageTitle("Dashboard")
 @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})

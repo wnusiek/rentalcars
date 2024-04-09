@@ -18,7 +18,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 
-@Route(value = "usermanagement", layout = MainLayout.class)
+@Route(value = "userManagementView", layout = MainLayout.class)
 @PageTitle("Użytkownicy")
 @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})

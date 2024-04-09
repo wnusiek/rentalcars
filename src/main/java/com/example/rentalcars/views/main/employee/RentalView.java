@@ -24,7 +24,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.time.LocalDate;
 
-@Route(value = "addrental", layout = MainLayout.class)
+@Route(value = "rentalView", layout = MainLayout.class)
 @PageTitle("Wypożyczanie")
 @Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})

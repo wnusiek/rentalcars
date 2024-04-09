@@ -20,7 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collections;
 
-@Route(value = "departmentsEmployees", layout = MainLayout.class)
+@Route(value = "departmentEmployeesManagementView", layout = MainLayout.class)
 @PageTitle("Pracownicy oddziałów")
 @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
