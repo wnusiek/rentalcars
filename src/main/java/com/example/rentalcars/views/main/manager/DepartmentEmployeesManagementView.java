@@ -24,7 +24,7 @@ import java.util.Collections;
 @PageTitle("Pracownicy oddziałów")
 @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
-public class DepartmentEmployeesView extends VerticalLayout {
+public class DepartmentEmployeesManagementView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;
     Grid<EmployeeModel> grid = new Grid<>(EmployeeModel.class, false);
@@ -34,7 +34,7 @@ public class DepartmentEmployeesView extends VerticalLayout {
     Button removeButton = new Button("Usuń pracownika z oddziału");
 
 
-    public DepartmentEmployeesView(DepartmentService departmentService, EmployeeService employeeService) {
+    public DepartmentEmployeesManagementView(DepartmentService departmentService, EmployeeService employeeService) {
         this.departmentService = departmentService;
         this.employeeService = employeeService;
         setSizeFull();
