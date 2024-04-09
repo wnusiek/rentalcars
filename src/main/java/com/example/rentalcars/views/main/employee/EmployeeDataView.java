@@ -1,8 +1,7 @@
-package com.example.rentalcars.views.main.customer;
+package com.example.rentalcars.views.main.employee;
 
-import com.example.rentalcars.model.CustomerModel;
-import com.example.rentalcars.model.UserModel;
-import com.example.rentalcars.service.CustomerService;
+import com.example.rentalcars.model.EmployeeModel;
+import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -14,20 +13,18 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
-import java.util.NoSuchElementException;
-
-@Route(value = "customerView", layout = MainLayout.class)
+@Route(value = "employeeDataView", layout = MainLayout.class)
 @PageTitle("Moje dane")
-@Secured({"ROLE_USER", "ROLE_ADMIN"})
-@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
-public class CustomerView extends VerticalLayout {
-
-    private final CustomerService customerService;
+@Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+public class EmployeeDataView extends VerticalLayout {
+    private final EmployeeService employeeService;
     private final UserService userService;
-    CustomerForm form = new CustomerForm();
+    EmployeeDataForm form = new EmployeeDataForm();
 
-    public CustomerView(CustomerService customerService, UserService userService) {
-        this.customerService = customerService;
+
+    public EmployeeDataView(EmployeeService employeeService, UserService userService) {
+        this.employeeService = employeeService;
         this.userService = userService;
         setSizeFull();
         configureForm();
@@ -47,44 +44,41 @@ public class CustomerView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new CustomerForm();
+        form = new EmployeeDataForm();
         form.setWidth("25em");
-
-        form.addSaveListener(this::saveCustomer);
+        form.addSaveListener(this::saveEmployee);
         form.addCloseListener(event -> closeEditor());
     }
 
-    private void saveCustomer(CustomerForm.SaveEvent event) {
-        customerService.saveCustomer(event.getCustomer());
-//        closeEditor();
+    private void saveEmployee(EmployeeDataForm.SaveEvent event) {
+        employeeService.saveEmployee(event.getEmployee());
+        closeEditor();
     }
 
     private Component getToolbar() {
 
-        Button editCustomerButton = new Button("Edytuj swoje dane");
-        CustomerModel customer = customerService.getCustomerByUserName(userService.getNameOfLoggedUser());
-        editCustomerButton.addClickListener(e -> editCustomer(customer));
+        Button editEmployeeButton = new Button("Edytuj swoje dane");
+        EmployeeModel employee = employeeService.getEmployeeByUserName(userService.getNameOfLoggedUser());
+        editEmployeeButton.addClickListener(e -> editEmployee(employee));
 
-        HorizontalLayout toolbar = new HorizontalLayout(editCustomerButton);
+        HorizontalLayout toolbar = new HorizontalLayout(editEmployeeButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
-    private void editCustomer(CustomerModel customerModel) {
-        if (customerModel == null) {
+    private void editEmployee(EmployeeModel employeeModel) {
+        if (employeeModel == null) {
             closeEditor();
         } else {
-            form.setCustomer(customerModel);
+            form.setEmployee(employeeModel);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setCustomer(null);
+        form.setEmployee(null);
         form.setVisible(false);
         removeClassName("editing");
     }
-
-
 }

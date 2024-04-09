@@ -1,9 +1,9 @@
 package com.example.rentalcars.enums;
 
 public enum EmployeePosition {
-    EMPLOYEE("Employee"),
-    MANAGER("Manager"),
-    CUSTOMER("Customer");
+    EMPLOYEE("EMPLOYEE"),
+    MANAGER("MANAGER"),
+    ADMIN("ADMIN");
 
     private String name;
 

@@ -27,18 +27,13 @@ public class UserModel {
     private String email;
 
     @Column
-    private Boolean active;
+    private Boolean state;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleModel role;
 
-
-    public Boolean isEnabled(){
-        return active;
-//        if (active){
-//            return true;
-//        }
-//        return false;
+    public Boolean isActive(){
+        return state;
     }
 }

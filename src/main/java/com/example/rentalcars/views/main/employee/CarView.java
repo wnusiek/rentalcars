@@ -17,8 +17,8 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "car", layout =  MainLayout.class)
 @PageTitle("Samochody")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class CarView extends VerticalLayout {
 
     private final CarService carService;

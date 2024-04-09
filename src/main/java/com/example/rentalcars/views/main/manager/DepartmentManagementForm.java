@@ -17,7 +17,7 @@ import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
 
 @PermitAll
-public class DepartmentForm extends FormLayout {
+public class DepartmentManagementForm extends FormLayout {
     Binder<DepartmentModel> departmentBinder = new BeanValidationBinder<>(DepartmentModel.class);
     TextField city = new TextField("Miasto");
     TextField address = new TextField("Adres oddziału");
@@ -26,7 +26,7 @@ public class DepartmentForm extends FormLayout {
     Button cancel = new Button("Anuluj");
     private DepartmentModel departmentModel;
 
-    public DepartmentForm() {
+    public DepartmentManagementForm() {
         departmentBinder.bindInstanceFields(this);
         addClassName("department-form");
         add(
@@ -48,7 +48,7 @@ public class DepartmentForm extends FormLayout {
 
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, departmentModel)));
-        cancel.addClickListener(event -> fireEvent(new DepartmentForm.CloseEvent(this)));
+        cancel.addClickListener(event -> fireEvent(new DepartmentManagementForm.CloseEvent(this)));
 
         return new HorizontalLayout(save, delete, cancel);
     }
@@ -67,10 +67,10 @@ public class DepartmentForm extends FormLayout {
     }
 
     //EVENTS
-    public static abstract class DepartmentFormEvent extends ComponentEvent<DepartmentForm> {
+    public static abstract class DepartmentFormEvent extends ComponentEvent<DepartmentManagementForm> {
         private DepartmentModel departmentModel;
 
-        protected DepartmentFormEvent(DepartmentForm source, DepartmentModel departmentModel) {
+        protected DepartmentFormEvent(DepartmentManagementForm source, DepartmentModel departmentModel) {
             super(source, false);
             this.departmentModel = departmentModel;
         }
@@ -79,18 +79,18 @@ public class DepartmentForm extends FormLayout {
             return departmentModel;
         }
     }
-    public static class SaveEvent extends DepartmentForm.DepartmentFormEvent {
-        SaveEvent(DepartmentForm source, DepartmentModel departmentModel) {
+    public static class SaveEvent extends DepartmentManagementForm.DepartmentFormEvent {
+        SaveEvent(DepartmentManagementForm source, DepartmentModel departmentModel) {
             super(source, departmentModel);
         }
     }
-        public static class DeleteEvent extends DepartmentForm.DepartmentFormEvent{
-        DeleteEvent(DepartmentForm source, DepartmentModel departmentModel){
+        public static class DeleteEvent extends DepartmentManagementForm.DepartmentFormEvent{
+        DeleteEvent(DepartmentManagementForm source, DepartmentModel departmentModel){
             super(source, departmentModel);
         }
     }
-    public static class CloseEvent extends DepartmentForm.DepartmentFormEvent {
-        CloseEvent(DepartmentForm source) {
+    public static class CloseEvent extends DepartmentManagementForm.DepartmentFormEvent {
+        CloseEvent(DepartmentManagementForm source) {
             super(source, null);
         }
     }
@@ -99,12 +99,12 @@ public class DepartmentForm extends FormLayout {
         return addListener(DeleteEvent.class, listener);
     }
 
-    public Registration addSaveListener(ComponentEventListener<DepartmentForm.SaveEvent> listener) {
-        return addListener(DepartmentForm.SaveEvent.class, listener);
+    public Registration addSaveListener(ComponentEventListener<DepartmentManagementForm.SaveEvent> listener) {
+        return addListener(DepartmentManagementForm.SaveEvent.class, listener);
     }
 
-    public Registration addCloseListener(ComponentEventListener<DepartmentForm.CloseEvent> listener) {
-        return addListener(DepartmentForm.CloseEvent.class, listener);
+    public Registration addCloseListener(ComponentEventListener<DepartmentManagementForm.CloseEvent> listener) {
+        return addListener(DepartmentManagementForm.CloseEvent.class, listener);
     }
 
 

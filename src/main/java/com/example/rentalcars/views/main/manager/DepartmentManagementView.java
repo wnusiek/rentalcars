@@ -15,15 +15,15 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "departments", layout = MainLayout.class)
 @PageTitle("Lista oddziałów")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
-public class DepartmentView extends VerticalLayout {
+@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
+public class DepartmentManagementView extends VerticalLayout {
 
     private final DepartmentService departmentService;
     Grid<DepartmentModel> grid = new Grid<>(DepartmentModel.class, false);
-    DepartmentForm form = new DepartmentForm();
+    DepartmentManagementForm form = new DepartmentManagementForm();
 
-    public DepartmentView(DepartmentService departmentService) {
+    public DepartmentManagementView(DepartmentService departmentService) {
         this.departmentService = departmentService;
         addClassName("departments-view");
         setSizeFull();
@@ -53,7 +53,7 @@ public class DepartmentView extends VerticalLayout {
     }
 
     private void configureForm(){
-        form = new DepartmentForm();
+        form = new DepartmentManagementForm();
         form.setWidth("25em");
 
         form.addSaveListener(this::saveDepartment);
@@ -61,13 +61,13 @@ public class DepartmentView extends VerticalLayout {
         form.addCloseListener(closeEvent -> closeEditor());
     }
 
-    private void deleteDepartment(DepartmentForm.DeleteEvent event){
+    private void deleteDepartment(DepartmentManagementForm.DeleteEvent event){
         departmentService.deleteDepartment(event.getDepartment());
         updateDepartmentList();
         closeEditor();
     }
 
-    private void saveDepartment(DepartmentForm.SaveEvent event){
+    private void saveDepartment(DepartmentManagementForm.SaveEvent event){
         departmentService.postAddDepartment(event.getDepartment());
         updateDepartmentList();
         closeEditor();

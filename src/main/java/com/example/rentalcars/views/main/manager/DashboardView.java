@@ -29,8 +29,8 @@ import java.util.Map;
 
 @Route(value = "dashboard", layout = MainLayout.class)
 @PageTitle("Dashboard")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
 public class DashboardView extends VerticalLayout {
     private CrmService crmService;
     private DepartmentService departmentService;

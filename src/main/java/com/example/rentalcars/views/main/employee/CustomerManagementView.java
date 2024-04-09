@@ -3,7 +3,7 @@ package com.example.rentalcars.views.main.employee;
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.example.rentalcars.views.main.customer.CustomerForm;
+import com.example.rentalcars.views.main.customer.CustomerDataForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,13 +18,13 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "customermanagement", layout = MainLayout.class)
 @PageTitle("Klienci")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class CustomerManagementView extends VerticalLayout {
 
     private final CustomerService customerService;
     Grid<CustomerModel> grid = new Grid<>(CustomerModel.class, false);
-    CustomerForm form = new CustomerForm();
+    CustomerDataForm form = new CustomerDataForm();
     TextField filterText = new TextField();
 
     public CustomerManagementView(CustomerService customerService) {
@@ -35,7 +35,8 @@ public class CustomerManagementView extends VerticalLayout {
         configureForm();
         add(
                 getToolbar(),
-                getContent());
+                getContent()
+        );
         updateCustomerList();
         closeEditor();
 
@@ -58,7 +59,7 @@ public class CustomerManagementView extends VerticalLayout {
         return content;
     }
     private void configureForm() {
-        form = new CustomerForm();
+        form = new CustomerDataForm();
         form.setWidth("25em");
 
         form.addSaveListener(this::saveCustomer);
@@ -66,7 +67,7 @@ public class CustomerManagementView extends VerticalLayout {
     }
 
 
-    private void saveCustomer(CustomerForm.SaveEvent event){
+    private void saveCustomer(CustomerDataForm.SaveEvent event){
         customerService.postAddCustomer(event.getCustomer());
         updateCustomerList();
         closeEditor();

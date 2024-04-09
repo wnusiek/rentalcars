@@ -26,8 +26,8 @@ import java.time.LocalDate;
 
 @Route(value = "addrental", layout = MainLayout.class)
 @PageTitle("Wypożyczanie")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
+@Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 
 public class RentalView extends VerticalLayout {
 

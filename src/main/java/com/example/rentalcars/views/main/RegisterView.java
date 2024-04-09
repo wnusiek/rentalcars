@@ -36,7 +36,6 @@ public class RegisterView extends VerticalLayout {
 
     // Inicjujemy pola i przycisk (tak jak wcześniej)
 
-
     public RegisterView(UserService userService, CustomerService customerService, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
         this.customerService = customerService;
@@ -67,17 +66,17 @@ public class RegisterView extends VerticalLayout {
             String firstName = name.getValue();
             String userEmail = email.getValue();
             String userPassword = password.getValue();
-            RoleModel roleModel = roleService.getRoleByName("USER");
+            RoleModel roleModel = roleService.getRoleByName("CUSTOMER");
 
             UserModel newUser = new UserModel();
             newUser.setName(firstName);
             newUser.setEmail(userEmail);
             newUser.setPassword(userPassword);
             newUser.setRole(roleModel);
-            newUser.setActive(true);
+            newUser.setState(true);
 
             if (userService.checkIfUserExists(newUser)) {
-                Notification.show("User istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
+                Notification.show("Taki użytkownik już istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
             } else {
                 userService.addUser(newUser);
                 CustomerModel newCustomer = new CustomerModel(1L,"","","","","","","",newUser);

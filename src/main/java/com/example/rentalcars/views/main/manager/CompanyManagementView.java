@@ -14,15 +14,15 @@ import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "configuration", layout = MainLayout.class)
 @PageTitle("Konfiguracja")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
-public class CompanyView extends VerticalLayout {
+@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_MANAGER", "ROLE_ADMIN"})
+public class CompanyManagementView extends VerticalLayout {
 
     private final CompanyService companyService;
     Grid<CompanyModel> grid = new Grid<>(CompanyModel.class);
-    CompanyForm form = new CompanyForm();
+    CompanyManagementForm form = new CompanyManagementForm();
 
-    public CompanyView(CompanyService companyService) {
+    public CompanyManagementView(CompanyService companyService) {
         this.companyService = companyService;
         addClassName("company-view");
         setSizeFull();
@@ -49,14 +49,14 @@ public class CompanyView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new CompanyForm();
+        form = new CompanyManagementForm();
         form.setWidth("25em");
 
         form.addSaveListener(this::saveCompany);
         form.addCloseListener(event -> closeEditor());
     }
 
-    private void saveCompany(CompanyForm.SaveEvent event){
+    private void saveCompany(CompanyManagementForm.SaveEvent event){
         companyService.updateCompany(event.getCompany());
         updateCompanyInfo();
         closeEditor();

@@ -22,9 +22,9 @@ import java.util.Collections;
 
 @Route(value = "departmentcars", layout = MainLayout.class)
 @PageTitle("Samochody oddziałów")
-@Secured("ROLE_ADMIN")
-@RolesAllowed("ROLE_ADMIN")
-public class DepartmentCarsView extends VerticalLayout {
+@Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
+public class DepartmentCarsManagementView extends VerticalLayout {
     private final DepartmentService departmentService;
     private final CarService carService;
     Grid<CarModel> grid = new Grid<>(CarModel.class, false);
@@ -34,7 +34,7 @@ public class DepartmentCarsView extends VerticalLayout {
     Button removeButton = new Button("Usuń samochód z oddziału");
 
 
-    public DepartmentCarsView(DepartmentService departmentService, CarService carService) {
+    public DepartmentCarsManagementView(DepartmentService departmentService, CarService carService) {
         this.departmentService = departmentService;
         this.carService = carService;
         setSizeFull();
