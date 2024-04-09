@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.pl.PESEL;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +34,7 @@ public class CustomerModel {
     @Column(name = "driver_licence_number")
     private String driverLicenceNumber;
 
+    @PESEL
     @Column(name = "pesel")
     private String pesel;
 
