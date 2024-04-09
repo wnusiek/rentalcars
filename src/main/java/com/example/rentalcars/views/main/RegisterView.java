@@ -73,7 +73,7 @@ public class RegisterView extends VerticalLayout {
             newUser.setEmail(userEmail);
             newUser.setPassword(userPassword);
             newUser.setRole(roleModel);
-            newUser.setActive(true);
+            newUser.setState(true);
 
             if (userService.checkIfUserExists(newUser)) {
                 Notification.show("Taki użytkownik już istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
