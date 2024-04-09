@@ -16,7 +16,7 @@ import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.RolesAllowed;
 
 @RolesAllowed("ROLE_ADMIN")
-public class CompanyForm extends VerticalLayout {
+public class CompanyManagementForm extends VerticalLayout {
     Binder<CompanyModel> binder = new BeanValidationBinder<>(CompanyModel.class);
     TextField companyName = new TextField("Company name");
     TextField companyDomainURL = new TextField("Company domain URL");
@@ -27,7 +27,7 @@ public class CompanyForm extends VerticalLayout {
     Button save = new Button("Save");
     private CompanyModel companyModel;
 
-    public CompanyForm(){
+    public CompanyManagementForm(){
         binder.bindInstanceFields(this);
         addClassName("company-form");
         add(
@@ -58,9 +58,9 @@ public class CompanyForm extends VerticalLayout {
         }
     }
 
-    public static abstract class CompanyFormEvent extends ComponentEvent<CompanyForm> {
+    public static abstract class CompanyFormEvent extends ComponentEvent<CompanyManagementForm> {
         private CompanyModel companyModel;
-        protected CompanyFormEvent(CompanyForm source, CompanyModel companyModel) {
+        protected CompanyFormEvent(CompanyManagementForm source, CompanyModel companyModel) {
             super(source, false);
             this.companyModel = companyModel;
         }
@@ -68,22 +68,22 @@ public class CompanyForm extends VerticalLayout {
             return companyModel;
         }
     }
-    public static class SaveEvent extends CompanyForm.CompanyFormEvent {
-        SaveEvent(CompanyForm source, CompanyModel companyModel) {
+    public static class SaveEvent extends CompanyManagementForm.CompanyFormEvent {
+        SaveEvent(CompanyManagementForm source, CompanyModel companyModel) {
             super(source, companyModel);
         }
     }
 
-    public static class CloseEvent extends CompanyForm.CompanyFormEvent {
-        CloseEvent(CompanyForm source) {
+    public static class CloseEvent extends CompanyManagementForm.CompanyFormEvent {
+        CloseEvent(CompanyManagementForm source) {
             super(source, null);
         }
     }
 
-    public Registration addSaveListener(ComponentEventListener<CompanyForm.SaveEvent> listener) {
-        return addListener(CompanyForm.SaveEvent.class, listener);
+    public Registration addSaveListener(ComponentEventListener<CompanyManagementForm.SaveEvent> listener) {
+        return addListener(CompanyManagementForm.SaveEvent.class, listener);
     }
-    public Registration addCloseListener(ComponentEventListener<CompanyForm.CloseEvent> listener) {
-        return addListener(CompanyForm.CloseEvent.class, listener);
+    public Registration addCloseListener(ComponentEventListener<CompanyManagementForm.CloseEvent> listener) {
+        return addListener(CompanyManagementForm.CloseEvent.class, listener);
     }
 }
