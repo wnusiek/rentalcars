@@ -1,6 +1,5 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.UserRepository;
 import com.vaadin.flow.component.notification.Notification;
@@ -11,15 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-
-    private final RoleService roleService;
     private PasswordEncoder passwordEncoder;
 
     public List<UserModel> getAllUsers() {
@@ -76,13 +72,6 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
-
-//    public void syncEmail(CustomerModel customer){
-//        Optional<UserModel> user = userRepository.findByName(getNameOfLoggedUser());
-//        if (user.isPresent()){
-//            user.get().setEmail(customer.getEmail());
-//        }
-//    }
 
 }
 
