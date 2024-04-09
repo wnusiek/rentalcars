@@ -2,6 +2,7 @@ package com.example.rentalcars.views.main.manager;
 
 import com.example.rentalcars.enums.EmployeePosition;
 import com.example.rentalcars.model.EmployeeModel;
+import com.example.rentalcars.model.UserModel;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -18,27 +19,33 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
 
+import java.util.List;
+
 @PermitAll
-public class EmployeeForm extends FormLayout {
+public class EmployeeManagementForm extends FormLayout {
     Binder<EmployeeModel> binder = new BeanValidationBinder<>(EmployeeModel.class);
 
-    TextField firstName = new TextField("First name");
-    TextField lastName = new TextField("Last name");
-    ComboBox<EmployeePosition> position = new ComboBox<>("Position");
+    TextField firstName = new TextField("Imię");
+    TextField lastName = new TextField("Nazwisko");
+    ComboBox<EmployeePosition> position = new ComboBox<>("Stanowisko");
+    ComboBox<UserModel> user = new ComboBox<>("Użytkownik");
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
+    Button save = new Button("Zapisz");
+    Button delete = new Button("Usuń");
+    Button cancel = new Button("Anuluj");
     private EmployeeModel employeeModel;
 
-    public EmployeeForm() {
+    public EmployeeManagementForm(List<UserModel> users) {
         position.setItems(EmployeePosition.values());
+        user.setItems(users);
+        user.setItemLabelGenerator(UserModel::getName);
         binder.bindInstanceFields(this);
         addClassName("employee-form");
         add(
                 firstName,
                 lastName,
                 position,
+                user,
                 createButtonLayout()
         );
     }
@@ -72,9 +79,9 @@ public class EmployeeForm extends FormLayout {
         }
     }
     //Events
-    public static abstract class EmployeeFormEvent extends ComponentEvent<EmployeeForm> {
+    public static abstract class EmployeeFormEvent extends ComponentEvent<EmployeeManagementForm> {
         private EmployeeModel employeeModel;
-        protected EmployeeFormEvent(EmployeeForm source, EmployeeModel employeeModel) {
+        protected EmployeeFormEvent(EmployeeManagementForm source, EmployeeModel employeeModel) {
             super(source, false);
             this.employeeModel = employeeModel;
         }
@@ -83,17 +90,17 @@ public class EmployeeForm extends FormLayout {
         }
     }
     public static class SaveEvent extends EmployeeFormEvent {
-        SaveEvent(EmployeeForm source, EmployeeModel employeeModel) {
+        SaveEvent(EmployeeManagementForm source, EmployeeModel employeeModel) {
             super(source, employeeModel);
         }
     }
     public static class DeleteEvent extends EmployeeFormEvent {
-        DeleteEvent(EmployeeForm source, EmployeeModel employeeModel) {
+        DeleteEvent(EmployeeManagementForm source, EmployeeModel employeeModel) {
             super(source, employeeModel);
         }
     }
     public static class CloseEvent extends EmployeeFormEvent {
-        CloseEvent(EmployeeForm source) {
+        CloseEvent(EmployeeManagementForm source) {
             super(source, null);
         }
     }
