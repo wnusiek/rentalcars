@@ -1,7 +1,9 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.RentalModel;
+import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.RentalRepository;
 import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,12 @@ public class RentalService {
             Notification.show("Coś napiedaczyłeś z datą drogi kolego");
             return;
         }
+        var reservation = rental.getReservation();
+        var carId = reservation.getCar().getId();
+        var receptionId = reservation.getReceptionVenue().getId();
 
-        departmentService.removeCarFromDepartment(rental.getReservation().getCar().getId(), rental.getReservation().getReceptionVenue().getId());
-        carService.setCarStatus(rental.getReservation().getCar().getId(), CarStatus.HIRED);
+        departmentService.removeCarFromDepartment(carId, receptionId);
+        carService.setCarStatus(carId, CarStatus.HIRED);
         rentalRepository.save(rental);
     }
 
@@ -69,5 +74,14 @@ public class RentalService {
 
     public void deleteRental(RentalModel rentalModel){
         rentalRepository.delete(rentalModel);
+    }
+
+    public RentalModel findByReservation(ReservationModel reservationModel){
+        var rental = rentalRepository.findByReservation(reservationModel);
+        if (rental.isPresent()){
+            return rental.get();
+        } else {
+            return null;
+        }
     }
 }

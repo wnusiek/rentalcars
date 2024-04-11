@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.service.EmployeeService;
@@ -143,6 +144,8 @@ public class RentalView extends VerticalLayout {
 
     private void saveRental(RentalForm.SaveEvent event){
         rentalService.postAddRental(event.getRental());
+        Long reservationId = event.getRental().getReservation().getId();
+        reservationService.setReservationStatus(reservationId, ReservationStatus.RENTED);
         closeEditor();
         updateReservationList();
     }

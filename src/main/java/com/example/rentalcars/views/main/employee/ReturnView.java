@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.service.*;
@@ -136,6 +137,8 @@ public class ReturnView extends VerticalLayout {
 
     private void saveReturn(ReturnForm.SaveEvent event){
         returnService.addReturn(event.getReturn());
+        Long reservationId = event.getReturn().getReservation().getId();
+        reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
         closeEditor();
         updateRentalList();
         comments.clear();

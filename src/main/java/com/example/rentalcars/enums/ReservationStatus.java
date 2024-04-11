@@ -3,7 +3,9 @@ package com.example.rentalcars.enums;
 public enum ReservationStatus {
 
     RESERVED("Auto zarezerwowane"),
-    CANCELLED("Rezerwacja anulowana");
+    CANCELLED("Rezerwacja anulowana"),
+    RENTED("Auto wypożyczone"),
+    RETURNED("Auto zwrócone");
 
     private String name;
 
