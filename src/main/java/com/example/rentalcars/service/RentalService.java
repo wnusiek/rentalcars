@@ -81,7 +81,6 @@ public class RentalService {
         if (rental.isPresent()){
             return rental.get();
         } else {
-            Notification.show("Nie znaleziono rezerwacji").setPosition(Notification.Position.MIDDLE);
             return null;
         }
     }
