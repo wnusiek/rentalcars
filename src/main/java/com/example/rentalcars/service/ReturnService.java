@@ -71,5 +71,12 @@ public class ReturnService {
         return income;
     }
 
-
+    public ReturnModel findByReservation(ReservationModel reservationModel) {
+        var ret = returnRepository.findByReservation(reservationModel);
+        if (ret.isPresent()){
+            return ret.get();
+        } else {
+            return null;
+        }
+    }
 }

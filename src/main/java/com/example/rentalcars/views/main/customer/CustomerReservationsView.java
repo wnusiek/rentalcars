@@ -1,7 +1,9 @@
 package com.example.rentalcars.views.main.customer;
 
 import com.example.rentalcars.model.ReservationModel;
+import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
+import com.example.rentalcars.service.ReturnService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -21,11 +23,16 @@ import org.springframework.security.access.annotation.Secured;
 public class CustomerReservationsView extends VerticalLayout {
 
     private final ReservationService reservationService;
+    private final RentalService rentalService;
+    private final ReturnService returnService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class, false);
     ReservationModel reservationModel;
+    Button cancelReservationButton = new Button("Anuluj rezerwację");
 
-    public CustomerReservationsView(ReservationService reservationService) {
+    public CustomerReservationsView(ReservationService reservationService, RentalService rentalService, ReturnService returnService) {
         this.reservationService = reservationService;
+        this.rentalService = rentalService;
+        this.returnService = returnService;
         setSizeFull();
         configureGrid();
         add(
@@ -36,19 +43,23 @@ public class CustomerReservationsView extends VerticalLayout {
     }
 
     private Component getToolbar() {
-        Button cancelReservationButton = new Button("Anuluj rezerwację");
         cancelReservationButton.addClickListener(e -> cancelReservation());
-
         HorizontalLayout toolbar = new HorizontalLayout(cancelReservationButton);
         return toolbar;
     }
 
     private void cancelReservation() {
-        if (this.reservationModel == null){
+        if (reservationModel == null){
             Notification.show("Zaznacz rezerwację, którą chcesz anulować").setPosition(Notification.Position.MIDDLE);
         } else {
-            reservationService.cancelReservation(this.reservationModel);
-            updateReservationList();
+            boolean carRented = rentalService.findByReservation(reservationModel) != null;
+            boolean carReturned = returnService.findByReservation(reservationModel) != null;
+            if (carRented || carReturned){
+                Notification.show(reservationModel.getReservationStatus() + ". Nie można anulować tej rezerwacji.").setPosition(Notification.Position.MIDDLE);
+            } else {
+                reservationService.cancelReservation(reservationModel);
+                updateReservationList();
+            }
         }
 
     }
