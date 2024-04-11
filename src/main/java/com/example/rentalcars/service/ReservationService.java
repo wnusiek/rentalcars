@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,8 +78,8 @@ public class ReservationService {
         reservationRepository.deleteById(reservationModel.getId());
     }
 
-    public ReservationModel findById(Long id) {
-        return reservationRepository.findById(id).orElse(null);
+    public Optional<ReservationModel> findById(Long id) {
+        return reservationRepository.findById(id);
     }
 
     private List<ReservationModel> getReservationListByCarId(Long carId) {
@@ -171,6 +172,15 @@ public class ReservationService {
             }
         } else {
             Notification.show("Nie można anulować tej rezerwacji").setPosition(Notification.Position.MIDDLE);
+        }
+    }
+
+    public void setReservationStatus(Long id, ReservationStatus reservationStatus) {
+        var reservation = findById(id);
+        if (reservation.isPresent()){
+            var r = reservation.get();
+            r.setReservationStatus(reservationStatus);
+            editReservation(r);
         }
     }
 }
