@@ -1,11 +1,16 @@
 # rentalcars - Wypożyczalnia samochodów
 
 ## Główne funkcje systemu
-- Rezerwacja samochodu (przez konkretnego klienta na konkretny termin)
+
+
+## Panel menadżera
+- Konfiguracja wypożyczalni
+- Zarządzanie listą siedzib
 - Wypożyczanie samochodu
 - Zwrot samochodu
-- Zarządzanie listą siedzi
 - Zarządzanie flotą oraz ich obecną lokalizacją
+- Zarządzanie pracownikami
+- Dashboard - statystyki
 
 ## Panel pracownika
 - Samochody - lista samochodów, formularz dodawania samochodu do floty
@@ -21,9 +26,8 @@
 - Pracownicy oddziałów - zarządzanie pracownikami oddziałów
 - Samochody oddziałów zarządzanie samochodami oddziałów
 - Moje dane - dane użytkownika / pracownika
-- Konfiguracja - konfiguracja wypożyczalni
 
-## Panel użytkownika/klienta
+## Panel klienta
 - Moje dane - dane użytkownika (imię, nazwisko, telefon, email, telefon, adres, nr prawa jazdy)
 - Zarezerwuj - formularz rezerwacji samochodu (data odbioru, data zwrotu, oddział odbioru, oddział zwrotu, wybór auta)
 - Moje rezerwacje - lista dokonanych rezerwacji (auto, daty, koszty, miejsce wypożyczenia i zwrotu)
