@@ -22,14 +22,9 @@ public class RentalService {
     private final ReturnService returnService;
 
     public void postAddRental(RentalModel rental) {
-        if(!rental.getDateOfRental().isEqual(LocalDate.now())){
-            Notification.show("Coś napiedaczyłeś z datą drogi kolego");
-            return;
-        }
         var reservation = rental.getReservation();
         var carId = reservation.getCar().getId();
         var receptionId = reservation.getReceptionVenue().getId();
-
         departmentService.removeCarFromDepartment(carId, receptionId);
         carService.setCarStatus(carId, CarStatus.HIRED);
         rentalRepository.save(rental);
@@ -46,6 +41,7 @@ public class RentalService {
                 .toList();
         return getRentalList()
                 .stream()
+                .filter(rentalModel -> rentalModel.getReservation().getReservationStatus().equals(ReservationStatus.RENTED))
                 .filter(rentalModel -> !returnedCarsReservationsIds.contains(rentalModel.getId()))
                 .toList();
     }
