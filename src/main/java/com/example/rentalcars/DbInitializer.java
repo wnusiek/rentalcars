@@ -4,6 +4,7 @@ import com.example.rentalcars.enums.*;
 import com.example.rentalcars.model.*;
 import com.example.rentalcars.repository.*;
 import com.example.rentalcars.service.DepartmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -11,36 +12,17 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
+@RequiredArgsConstructor
 public class DbInitializer implements ApplicationRunner {
 
     private final CarRepository carRepository;
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
-    private final ReturnRepository returnRepository;
-    private final RentalRepository rentalRepository;
-    private final ReservationRepository reservationRepository;
     private final CustomerRepository customerRepository;
     private final CompanyRepository companyRepository;
-
     private final DepartmentService departmentService;
-
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
-    public DbInitializer(CarRepository carRepository, EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, ReturnRepository returnRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, CustomerRepository customerRepository, CompanyRepository companyRepository, DepartmentService departmentService, UserRepository userRepository, RoleRepository roleRepository) {
-        this.carRepository = carRepository;
-        this.employeeRepository = employeeRepository;
-        this.departmentRepository = departmentRepository;
-        this.returnRepository = returnRepository;
-        this.rentalRepository = rentalRepository;
-        this.reservationRepository = reservationRepository;
-        this.customerRepository = customerRepository;
-        this.companyRepository = companyRepository;
-        this.departmentService = departmentService;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -74,7 +56,7 @@ public class DbInitializer implements ApplicationRunner {
         employeeRepository.save(new EmployeeModel(3l, "employee", "employee", EmployeePosition.EMPLOYEE, userEmployee));
         customerRepository.save(new CustomerModel(1l, "klient", "klient", "000000000", "AAAAAA", "99999999999", "ZZZZZZZZ", "00-000", userCustomer));
 
-        companyRepository.save(new CompanyModel(1l, "Gruz-rental", "gruz-rental.com", "", "", ""));
+        companyRepository.save(new CompanyModel(1l, "Gruz-rental", "gruz-rental.com", "", "Janusz Biznesu", ""));
 
     }
 }
