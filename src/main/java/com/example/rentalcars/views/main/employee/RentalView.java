@@ -106,7 +106,9 @@ public class RentalView extends VerticalLayout {
 
         dateOfRental.setPlaceholder("Wybierz datę");
         dateOfRental.setClearButtonVisible(true);
-        dateOfRental.setMin(LocalDate.now());
+        LocalDate now = LocalDate.now();
+        dateOfRental.setMin(now);
+        dateOfRental.setMax(now);
         rentACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
         var toolbar = new HorizontalLayout(dateOfRental, comments, rentACarButton);
@@ -143,8 +145,9 @@ public class RentalView extends VerticalLayout {
     }
 
     private void saveRental(RentalForm.SaveEvent event){
-        rentalService.postAddRental(event.getRental());
-        Long reservationId = event.getRental().getReservation().getId();
+        RentalModel rentalModel = event.getRental();
+        rentalService.postAddRental(rentalModel);
+        Long reservationId = rentalModel.getReservation().getId();
         reservationService.setReservationStatus(reservationId, ReservationStatus.RENTED);
         closeEditor();
         updateReservationList();
