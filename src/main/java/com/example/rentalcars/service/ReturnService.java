@@ -21,13 +21,11 @@ public class ReturnService {
     private final CarService carService;
 
     public void addReturn(ReturnModel returnModel) {
-        if(!returnModel.getDateOfReturn().isEqual(LocalDate.now())){
-            Notification.show("Coś napierdaczyłeś z datą drogi kolego");
-            return;
+        Boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(returnModel.getReservation().getDateTo());
+        if(carReturnedAfterDeadline){
+            Notification.show("Zwrot po terminie!").setPosition(Notification.Position.MIDDLE);
         }
         returnModel.setTotalCost(returnModel.getReservation().getPrice());
-        departmentService.addCarToDepartment(returnModel.getReservation().getCar().getId(), returnModel.getReservation().getReturnVenue().getId());
-        carService.setCarStatus(returnModel.getReservation().getCar().getId(), CarStatus.AVAILABLE);
         returnRepository.save(returnModel);
     }
 
