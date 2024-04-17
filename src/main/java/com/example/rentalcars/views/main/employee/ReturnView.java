@@ -1,7 +1,9 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.RentalModel;
+import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.service.*;
 import com.example.rentalcars.views.main.MainLayout;
@@ -18,6 +20,8 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
+import java.time.LocalDate;
+
 @Route(value = "returnView", layout = MainLayout.class)
 @PageTitle("Zwroty")
 @Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
@@ -25,6 +29,8 @@ import org.springframework.security.access.annotation.Secured;
 
 public class ReturnView extends VerticalLayout {
     private final ReservationService reservationService;
+    private final DepartmentService departmentService;
+    private final CarService carService;
     private final EmployeeService employeeService;
     private final ReturnService returnService;
     private final RentalService rentalService;
@@ -36,8 +42,10 @@ public class ReturnView extends VerticalLayout {
     ReturnForm form;
     RentalModel employeeChoice;
 
-    public ReturnView(ReservationService reservationService, EmployeeService employeeService, ReturnService returnService, RentalService rentalService, UserService userService) {
+    public ReturnView(ReservationService reservationService, DepartmentService departmentService, CarService carService, EmployeeService employeeService, ReturnService returnService, RentalService rentalService, UserService userService) {
         this.reservationService = reservationService;
+        this.departmentService = departmentService;
+        this.carService = carService;
         this.employeeService = employeeService;
         this.returnService = returnService;
         this.rentalService = rentalService;
@@ -100,6 +108,9 @@ public class ReturnView extends VerticalLayout {
     private HorizontalLayout getToolbar(){
         dateOfReturn.setPlaceholder("Wybierz datę");
         dateOfReturn.setClearButtonVisible(true);
+        LocalDate now = LocalDate.now();
+        dateOfReturn.setMin(now);
+        dateOfReturn.setMax(now);
         returnACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
         var toolbar = new HorizontalLayout(dateOfReturn, comments, returnACarButton);
@@ -136,8 +147,14 @@ public class ReturnView extends VerticalLayout {
     }
 
     private void saveReturn(ReturnForm.SaveEvent event){
-        returnService.addReturn(event.getReturn());
-        Long reservationId = event.getReturn().getReservation().getId();
+        ReturnModel returnModel = event.getReturn();
+        ReservationModel reservationModel = returnModel.getReservation();
+        Long carId = reservationModel.getCar().getId();
+        Long returnVenueId = reservationModel.getReturnVenue().getId();
+        Long reservationId = reservationModel.getId();
+        returnService.addReturn(returnModel);
+        departmentService.addCarToDepartment(carId, returnVenueId);
+        carService.setCarStatus(carId, CarStatus.AVAILABLE);
         reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
         closeEditor();
         updateRentalList();
