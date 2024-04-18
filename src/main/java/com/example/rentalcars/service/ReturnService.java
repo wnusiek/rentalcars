@@ -45,10 +45,11 @@ public class ReturnService {
         if (lastName == null || lastName.isEmpty()){
             return getReturnModelList();
         }
-        return getReturnModelList()
-                .stream()
-                .filter(returnModel -> returnModel.getReservation().getCustomer().getLastName().equals(lastName))
-                .toList();
+        return returnRepository.search(lastName);
+//        return getReturnModelList()
+//                .stream()
+//                .filter(returnModel -> returnModel.getReservation().getCustomer().getLastName().equals(lastName))
+//                .toList();
     }
 
     public void updateReturn(ReturnModel returnModel) {

@@ -60,10 +60,11 @@ public class ReservationService {
         if (lastName == null || lastName.isEmpty()){
             return getReservationList();
         }
-        return getReservationList()
-                .stream()
-                .filter(reservation -> reservation.getCustomer().getLastName().equals(lastName))
-                .toList();
+        return reservationRepository.search(lastName);
+//        return getReservationList()
+//                .stream()
+//                .filter(reservation -> reservation.getCustomer().getLastName().equals(lastName))
+//                .toList();
     }
 
     public void editReservation(ReservationModel editReservation) {

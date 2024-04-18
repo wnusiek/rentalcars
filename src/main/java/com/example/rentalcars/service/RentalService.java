@@ -50,10 +50,11 @@ public class RentalService {
         if (lastName == null || lastName.isEmpty()){
             return getRentalList();
         }
-        return getRentalList()
-                .stream()
-                .filter(rental -> rental.getReservation().getCustomer().getLastName().equals(lastName))
-                .toList();
+        return rentalRepository.search(lastName);
+//        return getRentalList()
+//                .stream()
+//                .filter(rental -> rental.getReservation().getCustomer().getLastName().equals(lastName))
+//                .toList();
     }
 
     public RentalModel findById(Long id) {
