@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main.customer;
 
+import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
@@ -43,6 +44,7 @@ public class ReservationView extends VerticalLayout {
     DatePicker endDate = new DatePicker("Data zwrotu");
     ComboBox<DepartmentModel> receptionVenueComboBox = new ComboBox<>("Oddział odbioru");
     ComboBox<DepartmentModel> returnVenueCombobox = new ComboBox<>("Oddział zwrotu");
+    ComboBox<GearboxType> gearboxTypeComboBox = new ComboBox<>("Typ skrzyni");
     Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
     Button makeReservationButton = new Button("Zarezerwuj");
     private CarModel customerChoice;
@@ -151,9 +153,13 @@ public class ReservationView extends VerticalLayout {
 
         carStatusCheckBox.addValueChangeListener(e -> updateCarList());
 
+        gearboxTypeComboBox.setPlaceholder("Wybierz typ skrzyni");
+        gearboxTypeComboBox.setItems(GearboxType.values());
+        gearboxTypeComboBox.addValueChangeListener(e->updateCarList());
+
         makeReservationButton.addClickListener(e -> validateFields());
 
-        var toolbar = new HorizontalLayout(startDate, endDate, receptionVenueComboBox, returnVenueCombobox, carStatusCheckBox, makeReservationButton);
+        var toolbar = new HorizontalLayout(startDate, endDate, receptionVenueComboBox, returnVenueCombobox, carStatusCheckBox, makeReservationButton, gearboxTypeComboBox);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
