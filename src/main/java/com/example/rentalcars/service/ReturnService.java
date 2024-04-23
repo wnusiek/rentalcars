@@ -21,11 +21,6 @@ public class ReturnService {
     private final CarService carService;
 
     public void addReturn(ReturnModel returnModel) {
-        Boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(returnModel.getReservation().getDateTo());
-        if(carReturnedAfterDeadline){
-            Notification.show("Zwrot po terminie!").setPosition(Notification.Position.MIDDLE);
-        }
-        returnModel.setTotalCost(returnModel.getReservation().getPrice());
         returnRepository.save(returnModel);
     }
 
@@ -46,10 +41,6 @@ public class ReturnService {
             return getReturnModelList();
         }
         return returnRepository.search(lastName);
-//        return getReturnModelList()
-//                .stream()
-//                .filter(returnModel -> returnModel.getReservation().getCustomer().getLastName().equals(lastName))
-//                .toList();
     }
 
     public void updateReturn(ReturnModel returnModel) {
