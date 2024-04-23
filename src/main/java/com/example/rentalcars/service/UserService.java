@@ -6,7 +6,6 @@ import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
 
     public List<UserModel> getAllUsers() {
         return userRepository.findAll();
@@ -51,17 +49,6 @@ public class UserService {
             return true;
         }
         return false;
-    }
-
-    public UserModel findUserByName(String name) {
-        var user = userRepository.findByName(name);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        else {
-            Notification.show("Nie ma takiego użytkownika").setPosition(Notification.Position.BOTTOM_CENTER);
-            return null;
-        }
     }
 
     public boolean isUserLogged(){
