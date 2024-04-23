@@ -19,7 +19,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -141,13 +140,13 @@ public class ReservationView extends VerticalLayout {
 
 
         receptionVenueComboBox.setPlaceholder("Wybierz oddział");
-        receptionVenueComboBox.setItems(departmentService.getDepartmentList1());
+        receptionVenueComboBox.setItems(departmentService.getDepartmentList());
         receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         receptionVenueComboBox.setClearButtonVisible(true);
         receptionVenueComboBox.addValueChangeListener(e -> updateCarList());
 
         returnVenueCombobox.setPlaceholder("Wybierz oddział");
-        returnVenueCombobox.setItems(departmentService.getDepartmentList1());
+        returnVenueCombobox.setItems(departmentService.getDepartmentList());
         returnVenueCombobox.setItemLabelGenerator(DepartmentModel::getCity);
         returnVenueCombobox.setClearButtonVisible(true);
 
@@ -181,7 +180,7 @@ public class ReservationView extends VerticalLayout {
     }
 
     private void configureForm() {
-        reservationForm = new ReservationForm(departmentService.getDepartmentList1(), carService.getCarList1(), customerService.getCustomerList());
+        reservationForm = new ReservationForm(departmentService.getDepartmentList(), carService.getCarList1(), customerService.getCustomerList());
         reservationForm.setWidth("25em");
 
         reservationForm.addSaveListener(this::saveReservation);

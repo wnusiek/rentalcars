@@ -15,10 +15,8 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
@@ -104,7 +102,7 @@ public class DashboardView extends VerticalLayout {
     private Component getEmployeesInDepartmentsChart(){
         Chart chart = new Chart(ChartType.PIE);
         DataSeries dataSeries = new DataSeries();
-        departmentService.getDepartmentList1().forEach(department -> {
+        departmentService.getDepartmentList().forEach(department -> {
             dataSeries.add(new DataSeriesItem(department.getCity(), department.getEmployees().stream().count()));
         });
         chart.getConfiguration().setSeries(dataSeries);
@@ -114,7 +112,7 @@ public class DashboardView extends VerticalLayout {
     private Component getCarsInDepartmentsChart() {
         Chart chart = new Chart(ChartType.PIE);
         DataSeries dataSeries = new DataSeries();
-        departmentService.getDepartmentList1().forEach(department -> {
+        departmentService.getDepartmentList().forEach(department -> {
             dataSeries.add(new DataSeriesItem(department.getCity(), department.getCars().stream().count()));
         });
         chart.getConfiguration().setSeries(dataSeries);
