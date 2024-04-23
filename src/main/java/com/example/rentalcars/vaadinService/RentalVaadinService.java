@@ -3,7 +3,6 @@ package com.example.rentalcars.vaadinService;
 import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.MenagementServices.CarsByDateService;
 import com.example.rentalcars.MenagementServices.CarsBySpecificationService;
-import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.repository.*;
@@ -73,12 +72,12 @@ public class RentalVaadinService {
     public List<CarModel> findCarsByDepartment (DepartmentModel departmentModel, Boolean availabilityCheckbox){
         try {
             if (availabilityCheckbox){
-                return carService.getAvailableCars1(departmentService.getAllCarsByDepartment(departmentModel.getId()));
+                return carService.getAvailableCars(departmentService.getAllCarsByDepartment(departmentModel.getId()));
             } else return departmentService.getAllCarsByDepartment(departmentModel.getId());
 
         } catch (NullPointerException n) {
             if (availabilityCheckbox){
-                return carService.getAvailableCars1(carService.getCarList1());
+                return carService.getAvailableCars(carService.getCarList1());
             } else return carService.getCarList1();
         }
     }
