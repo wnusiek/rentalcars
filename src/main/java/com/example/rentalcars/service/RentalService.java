@@ -5,11 +5,9 @@ import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.RentalRepository;
-import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,7 +19,7 @@ public class RentalService {
     private final CarService carService;
     private final ReturnService returnService;
 
-    public void postAddRental(RentalModel rental) {
+    public void addRental(RentalModel rental) {
         var reservation = rental.getReservation();
         var carId = reservation.getCar().getId();
         var receptionId = reservation.getReceptionVenue().getId();
@@ -51,10 +49,6 @@ public class RentalService {
             return getRentalList();
         }
         return rentalRepository.search(lastName);
-//        return getRentalList()
-//                .stream()
-//                .filter(rental -> rental.getReservation().getCustomer().getLastName().equals(lastName))
-//                .toList();
     }
 
     public RentalModel findById(Long id) {
@@ -67,10 +61,6 @@ public class RentalService {
 
     public void removeRental(Long id) {
         rentalRepository.deleteById(id);
-    }
-
-    public void deleteRental(RentalModel rentalModel){
-        rentalRepository.delete(rentalModel);
     }
 
     public RentalModel findByReservation(ReservationModel reservationModel){

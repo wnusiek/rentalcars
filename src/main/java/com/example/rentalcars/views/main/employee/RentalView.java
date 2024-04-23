@@ -12,8 +12,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -146,7 +144,7 @@ public class RentalView extends VerticalLayout {
 
     private void saveRental(RentalForm.SaveEvent event){
         RentalModel rentalModel = event.getRental();
-        rentalService.postAddRental(rentalModel);
+        rentalService.addRental(rentalModel);
         Long reservationId = rentalModel.getReservation().getId();
         reservationService.setReservationStatus(reservationId, ReservationStatus.RENTED);
         closeEditor();
