@@ -152,6 +152,11 @@ public class ReturnView extends VerticalLayout {
         Long carId = reservationModel.getCar().getId();
         Long returnVenueId = reservationModel.getReturnVenue().getId();
         Long reservationId = reservationModel.getId();
+        Boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(reservationModel.getDateTo());
+        if(carReturnedAfterDeadline){
+            Notification.show("Zwrot po terminie!").setPosition(Notification.Position.MIDDLE);
+        }
+        returnModel.setTotalCost(reservationModel.getPrice());
         returnService.addReturn(returnModel);
         departmentService.addCarToDepartment(carId, returnVenueId);
         carService.setCarStatus(carId, CarStatus.AVAILABLE);

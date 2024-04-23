@@ -68,7 +68,7 @@ public class DepartmentManagementView extends VerticalLayout {
     }
 
     private void saveDepartment(DepartmentManagementForm.SaveEvent event){
-        departmentService.postAddDepartment(event.getDepartment());
+        departmentService.addDepartment(event.getDepartment());
         updateDepartmentList();
         closeEditor();
     }
@@ -88,7 +88,7 @@ public class DepartmentManagementView extends VerticalLayout {
     }
 
     private void updateDepartmentList(){
-        grid.setItems(departmentService.getDepartmentList1());
+        grid.setItems(departmentService.getDepartmentList());
     }
 
     private void configureGrid(){

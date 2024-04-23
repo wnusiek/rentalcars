@@ -3,7 +3,6 @@ package com.example.rentalcars.service;
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
-import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.ReservationRepository;
 import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class ReservationService {
     public void addReservation(ReservationModel reservation) {
 
         if (beforeAfterDatesValidation(reservation)){
-            if (getCarAvailabilityByDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())){
+            if (isCarAvailableInGivenDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())){
                 reservation.setPrice(calculateRentalCost(reservation));
                 reservationRepository.save(reservation);
             } else throw new InputMismatchException ("Samochód niedostępny w podanym terminie!");
@@ -61,10 +60,6 @@ public class ReservationService {
             return getReservationList();
         }
         return reservationRepository.search(lastName);
-//        return getReservationList()
-//                .stream()
-//                .filter(reservation -> reservation.getCustomer().getLastName().equals(lastName))
-//                .toList();
     }
 
     public void editReservation(ReservationModel editReservation) {
@@ -73,10 +68,6 @@ public class ReservationService {
 
     public void removeReservation(Long id) {
         reservationRepository.deleteById(id);
-    }
-
-    public void removeReservation(ReservationModel reservationModel){
-        reservationRepository.deleteById(reservationModel.getId());
     }
 
     public Optional<ReservationModel> findById(Long id) {
@@ -89,7 +80,7 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public Boolean getCarAvailabilityByDateRange(Long carId, LocalDate dateFrom, LocalDate dateTo) {
+    public Boolean isCarAvailableInGivenDateRange(Long carId, LocalDate dateFrom, LocalDate dateTo) {
         var reservationList = getReservationListByCarId(carId);
         for (ReservationModel r : reservationList) {
             if (dateFrom.equals(r.getDateFrom()) || dateFrom.equals(r.getDateTo()) || dateTo.equals(r.getDateFrom()) || dateTo.equals(r.getDateTo())){
@@ -110,7 +101,7 @@ public class ReservationService {
         List<CarModel> availableInDateRangeCarList = new ArrayList<>();
 
         for (CarModel c : cars) {
-            if (getCarAvailabilityByDateRange(c.getId(), dateFrom, dateTo)) {
+            if (isCarAvailableInGivenDateRange(c.getId(), dateFrom, dateTo)) {
                 availableInDateRangeCarList.add(c);
             }
         }
@@ -125,7 +116,6 @@ public class ReservationService {
     }
 
     public  BigDecimal calculateRentalCost(ReservationModel reservation) {
-//        BigDecimal dailyRentalPrice =  carRepository.findById(reservation.getCar().getId()).get().getPrice();
         BigDecimal dailyRentalPrice = reservation.getCar().getPrice();
         LocalDate startDate = reservation.getDateFrom();
         LocalDate endDate = reservation.getDateTo();
