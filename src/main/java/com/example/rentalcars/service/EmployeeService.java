@@ -1,7 +1,5 @@
 package com.example.rentalcars.service;
 
-import com.example.rentalcars.DTO.EmployeeDto;
-import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +12,6 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-
-
-//    public List<EmployeeDto> getEmployeeList() {
-//    return employeeRepository.findAll().stream().map(i -> new EmployeeDto(i.getName(), i.getSurname(), i.getPosition())).toList();
-//    }
 
     public List<EmployeeModel> getEmployeeList() {
         return employeeRepository.findAll();

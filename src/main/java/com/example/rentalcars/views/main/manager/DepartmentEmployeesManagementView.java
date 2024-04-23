@@ -67,7 +67,7 @@ public class DepartmentEmployeesManagementView extends VerticalLayout {
         HorizontalLayout toolbar = new HorizontalLayout(departmentModelComboBox, employeeComboBox, addButton, removeButton);
 
         departmentModelComboBox.setPlaceholder("Oddziały");
-        departmentModelComboBox.setItems(departmentService.getDepartmentList1());
+        departmentModelComboBox.setItems(departmentService.getDepartmentList());
         departmentModelComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         departmentModelComboBox.setClearButtonVisible(true);
         departmentModelComboBox.addValueChangeListener(e -> updateDepartmentEmployeeList());

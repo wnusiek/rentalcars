@@ -22,7 +22,7 @@ public class RentalRestController {
 
     @PostMapping("/addRental")
     public void add(RentalModel rentalModel) {
-        rentalService.postAddRental(rentalModel);
+        rentalService.addRental(rentalModel);
     }
 
     @PostMapping("/editRental/{id}")

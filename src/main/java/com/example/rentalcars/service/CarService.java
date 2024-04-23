@@ -1,7 +1,6 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.DTO.CarDto;
-import com.example.rentalcars.MenagementServices.CarsBySpecificationService;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
@@ -55,15 +54,7 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
-
-    public List<CarDto> getAvailableCars() {
-        return getCarList().stream()
-                .filter(car -> car.getAvailability() != null)
-                .filter(car -> car.getAvailability().equals(CarStatus.AVAILABLE))
-                .toList();
-    }
-
-    public List<CarModel> getAvailableCars1(List <CarModel> cars) {
+    public List<CarModel> getAvailableCars(List <CarModel> cars) {
         return cars.stream()
                 .filter(car -> car.getAvailability() != null)
                 .filter(car -> car.getAvailability().equals(CarStatus.AVAILABLE))

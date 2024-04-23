@@ -1,7 +1,5 @@
 package com.example.rentalcars.controller;
 
-import com.example.rentalcars.DTO.CarDto;
-import com.example.rentalcars.DTO.ReservationDto;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.ReservationModel;
@@ -43,7 +41,7 @@ public class ReservationRestController {
 
     @GetMapping("/getCarStatusByDateRange/{id}")
     public CarStatus getCarStatusByDateRange(@PathVariable("id") Long id, LocalDate dateFrom, LocalDate dateTo) {
-        if (reservationService.getCarAvailabilityByDateRange(id, dateFrom, dateTo)) {
+        if (reservationService.isCarAvailableInGivenDateRange(id, dateFrom, dateTo)) {
             return CarStatus.AVAILABLE;
         }
         return CarStatus.UNAVAILABLE;

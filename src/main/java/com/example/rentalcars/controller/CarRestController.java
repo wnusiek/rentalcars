@@ -54,11 +54,6 @@ public class CarRestController {
         carService.removeCar(id);
     }
 
-    @GetMapping("/availableCars")
-    public List<CarDto> getAvailableCars() {
-        return carService.getAvailableCars();
-    }
-
     @PostMapping("/setCarStatus/{id}/{carStatus}")
     public void setCarStatus(@PathVariable Long id, @PathVariable CarStatus carStatus) {
         carService.setCarStatus(id, carStatus);
