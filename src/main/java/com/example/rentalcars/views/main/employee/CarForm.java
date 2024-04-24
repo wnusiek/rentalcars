@@ -29,12 +29,16 @@ public class CarForm extends FormLayout {
 
     TextField mark = new TextField("Marka");
     TextField model = new TextField("Model");
-    ComboBox<BodyType> body = new ComboBox<>("Nadwozie");
-    TextField color = new TextField("Kolor");
-    ComboBox<FuelType> fuelType = new ComboBox<>("Paliwo");
-    ComboBox<GearboxType> gearbox = new ComboBox<>("Skrzynia biegów");
     TextField price = new TextField("Cena");
+    TextField bail = new TextField("Kaucja");
+    ComboBox<BodyType> body = new ComboBox<>("Nadwozie");
+    ComboBox<GearboxType> gearbox = new ComboBox<>("Skrzynia biegów");
+    TextField numberOfSeats = new TextField("Liczba miejsc");
+    TextField numberOfDoors = new TextField("Liczba drzwi");
+    ComboBox<FuelType> fuelType = new ComboBox<>("Paliwo");
+    TextField trunk = new TextField("Bagażnik");
     ComboBox<CarStatus> availability = new ComboBox<>("Dostępność");
+    TextField color = new TextField("Kolor");
     TextField mileage = new TextField("Przebieg");
     TextField productionDate = new TextField("Rok produkcji");
 
@@ -45,29 +49,73 @@ public class CarForm extends FormLayout {
     private CarModel carModel;
 
     public CarForm() {
+        String requiredFieldErrorMessage = "To pole jest wymagane!";
+        String wrongValueErrorMessage = "Zła wartość";
+        String onlyNumbersErrorMessage = "Tylko liczby!";
 
         body.setItems(BodyType.values());
         fuelType.setItems(FuelType.values());
         gearbox.setItems(GearboxType.values());
         availability.setItems(CarStatus.values());
-        binder.forField(mark).asRequired("To pole jest wymagane!").bind(CarModel::getMark, CarModel::setMark);
-        binder.forField(model).asRequired("To pole jest wymagane!").bind(CarModel::getModel, CarModel::setModel);
-        binder.forField(color).asRequired("To pole jest wymagane!").bind(CarModel::getColor, CarModel::setColor);
-        binder.forField(price).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToBigDecimalConverter("zła wartość")).bind(CarModel::getPrice, CarModel::setPrice);
-        binder.forField(productionDate).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToIntegerConverter("tylko liczby!")).bind(CarModel::getProductionDate, CarModel::setProductionDate);
-        binder.forField(mileage).asRequired("To pole jest wymagane!").withNullRepresentation("").withConverter(new StringToIntegerConverter("tylko liczby!")).bind(CarModel::getMileage, CarModel::setMileage);
+        binder.forField(mark)
+                .asRequired(requiredFieldErrorMessage)
+                .bind(CarModel::getMark, CarModel::setMark);
+        binder.forField(model)
+                .asRequired(requiredFieldErrorMessage)
+                .bind(CarModel::getModel, CarModel::setModel);
+        binder.forField(color)
+                .asRequired(requiredFieldErrorMessage)
+                .bind(CarModel::getColor, CarModel::setColor);
+        binder.forField(trunk)
+                .asRequired(requiredFieldErrorMessage)
+                .bind(CarModel::getTrunk, CarModel::setTrunk);
+        binder.forField(price)
+                .asRequired(requiredFieldErrorMessage)
+                .withNullRepresentation("")
+                .withConverter(new StringToBigDecimalConverter(wrongValueErrorMessage))
+                .bind(CarModel::getPrice, CarModel::setPrice);
+        binder.forField(bail)
+                .asRequired(requiredFieldErrorMessage)
+                .withNullRepresentation("")
+                .withConverter(new StringToBigDecimalConverter(wrongValueErrorMessage))
+                .bind(CarModel::getBail, CarModel::setBail);
+        binder.forField(productionDate)
+                .asRequired(requiredFieldErrorMessage)
+                .withNullRepresentation("")
+                .withConverter(new StringToIntegerConverter(onlyNumbersErrorMessage))
+                .bind(CarModel::getProductionDate, CarModel::setProductionDate);
+        binder.forField(mileage)
+                .asRequired(requiredFieldErrorMessage)
+                .withNullRepresentation("")
+                .withConverter(new StringToIntegerConverter(onlyNumbersErrorMessage))
+                .bind(CarModel::getMileage, CarModel::setMileage);
+        binder.forField(numberOfDoors)
+                .asRequired(requiredFieldErrorMessage)
+                .withNullRepresentation("")
+                .withConverter(new StringToIntegerConverter(onlyNumbersErrorMessage))
+                .bind(CarModel::getNumberOfDoors, CarModel::setNumberOfDoors);
+        binder.forField(numberOfSeats)
+                .asRequired(requiredFieldErrorMessage)
+                .withNullRepresentation("")
+                .withConverter(new StringToIntegerConverter(onlyNumbersErrorMessage))
+                .bind(CarModel::getNumberOfSeats, CarModel::setNumberOfSeats);
+
         binder.bindInstanceFields(this);
 
         addClassName("car-form");
         add(
                 mark,
                 model,
-                body,
-                color,
-                fuelType,
-                gearbox,
                 price,
+                bail,
+                body,
+                gearbox,
+                numberOfSeats,
+                numberOfDoors,
+                fuelType,
+                trunk,
                 availability,
+                color,
                 mileage,
                 productionDate,
                 createButtonLayout()

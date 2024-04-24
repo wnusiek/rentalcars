@@ -105,18 +105,18 @@ public class CarView extends VerticalLayout {
         carGrid.setSizeFull();
         carGrid.addColumn("mark").setHeader("Marka");
         carGrid.addColumn("model").setHeader("Model");
-        carGrid.addColumn("body").setHeader("Nadwozie");
-        carGrid.addColumn("color").setHeader("Kolor");
-        carGrid.addColumn("fuelType").setHeader("Paliwo");
-        carGrid.addColumn("gearbox").setHeader("Skrzynia biegów");
         carGrid.addColumn("price").setHeader("Cena");
         carGrid.addColumn("bail").setHeader("Kaucja");
-        carGrid.addColumn("availability").setHeader("Dostępność");
-        carGrid.addColumn("mileage").setHeader("Przebieg");
-        carGrid.addColumn("productionDate").setHeader("Data produkcji");
+        carGrid.addColumn("body").setHeader("Nadwozie");
+        carGrid.addColumn("gearbox").setHeader("Skrzynia biegów");
         carGrid.addColumn("numberOfSeats").setHeader("Liczba miejsc");
         carGrid.addColumn("numberOfDoors").setHeader("Liczba drzwi");
+        carGrid.addColumn("fuelType").setHeader("Paliwo");
         carGrid.addColumn("trunk").setHeader("Bagażnik");
+        carGrid.addColumn("availability").setHeader("Dostępność");
+        carGrid.addColumn("color").setHeader("Kolor");
+        carGrid.addColumn("mileage").setHeader("Przebieg");
+        carGrid.addColumn("productionDate").setHeader("Rok produkcji");
 
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
