@@ -141,6 +141,7 @@ public class ReservationView extends VerticalLayout {
         receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         receptionVenueComboBox.setClearButtonVisible(true);
         receptionVenueComboBox.addValueChangeListener(e -> updateCarList());
+        receptionVenueComboBox.addValueChangeListener(e -> updateReturnVenue());
 
         returnVenueCombobox.setPlaceholder("Wybierz oddział");
         returnVenueCombobox.setItems(departmentService.getDepartmentList());
@@ -157,6 +158,10 @@ public class ReservationView extends VerticalLayout {
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
+    }
+
+    private void updateReturnVenue() {
+        returnVenueCombobox.setValue(receptionVenueComboBox.getValue());
     }
 
     private void updateEndDate() {
