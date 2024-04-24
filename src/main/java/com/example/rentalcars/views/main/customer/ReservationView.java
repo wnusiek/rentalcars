@@ -38,12 +38,10 @@ public class ReservationView extends VerticalLayout {
     private final CustomerService customerService;
     private final UserService userService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
-//    TextField filterText = new TextField();
     DatePicker startDate = new DatePicker("Data odbioru");
     DatePicker endDate = new DatePicker("Data zwrotu");
     ComboBox<DepartmentModel> receptionVenueComboBox = new ComboBox<>("Oddział odbioru");
     ComboBox<DepartmentModel> returnVenueCombobox = new ComboBox<>("Oddział zwrotu");
-    ComboBox<GearboxType> gearboxTypeComboBox = new ComboBox<>("Typ skrzyni");
     Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
     Button makeReservationButton = new Button("Zarezerwuj");
     private CarModel customerChoice;
@@ -138,7 +136,6 @@ public class ReservationView extends VerticalLayout {
         endDate.addValueChangeListener(e -> updateCarList());
         endDate.setMin(LocalDate.now());
 
-
         receptionVenueComboBox.setPlaceholder("Wybierz oddział");
         receptionVenueComboBox.setItems(departmentService.getDepartmentList());
         receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
@@ -151,21 +148,18 @@ public class ReservationView extends VerticalLayout {
         returnVenueCombobox.setClearButtonVisible(true);
 
         carStatusCheckBox.addValueChangeListener(e -> updateCarList());
-
-        gearboxTypeComboBox.setPlaceholder("Wybierz typ skrzyni");
-        gearboxTypeComboBox.setItems(GearboxType.values());
-        gearboxTypeComboBox.addValueChangeListener(e->updateCarList());
-
         makeReservationButton.addClickListener(e -> validateFields());
 
-        var toolbar = new HorizontalLayout(startDate, endDate, receptionVenueComboBox, returnVenueCombobox, carStatusCheckBox, makeReservationButton, gearboxTypeComboBox);
+        var toolbar = new HorizontalLayout(
+                new VerticalLayout(startDate, receptionVenueComboBox),
+                new VerticalLayout(endDate, returnVenueCombobox),
+                carStatusCheckBox, makeReservationButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
     }
 
     private void addReservation(CarModel carModel) {
-//        carGrid.asSingleSelect().clear();
         CustomerModel customerModel;
         customerModel = customerService.getCustomerByUserName(userService.getNameOfLoggedUser());
         ReservationModel reservationModel = new ReservationModel();
@@ -182,7 +176,6 @@ public class ReservationView extends VerticalLayout {
     private void configureForm() {
         reservationForm = new ReservationForm(departmentService.getDepartmentList(), carService.getCarList1(), customerService.getCustomerList());
         reservationForm.setWidth("25em");
-
         reservationForm.addSaveListener(this::saveReservation);
         reservationForm.addCloseListener(event -> closeEditor());
     }
