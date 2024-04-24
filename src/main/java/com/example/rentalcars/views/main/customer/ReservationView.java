@@ -166,6 +166,7 @@ public class ReservationView extends VerticalLayout {
 
     private void updateEndDate() {
         endDate.setMin(startDate.getValue());
+        endDate.setValue(startDate.getValue());
     }
 
     private void addReservation(CarModel carModel) {
