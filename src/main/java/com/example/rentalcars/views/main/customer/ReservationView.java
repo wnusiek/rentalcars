@@ -129,12 +129,12 @@ public class ReservationView extends VerticalLayout {
         startDate.setPlaceholder("Wybierz datę");
         startDate.setClearButtonVisible(true);
         startDate.setMin(LocalDate.now());
+        startDate.addValueChangeListener(e -> updateEndDate());
         startDate.addValueChangeListener(e -> updateCarList());
 
         endDate.setPlaceholder("Wybierz datę");
         endDate.setClearButtonVisible(true);
         endDate.addValueChangeListener(e -> updateCarList());
-        endDate.setMin(LocalDate.now());
 
         receptionVenueComboBox.setPlaceholder("Wybierz oddział");
         receptionVenueComboBox.setItems(departmentService.getDepartmentList());
@@ -157,6 +157,10 @@ public class ReservationView extends VerticalLayout {
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
+    }
+
+    private void updateEndDate() {
+        endDate.setMin(startDate.getValue());
     }
 
     private void addReservation(CarModel carModel) {
