@@ -129,18 +129,19 @@ public class ReservationView extends VerticalLayout {
         startDate.setPlaceholder("Wybierz datę");
         startDate.setClearButtonVisible(true);
         startDate.setMin(LocalDate.now());
+        startDate.addValueChangeListener(e -> updateEndDate());
         startDate.addValueChangeListener(e -> updateCarList());
 
         endDate.setPlaceholder("Wybierz datę");
         endDate.setClearButtonVisible(true);
         endDate.addValueChangeListener(e -> updateCarList());
-        endDate.setMin(LocalDate.now());
 
         receptionVenueComboBox.setPlaceholder("Wybierz oddział");
         receptionVenueComboBox.setItems(departmentService.getDepartmentList());
         receptionVenueComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         receptionVenueComboBox.setClearButtonVisible(true);
         receptionVenueComboBox.addValueChangeListener(e -> updateCarList());
+        receptionVenueComboBox.addValueChangeListener(e -> updateReturnVenue());
 
         returnVenueCombobox.setPlaceholder("Wybierz oddział");
         returnVenueCombobox.setItems(departmentService.getDepartmentList());
@@ -157,6 +158,14 @@ public class ReservationView extends VerticalLayout {
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
+    }
+
+    private void updateReturnVenue() {
+        returnVenueCombobox.setValue(receptionVenueComboBox.getValue());
+    }
+
+    private void updateEndDate() {
+        endDate.setMin(startDate.getValue());
     }
 
     private void addReservation(CarModel carModel) {
