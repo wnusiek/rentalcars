@@ -4,27 +4,27 @@
 
 
 ## Panel menadżera
-- Konfiguracja wypożyczalni
-- Zarządzanie listą siedzib
-- Wypożyczanie samochodu
-- Zwrot samochodu
-- Zarządzanie flotą oraz ich obecną lokalizacją
-- Zarządzanie pracownikami
-- Dashboard - statystyki
-
-## Panel pracownika
 - Samochody - lista samochodów, formularz dodawania samochodu do floty
-- Zarezerwuj - formularz rezerwacji samochodu
-- Pokaż rezerwacje - lista wszystkich rezerwacji
 - Wypożycz - formularz wypożyczania samochodu
-- Wypożyczenia - lista wszystkich wypożyczeń
 - Zwróć - formularz zwrotu samochodu
-- Zwroty - lista wszystkich zwrotów
 - Pracownicy - lista pracowników, formularz dodawania pracownika
 - Klienci - lista klientów, formularz dodawania klienta
 - Oddziały - lista oddziałów, zarządzanie oddziałami
 - Pracownicy oddziałów - zarządzanie pracownikami oddziałów
-- Samochody oddziałów zarządzanie samochodami oddziałów
+- Samochody oddziałów - zarządzanie samochodami oddziałów
+- Konfiguracja - kofigurowanie wypożyczalni
+- Rezerwacje, Wypożyczenia i Zwroty - lista wszystkich rezerwacji, wypożyczeń i zwrotów
+- Dashboard - statystyki
+- Użytkownicy - zarządzanie userami
+- Moje dane
+
+## Panel pracownika
+- Samochody - lista samochodów, formularz dodawania samochodu do floty
+- Wypożycz - formularz wypożyczania samochodu
+- Zwróć - formularz zwrotu samochodu
+- Klienci - lista klientów, formularz dodawania klienta
+- Samochody oddziałów - zarządzanie samochodami oddziałów
+- Rezerwacje, Wypożyczenia i Zwroty - lista wszystkich rezerwacji, wypożyczeń i zwrotów
 - Moje dane - dane użytkownika / pracownika
 
 ## Panel klienta
