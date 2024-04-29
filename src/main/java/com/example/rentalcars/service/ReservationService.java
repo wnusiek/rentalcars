@@ -174,4 +174,8 @@ public class ReservationService {
             editReservation(r);
         }
     }
+
+    public List<ReservationModel> getReservationListWithFilters(String filterValue, LocalDate date) {
+        return reservationRepository.findByReservationDateFrom(filterValue, date);
+    }
 }
