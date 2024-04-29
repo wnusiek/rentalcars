@@ -8,6 +8,7 @@ import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.ReturnService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -32,6 +33,7 @@ public class HistoryView extends VerticalLayout {
     Grid<RentalModel> rentalGrid = new Grid<>(RentalModel.class, false);
     Grid<ReturnModel> returnGrid = new Grid<>(ReturnModel.class, false);
     TextField filter = new TextField();
+    DatePicker date = new DatePicker("Data");
 
     public HistoryView(ReservationService reservationService, RentalService rentalService, ReturnService returnService) {
         this.reservationService = reservationService;
@@ -62,12 +64,13 @@ public class HistoryView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.addValueChangeListener(e -> updateLists());
 
-        var toolbar = new HorizontalLayout(filter);
+        var toolbar = new HorizontalLayout(filter, date);
         return toolbar;
     }
 
     private void updateLists() {
-        reservationGrid.setItems(reservationService.getReservationListByCustomerLastName(filter.getValue()));
+//        reservationGrid.setItems(reservationService.getReservationListByCustomerLastName(filter.getValue()));
+        reservationGrid.setItems((reservationService.getReservationListWithFilters(filter.getValue(), date.getValue())));
         rentalGrid.setItems(rentalService.getRentalListByCustomerLastName(filter.getValue()));
         returnGrid.setItems(returnService.getReturnListByCustomerLastName(filter.getValue()));
     }
