@@ -11,6 +11,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -32,7 +33,7 @@ public class HistoryView extends VerticalLayout {
     Grid<ReservationModel> reservationGrid = new Grid<>(ReservationModel.class, false);
     Grid<RentalModel> rentalGrid = new Grid<>(RentalModel.class, false);
     Grid<ReturnModel> returnGrid = new Grid<>(ReturnModel.class, false);
-    TextField filter = new TextField();
+    TextField filter = new TextField("Nazwisko klienta");
     DatePicker date = new DatePicker("Data");
 
     public HistoryView(ReservationService reservationService, RentalService rentalService, ReturnService returnService) {
@@ -47,11 +48,11 @@ public class HistoryView extends VerticalLayout {
 
         add(
                 getToolbar(),
-                new H2("Rezerwacje"),
+                new H4("Rezerwacje"),
                 reservationGrid,
-                new H2("Wypożyczenia"),
+                new H4("Wypożyczenia"),
                 rentalGrid,
-                new H2("Zwroty"),
+                new H4("Zwroty"),
                 returnGrid
         );
         updateLists();
@@ -64,6 +65,9 @@ public class HistoryView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.addValueChangeListener(e -> updateLists());
 
+        date.setPlaceholder("Rezerwacja od...");
+        date.setClearButtonVisible(true);
+        date.addValueChangeListener(e -> updateLists());
         var toolbar = new HorizontalLayout(filter, date);
         return toolbar;
     }
