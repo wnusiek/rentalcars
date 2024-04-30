@@ -24,7 +24,7 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
             "and (:searchDate is null or r.dateFrom = :searchDate)" +
             "and (:searchDepartment is null or r.receptionVenue = :searchDepartment)" +
             "and (:searchReservationStatus is null or r.reservationStatus = :searchReservationStatus)")
-    List<ReservationModel> findByReservationDateFrom(
+    List<ReservationModel> findWithFilters(
             @Param("searchTerm") CustomerModel customer,
             @Param("searchDate") LocalDate date,
             @Param("searchDepartment") DepartmentModel receptionVenue,
