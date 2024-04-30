@@ -2,6 +2,7 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.ReservationRepository;
 import com.vaadin.flow.component.notification.Notification;
@@ -175,7 +176,7 @@ public class ReservationService {
         }
     }
 
-    public List<ReservationModel> getReservationListWithFilters(String filterValue, LocalDate date) {
-        return reservationRepository.findByReservationDateFrom(filterValue, date);
+    public List<ReservationModel> getReservationListWithFilters(String filterValue, LocalDate date, DepartmentModel receptionVenue) {
+        return reservationRepository.findByReservationDateFrom(filterValue, date, receptionVenue);
     }
 }
