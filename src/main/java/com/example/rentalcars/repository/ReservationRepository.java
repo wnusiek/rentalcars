@@ -1,6 +1,7 @@
 package com.example.rentalcars.repository;
 
 import com.example.rentalcars.enums.ReservationStatus;
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,12 +19,13 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
     List<ReservationModel> search(@Param("searchTerm") String searchTerm);
 
     @Query("select r from ReservationModel r " +
-            "where (:searchTerm is null or lower(r.customer.lastName) like lower(concat('%', :searchTerm, '%'))) " +
+            "where (:searchTerm is null or lower(r.customer.lastName) like lower(concat('%', :searchTerm, '%'))" +
+            "or lower(r.customer.firstName) like lower(concat('%', :searchTerm, '%')))" +
             "and (:searchDate is null or r.dateFrom = :searchDate)" +
             "and (:searchDepartment is null or r.receptionVenue = :searchDepartment)" +
             "and (:searchReservationStatus is null or r.reservationStatus = :searchReservationStatus)")
     List<ReservationModel> findByReservationDateFrom(
-            @Param("searchTerm") String searchTerm,
+            @Param("searchTerm") CustomerModel customer,
             @Param("searchDate") LocalDate date,
             @Param("searchDepartment") DepartmentModel receptionVenue,
             @Param("searchReservationStatus") ReservationStatus reservationStatus);

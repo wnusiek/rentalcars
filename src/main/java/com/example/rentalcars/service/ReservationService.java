@@ -2,6 +2,7 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
+import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.ReservationRepository;
@@ -176,7 +177,7 @@ public class ReservationService {
         }
     }
 
-    public List<ReservationModel> getReservationListWithFilters(String filterValue, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
-        return reservationRepository.findByReservationDateFrom(filterValue, date, receptionVenue, reservationStatus);
+    public List<ReservationModel> getReservationListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
+        return reservationRepository.findByReservationDateFrom(customer, date, receptionVenue, reservationStatus);
     }
 }
