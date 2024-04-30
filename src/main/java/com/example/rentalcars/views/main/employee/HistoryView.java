@@ -1,16 +1,17 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
+import com.example.rentalcars.service.DepartmentService;
 import com.example.rentalcars.service.RentalService;
 import com.example.rentalcars.service.ReservationService;
 import com.example.rentalcars.service.ReturnService;
 import com.example.rentalcars.views.main.MainLayout;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -27,6 +28,7 @@ import org.springframework.security.access.annotation.Secured;
 @RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class HistoryView extends VerticalLayout {
     private final ReservationService reservationService;
+    private final DepartmentService departmentService;
     private final RentalService rentalService;
     private final ReturnService returnService;
 
@@ -35,9 +37,11 @@ public class HistoryView extends VerticalLayout {
     Grid<ReturnModel> returnGrid = new Grid<>(ReturnModel.class, false);
     TextField filter = new TextField("Nazwisko klienta");
     DatePicker date = new DatePicker("Data");
+    ComboBox<DepartmentModel> receptionVenue = new ComboBox<>("Oddział odbioru");
 
-    public HistoryView(ReservationService reservationService, RentalService rentalService, ReturnService returnService) {
+    public HistoryView(ReservationService reservationService, DepartmentService departmentService, RentalService rentalService, ReturnService returnService) {
         this.reservationService = reservationService;
+        this.departmentService = departmentService;
         this.rentalService = rentalService;
         this.returnService = returnService;
 
@@ -68,13 +72,18 @@ public class HistoryView extends VerticalLayout {
         date.setPlaceholder("Rezerwacja od...");
         date.setClearButtonVisible(true);
         date.addValueChangeListener(e -> updateLists());
-        var toolbar = new HorizontalLayout(filter, date);
+
+        receptionVenue.setItems(departmentService.getDepartmentList());
+        receptionVenue.setItemLabelGenerator(DepartmentModel::getCity);
+        receptionVenue.setClearButtonVisible(true);
+        receptionVenue.addValueChangeListener(e -> updateLists());
+        var toolbar = new HorizontalLayout(filter, date, receptionVenue);
         return toolbar;
     }
 
     private void updateLists() {
 //        reservationGrid.setItems(reservationService.getReservationListByCustomerLastName(filter.getValue()));
-        reservationGrid.setItems((reservationService.getReservationListWithFilters(filter.getValue(), date.getValue())));
+        reservationGrid.setItems((reservationService.getReservationListWithFilters(filter.getValue(), date.getValue(), receptionVenue.getValue())));
         rentalGrid.setItems(rentalService.getRentalListByCustomerLastName(filter.getValue()));
         returnGrid.setItems(returnService.getReturnListByCustomerLastName(filter.getValue()));
     }

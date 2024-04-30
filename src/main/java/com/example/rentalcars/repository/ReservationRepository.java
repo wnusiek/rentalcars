@@ -1,5 +1,6 @@
 package com.example.rentalcars.repository;
 
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,8 +18,10 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
 
     @Query("select r from ReservationModel r " +
             "where (:searchTerm is null or lower(r.customer.lastName) like lower(concat('%', :searchTerm, '%'))) " +
-            "and (:searchDate is null or r.dateFrom = :searchDate)")
+            "and (:searchDate is null or r.dateFrom = :searchDate)" +
+            "and (:searchDepartment is null or r.receptionVenue = :searchDepartment)")
     List<ReservationModel> findByReservationDateFrom(
             @Param("searchTerm") String searchTerm,
-            @Param("searchDate") LocalDate date);
+            @Param("searchDate") LocalDate date,
+            @Param("searchDepartment") DepartmentModel receptionVenue);
 }
