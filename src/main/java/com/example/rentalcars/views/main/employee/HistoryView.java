@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
@@ -38,6 +39,7 @@ public class HistoryView extends VerticalLayout {
     TextField filter = new TextField("Nazwisko klienta");
     DatePicker date = new DatePicker("Data");
     ComboBox<DepartmentModel> receptionVenue = new ComboBox<>("Oddział odbioru");
+    ComboBox<ReservationStatus> reservationStatus = new ComboBox<>("Status rezerwacji");
 
     public HistoryView(ReservationService reservationService, DepartmentService departmentService, RentalService rentalService, ReturnService returnService) {
         this.reservationService = reservationService;
@@ -63,7 +65,7 @@ public class HistoryView extends VerticalLayout {
     }
 
     private HorizontalLayout getToolbar() {
-        filter.setPlaceholder("Filtrowanie po nazwisku klienta...");
+        filter.setPlaceholder("Nazwisko klienta...");
         filter.setClearButtonVisible(true);
         filter.setWidth("300px");
         filter.setValueChangeMode(ValueChangeMode.LAZY);
@@ -73,17 +75,24 @@ public class HistoryView extends VerticalLayout {
         date.setClearButtonVisible(true);
         date.addValueChangeListener(e -> updateLists());
 
+        receptionVenue.setPlaceholder("Wybierz oddział...");
         receptionVenue.setItems(departmentService.getDepartmentList());
         receptionVenue.setItemLabelGenerator(DepartmentModel::getCity);
         receptionVenue.setClearButtonVisible(true);
         receptionVenue.addValueChangeListener(e -> updateLists());
-        var toolbar = new HorizontalLayout(filter, date, receptionVenue);
+
+        reservationStatus.setPlaceholder("Wybierz status...");
+        reservationStatus.setItems(ReservationStatus.values());
+        reservationStatus.setClearButtonVisible(true);
+        reservationStatus.setWidth("250px");
+        reservationStatus.addValueChangeListener(e -> updateLists());
+        var toolbar = new HorizontalLayout(filter, date, receptionVenue, reservationStatus);
         return toolbar;
     }
 
     private void updateLists() {
 //        reservationGrid.setItems(reservationService.getReservationListByCustomerLastName(filter.getValue()));
-        reservationGrid.setItems((reservationService.getReservationListWithFilters(filter.getValue(), date.getValue(), receptionVenue.getValue())));
+        reservationGrid.setItems((reservationService.getReservationListWithFilters(filter.getValue(), date.getValue(), receptionVenue.getValue(), reservationStatus.getValue())));
         rentalGrid.setItems(rentalService.getRentalListByCustomerLastName(filter.getValue()));
         returnGrid.setItems(returnService.getReturnListByCustomerLastName(filter.getValue()));
     }

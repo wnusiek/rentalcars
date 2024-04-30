@@ -176,7 +176,7 @@ public class ReservationService {
         }
     }
 
-    public List<ReservationModel> getReservationListWithFilters(String filterValue, LocalDate date, DepartmentModel receptionVenue) {
-        return reservationRepository.findByReservationDateFrom(filterValue, date, receptionVenue);
+    public List<ReservationModel> getReservationListWithFilters(String filterValue, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
+        return reservationRepository.findByReservationDateFrom(filterValue, date, receptionVenue, reservationStatus);
     }
 }
