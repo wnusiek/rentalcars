@@ -86,9 +86,9 @@ public class HistoryView extends VerticalLayout {
     }
 
     private void updateLists() {
-        reservationGrid.setItems((reservationService.getReservationListWithFilters(customer.getValue(), date.getValue(), receptionVenue.getValue(), reservationStatus.getValue())));
-//        rentalGrid.setItems(rentalService.getRentalListByCustomerLastName(customer.getValue()));
-//        returnGrid.setItems(returnService.getReturnListByCustomerLastName(customer.getValue()));
+        reservationGrid.setItems(reservationService.getReservationListWithFilters(customer.getValue(), date.getValue(), receptionVenue.getValue(), reservationStatus.getValue()));
+        rentalGrid.setItems(rentalService.getRentalListWithFilters(customer.getValue(), date.getValue(), receptionVenue.getValue(), reservationStatus.getValue()));
+        returnGrid.setItems(returnService.getReturnListWithFilters(customer.getValue(), date.getValue(), receptionVenue.getValue(), reservationStatus.getValue()));
     }
 
     private void configureReservationGrid() {

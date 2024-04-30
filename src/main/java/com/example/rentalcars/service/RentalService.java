@@ -2,12 +2,15 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.ReservationStatus;
+import com.example.rentalcars.model.CustomerModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -70,5 +73,9 @@ public class RentalService {
         } else {
             return null;
         }
+    }
+
+    public List<RentalModel> getRentalListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
+        return rentalRepository.findWithFilters(customer, date, receptionVenue, reservationStatus);
     }
 }

@@ -1,6 +1,9 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.ReservationStatus;
+import com.example.rentalcars.model.CustomerModel;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.repository.ReturnRepository;
@@ -8,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -66,5 +70,9 @@ public class ReturnService {
         } else {
             return null;
         }
+    }
+
+    public List<ReturnModel> getReturnListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
+        return returnRepository.findWithFilters(customer, date, receptionVenue, reservationStatus);
     }
 }
