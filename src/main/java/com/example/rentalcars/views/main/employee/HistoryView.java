@@ -6,8 +6,8 @@ import com.example.rentalcars.service.*;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -48,14 +48,29 @@ public class HistoryView extends VerticalLayout {
 
         add(
                 getToolbar(),
-                new H4("Rezerwacje"),
-                reservationGrid,
-                new H4("Wypożyczenia"),
-                rentalGrid,
-                new H4("Zwroty"),
-                returnGrid
+                getGrids()
         );
         updateLists();
+
+    }
+
+    private VerticalLayout getGrids() {
+        Details reservations =  new Details("Rezerwacje", reservationGrid);
+        reservations.setOpened(true);
+        reservations.setWidthFull();
+        reservations.setHeightFull();
+        Details rentals = new Details("Wypożyczenia", rentalGrid);
+        rentals.setOpened(true);
+        rentals.setWidthFull();
+        rentals.setHeightFull();
+        Details returns = new Details("Zwroty", returnGrid);
+        returns.setOpened(true);
+        returns.setWidthFull();
+        returns.setHeightFull();
+
+        VerticalLayout grids = new VerticalLayout();
+        grids.add(reservations, rentals, returns);
+        return grids;
     }
 
     private HorizontalLayout getToolbar() {
@@ -93,6 +108,7 @@ public class HistoryView extends VerticalLayout {
 
     private void configureReservationGrid() {
         reservationGrid.setSizeFull();
+        reservationGrid.setAllRowsVisible(true);
         reservationGrid.addColumn("car.mark").setHeader("Marka");
         reservationGrid.addColumn("car.model").setHeader("Model");
         reservationGrid.addColumn("dateFrom").setHeader("Data od");
@@ -108,6 +124,7 @@ public class HistoryView extends VerticalLayout {
 
     private void configureRentalGrid(){
         rentalGrid.setSizeFull();
+        rentalGrid.setAllRowsVisible(true);
         rentalGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
         rentalGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         rentalGrid.addColumn("reservation.car.mark").setHeader("Marka samochodu");
@@ -121,6 +138,7 @@ public class HistoryView extends VerticalLayout {
 
     private void configureReturnGrid(){
         returnGrid.setSizeFull();
+        returnGrid.setAllRowsVisible(true);
         returnGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
         returnGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         returnGrid.addColumn("reservation.car.mark").setHeader("Marka samochodu");
