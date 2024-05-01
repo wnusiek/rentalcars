@@ -125,11 +125,11 @@ public class HistoryView extends VerticalLayout {
     private void configureRentalGrid(){
         rentalGrid.setSizeFull();
         rentalGrid.setAllRowsVisible(true);
+        rentalGrid.addColumn("reservation.car.mark").setHeader("Marka");
+        rentalGrid.addColumn("reservation.car.model").setHeader("Model");
+        rentalGrid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
         rentalGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
         rentalGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
-        rentalGrid.addColumn("reservation.car.mark").setHeader("Marka samochodu");
-        rentalGrid.addColumn("reservation.car.model").setHeader("Model samochodu");
-        rentalGrid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
         rentalGrid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
         rentalGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
         rentalGrid.addColumn("comments").setHeader("Komentarz");
@@ -139,11 +139,11 @@ public class HistoryView extends VerticalLayout {
     private void configureReturnGrid(){
         returnGrid.setSizeFull();
         returnGrid.setAllRowsVisible(true);
+        returnGrid.addColumn("reservation.car.mark").setHeader("Marka");
+        returnGrid.addColumn("reservation.car.model").setHeader("Model");
+        returnGrid.addColumn("dateOfReturn").setHeader("Data zwrotu");
         returnGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
         returnGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
-        returnGrid.addColumn("reservation.car.mark").setHeader("Marka samochodu");
-        returnGrid.addColumn("reservation.car.model").setHeader("Model samochodu");
-        returnGrid.addColumn("dateOfReturn").setHeader("Data zwrotu");
         returnGrid.addColumn("reservation.customer.firstName").setHeader("Imię Klienta");
         returnGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
         returnGrid.addColumn("comments").setHeader("Komentarz");
