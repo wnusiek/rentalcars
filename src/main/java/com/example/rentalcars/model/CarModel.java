@@ -5,10 +5,7 @@ import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -17,6 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 public class CarModel {
 
     @Id

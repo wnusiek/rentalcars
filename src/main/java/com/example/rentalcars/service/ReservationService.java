@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +41,18 @@ public class ReservationService {
 //        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
 //    }
 
-    public List<ReservationModel> getReservationListOfNotRentedCars(){
+    public List<ReservationModel> getReservationListOfNotRentedCarsByReceptionDepartment(DepartmentModel departmentModel){
+        if (departmentModel == null){
+            return getReservationListOfNotRentedCarsAllReceptionDepartments();
+        } else {
+            return getReservationList()
+                    .stream()
+                    .filter(r -> r.getReservationStatus().equals(ReservationStatus.RESERVED))
+                    .filter(r -> r.getReceptionVenue().getCity().equals(departmentModel.getCity()))
+                    .toList();
+        }
+    }
+    public List<ReservationModel> getReservationListOfNotRentedCarsAllReceptionDepartments(){
         List<Long> rentedCarsReservationsIds = rentalService.getRentalList()
                 .stream()
                 .map(rentalModel -> rentalModel.getReservation().getId())

@@ -1,16 +1,14 @@
 package com.example.rentalcars.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 public class RoleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

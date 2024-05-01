@@ -61,6 +61,18 @@ public class DepartmentService {
                 .collect(Collectors.toSet());
     }
 
+    public DepartmentModel getDepartmentByEmployee(EmployeeModel employeeModel){
+        var department = getDepartmentList().stream()
+                .filter(d -> d.getEmployees().contains(employeeModel))
+                .findFirst();
+        if (department.isPresent())
+            return department.get();
+        else {
+            System.err.println("Nie znaleziono oddziału");
+            return null;
+        }
+    }
+
     public Long countEmployeesInDepartment(Long departmentId){
         return getDepartmentEmployees(departmentId).stream().count();
     }
