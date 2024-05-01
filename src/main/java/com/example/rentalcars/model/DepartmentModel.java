@@ -2,10 +2,7 @@ package com.example.rentalcars.model;
 
 import com.example.rentalcars.DTO.EmployeeDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 public class DepartmentModel {
 
     @Id
