@@ -19,8 +19,7 @@ public interface ReservationRepository extends JpaRepository<ReservationModel, L
     List<ReservationModel> search(@Param("searchTerm") String searchTerm);
 
     @Query("select r from ReservationModel r " +
-            "where (:searchTerm is null or lower(r.customer.lastName) like lower(concat('%', :searchTerm, '%'))" +
-            "or lower(r.customer.firstName) like lower(concat('%', :searchTerm, '%')))" +
+            "where (:searchTerm is null or r.customer = :searchTerm)" +
             "and (:searchDate is null or r.dateFrom = :searchDate)" +
             "and (:searchDepartment is null or r.receptionVenue = :searchDepartment)" +
             "and (:searchReservationStatus is null or r.reservationStatus = :searchReservationStatus)")
