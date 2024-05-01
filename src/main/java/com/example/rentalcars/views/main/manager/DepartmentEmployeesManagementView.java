@@ -60,6 +60,7 @@ public class DepartmentEmployeesManagementView extends VerticalLayout {
         grid.addColumn("lastName").setHeader("Nazwisko");
         grid.addColumn("position").setHeader("Stanowisko");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(e -> employeeComboBox.setValue(e.getValue()));
     }
 
     private Component getToolbar(){
