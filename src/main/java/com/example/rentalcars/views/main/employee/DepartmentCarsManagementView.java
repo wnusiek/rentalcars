@@ -71,6 +71,7 @@ public class DepartmentCarsManagementView extends VerticalLayout {
         grid.addColumn("numberOfDoors").setHeader("Liczba drzwi");
         grid.addColumn("trunk").setHeader("Bagażnik");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(e -> carComboBox.setValue(e.getValue()));
     }
 
     private Component getToolbar(){
