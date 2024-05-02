@@ -87,21 +87,18 @@ public class ReturnView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("rental-grid");
         grid.setSizeFull();
-
-        grid.addColumn("employee.firstName").setHeader("Imię pracownika");
-        grid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         grid.addColumn("reservation.car.mark").setHeader("Marka");
         grid.addColumn("reservation.car.model").setHeader("Model");
-        grid.addColumn("reservation.dateFrom").setHeader("Data rezerwacji od");
-        grid.addColumn("reservation.dateTo" ).setHeader("Data rezerwacji  do");
+        grid.addColumn("reservation.dateFrom").setHeader("Rezerwacja od");
+        grid.addColumn("reservation.dateTo" ).setHeader("Rezerwacja do");
+        grid.addColumn("employee.firstName").setHeader("Imię pracownika");
+        grid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         grid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
         grid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
         grid.addColumn("reservation.price").setHeader("Cena");
-        grid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
+        grid.addColumn("dateOfRental").setHeader("Wypożyczenie od");
         grid.addColumn("comments").setHeader("Komentarz");
-
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
         grid.asSingleSelect().addValueChangeListener(event -> saveEmployeeChoice(event.getValue()));
     }
 
