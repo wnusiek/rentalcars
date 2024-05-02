@@ -2,6 +2,7 @@ package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.ReservationStatus;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
@@ -9,8 +10,10 @@ import com.example.rentalcars.service.*;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -39,6 +42,7 @@ public class ReturnView extends VerticalLayout {
     DatePicker dateOfReturn = new DatePicker("Data zwrotu");
     Button returnACarButton = new Button("Zwróć");
     TextField comments = new TextField("Komentarz");
+    ComboBox<DepartmentModel> returnVenue = new ComboBox<>("Oddział zwrotu");
     ReturnForm form;
     RentalModel employeeChoice;
 
@@ -77,7 +81,7 @@ public class ReturnView extends VerticalLayout {
     }
 
     private void updateRentalList(){
-        grid.setItems(rentalService.getRentalListOfNotReturnedCars());
+        grid.setItems(rentalService.getRentalListOfNotReturnedCarsByReturnDepartment(returnVenue.getValue()));
     }
 
     private void configureGrid() {
@@ -113,7 +117,19 @@ public class ReturnView extends VerticalLayout {
         dateOfReturn.setMax(now);
         returnACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
-        var toolbar = new HorizontalLayout(dateOfReturn, comments, returnACarButton);
+        returnVenue.setPlaceholder("Wybierz oddział");
+        returnVenue.setClearButtonVisible(true);
+        returnVenue.setItems(departmentService.getDepartmentList());
+        returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
+        returnVenue.setValue(
+                departmentService.getDepartmentByEmployee(
+                        employeeService.getEmployeeByUserName(
+                                userService.getNameOfLoggedUser())));
+        returnVenue.addValueChangeListener(e -> updateRentalList());
+        HorizontalLayout toolbar = new HorizontalLayout();
+        toolbar.add(dateOfReturn, comments, returnACarButton);
+        toolbar.addAndExpand(new Span());
+        toolbar.add(returnVenue);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
