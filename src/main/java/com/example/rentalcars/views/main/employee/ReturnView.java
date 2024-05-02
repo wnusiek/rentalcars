@@ -159,6 +159,16 @@ public class ReturnView extends VerticalLayout {
         form.addCloseListener(cancelEvent -> closeEditor());
     }
 
+    private void editReturn(ReturnModel returnModel){
+        if (returnModel == null){
+            closeEditor();
+        }else {
+            form.setReturn(returnModel);
+            form.save.click();
+            addClassName("editing");
+        }
+    }
+
     private void saveReturn(ReturnForm.SaveEvent event){
         ReturnModel returnModel = event.getReturn();
         ReservationModel reservationModel = returnModel.getReservation();
@@ -177,16 +187,6 @@ public class ReturnView extends VerticalLayout {
         closeEditor();
         updateRentalList();
         comments.clear();
-    }
-
-    private void editReturn(ReturnModel returnModel){
-        if (returnModel == null){
-            closeEditor();
-        }else {
-            form.setReturn(returnModel);
-            form.save.click();
-            addClassName("editing");
-        }
     }
 
 
