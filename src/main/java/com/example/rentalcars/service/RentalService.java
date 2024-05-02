@@ -35,7 +35,7 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
-    public List<RentalModel> getRentalListOfNotReturnedCars(){
+    public List<RentalModel> getRentalListOfNotReturnedCarsAllDepartments(){
         List<Long> returnedCarsReservationsIds = returnService.getReturnModelList()
                 .stream()
                 .map(returnModel -> returnModel.getReservation().getId())
@@ -77,5 +77,17 @@ public class RentalService {
 
     public List<RentalModel> getRentalListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
         return rentalRepository.findWithFilters(customer, date, receptionVenue, reservationStatus);
+    }
+
+    public List<RentalModel> getRentalListOfNotReturnedCarsByReturnDepartment(DepartmentModel departmentModel) {
+        if (departmentModel == null){
+            return getRentalListOfNotReturnedCarsAllDepartments();
+        } else {
+            return getRentalList()
+                    .stream()
+                    .filter(r -> r.getReservation().getReservationStatus().equals(ReservationStatus.RENTED))
+                    .filter(r -> r.getReservation().getReturnVenue().getCity().equals(departmentModel.getCity()))
+                    .toList();
+        }
     }
 }
