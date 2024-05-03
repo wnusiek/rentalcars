@@ -12,6 +12,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -27,6 +28,7 @@ public class ReturnForm extends FormLayout {
     ComboBox<ReservationModel> reservation = new ComboBox<>("Rezerwacja");
     DatePicker dateOfReturn = new DatePicker("Data zwrotu");
     TextField comments = new TextField("Komentarz");
+    BigDecimalField supplement = new BigDecimalField("Dopłata");
     Button save = new Button("Zwróć auto");
     Button cancel = new Button("Anuluj");
     private ReturnModel returnModel;
@@ -42,6 +44,7 @@ public class ReturnForm extends FormLayout {
         returnBinder.forField(reservation).bind(ReturnModel::getReservation, ReturnModel::setReservation);
         returnBinder.forField(dateOfReturn).bind(ReturnModel::getDateOfReturn, ReturnModel::setDateOfReturn);
         returnBinder.forField(comments).bind(ReturnModel::getComments, ReturnModel::setComments);
+        returnBinder.forField(supplement).bind(ReturnModel::getSupplement, ReturnModel::setSupplement);
 
         add(
             employee,
