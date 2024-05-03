@@ -27,6 +27,9 @@ public class DepartmentModel {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "phone")
+    private String phone;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Column(name = "employees")
     private Set<EmployeeModel> employees = new HashSet<>();
