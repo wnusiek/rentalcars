@@ -182,6 +182,8 @@ public class ReservationService {
             var r = reservation.get();
             r.setReservationStatus(reservationStatus);
             editReservation(r);
+        } else {
+            Notification.show("Wystąpił błąd. Status rezerwacji nie został zmieniony").setPosition(Notification.Position.MIDDLE);
         }
     }
 

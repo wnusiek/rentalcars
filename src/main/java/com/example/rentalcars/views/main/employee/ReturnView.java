@@ -2,6 +2,7 @@ package com.example.rentalcars.views.main.employee;
 
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.ReservationStatus;
+import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
@@ -9,17 +10,24 @@ import com.example.rentalcars.service.*;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Route(value = "returnView", layout = MainLayout.class)
@@ -39,6 +47,8 @@ public class ReturnView extends VerticalLayout {
     DatePicker dateOfReturn = new DatePicker("Data zwrotu");
     Button returnACarButton = new Button("Zwróć");
     TextField comments = new TextField("Komentarz");
+    BigDecimalField supplement = new BigDecimalField("Dopłata");
+    ComboBox<DepartmentModel> returnVenue = new ComboBox<>("Oddział zwrotu");
     ReturnForm form;
     RentalModel employeeChoice;
 
@@ -77,27 +87,24 @@ public class ReturnView extends VerticalLayout {
     }
 
     private void updateRentalList(){
-        grid.setItems(rentalService.getRentalListOfNotReturnedCars());
+        grid.setItems(rentalService.getRentalListOfNotReturnedCarsByReturnDepartment(returnVenue.getValue()));
     }
 
     private void configureGrid() {
         grid.addClassNames("rental-grid");
         grid.setSizeFull();
-
-        grid.addColumn("employee.firstName").setHeader("Imię pracownika");
-        grid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         grid.addColumn("reservation.car.mark").setHeader("Marka");
         grid.addColumn("reservation.car.model").setHeader("Model");
-        grid.addColumn("reservation.dateFrom").setHeader("Data rezerwacji od");
-        grid.addColumn("reservation.dateTo" ).setHeader("Data rezerwacji  do");
+        grid.addColumn("dateOfRental").setHeader("Wypożyczenie od");
+        grid.addColumn("reservation.dateFrom").setHeader("Rezerwacja od");
+        grid.addColumn("reservation.dateTo" ).setHeader("Rezerwacja do");
+        grid.addColumn("employee.firstName").setHeader("Imię pracownika");
+        grid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         grid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
         grid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
         grid.addColumn("reservation.price").setHeader("Cena");
-        grid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
         grid.addColumn("comments").setHeader("Komentarz");
-
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
         grid.asSingleSelect().addValueChangeListener(event -> saveEmployeeChoice(event.getValue()));
     }
 
@@ -113,7 +120,24 @@ public class ReturnView extends VerticalLayout {
         dateOfReturn.setMax(now);
         returnACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
-        var toolbar = new HorizontalLayout(dateOfReturn, comments, returnACarButton);
+        returnVenue.setPlaceholder("Wybierz oddział");
+        returnVenue.setClearButtonVisible(true);
+        returnVenue.setItems(departmentService.getDepartmentList());
+        returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
+        returnVenue.setValue(
+                departmentService.getDepartmentByEmployee(
+                        employeeService.getEmployeeByUserName(
+                                userService.getNameOfLoggedUser())));
+        returnVenue.addValueChangeListener(e -> updateRentalList());
+        supplement.setPlaceholder("Wprowadź koszty");
+        supplement.setWidth("200px");
+        Div plnPrefix = new Div();
+        plnPrefix.setText("PLN");
+        supplement.setPrefixComponent(plnPrefix);
+        HorizontalLayout toolbar = new HorizontalLayout();
+        toolbar.add(dateOfReturn, comments, supplement, returnACarButton);
+        toolbar.addAndExpand(new Span());
+        toolbar.add(returnVenue);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
@@ -135,6 +159,7 @@ public class ReturnView extends VerticalLayout {
         returnModel.setReservation(employeeChoice.getReservation());
         returnModel.setDateOfReturn(dateOfReturn.getValue());
         returnModel.setComments(comments.getValue());
+        returnModel.setSupplement(supplement.getValue());
         editReturn(returnModel);
     }
 
@@ -146,26 +171,6 @@ public class ReturnView extends VerticalLayout {
         form.addCloseListener(cancelEvent -> closeEditor());
     }
 
-    private void saveReturn(ReturnForm.SaveEvent event){
-        ReturnModel returnModel = event.getReturn();
-        ReservationModel reservationModel = returnModel.getReservation();
-        Long carId = reservationModel.getCar().getId();
-        Long returnVenueId = reservationModel.getReturnVenue().getId();
-        Long reservationId = reservationModel.getId();
-        Boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(reservationModel.getDateTo());
-        if(carReturnedAfterDeadline){
-            Notification.show("Zwrot po terminie!").setPosition(Notification.Position.MIDDLE);
-        }
-        returnModel.setTotalCost(reservationModel.getPrice());
-        returnService.addReturn(returnModel);
-        departmentService.addCarToDepartment(carId, returnVenueId);
-        carService.setCarStatus(carId, CarStatus.AVAILABLE);
-        reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
-        closeEditor();
-        updateRentalList();
-        comments.clear();
-    }
-
     private void editReturn(ReturnModel returnModel){
         if (returnModel == null){
             closeEditor();
@@ -174,6 +179,40 @@ public class ReturnView extends VerticalLayout {
             form.save.click();
             addClassName("editing");
         }
+    }
+
+    private void saveReturn(ReturnForm.SaveEvent event){
+        ReturnModel returnModel = event.getReturn();
+        ReservationModel reservationModel = returnModel.getReservation();
+        Long carId = reservationModel.getCar().getId();
+        Long returnVenueId = reservationModel.getReturnVenue().getId();
+        Long reservationId = reservationModel.getId();
+        BigDecimal afterDeadlineFee = BigDecimal.valueOf(0);
+        Boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(reservationModel.getDateTo());
+        if(carReturnedAfterDeadline){
+            Duration difference = Duration.between(returnModel.getDateOfReturn(), reservationModel.getDateTo());
+            afterDeadlineFee = BigDecimal.valueOf(100*difference.toDays());
+            Notification.show("Zwrot po terminie! Dodatkowa opłata: " + afterDeadlineFee).setPosition(Notification.Position.MIDDLE);
+        }
+        if (supplement.getValue() == null){
+            returnModel.setSupplement(BigDecimal.valueOf(0));
+        } else {
+            // Brakuje sprawdzenia czy mniejsze od zera!!!
+            returnModel.setSupplement(supplement.getValue());
+            Notification.show("Dopłata: " + supplement.getValue()).setPosition(Notification.Position.MIDDLE);
+        }
+        Notification.show("Total cost: " + returnModel.getTotalCost()).setPosition(Notification.Position.MIDDLE);
+        returnModel.setTotalCost(reservationModel.getPrice()
+                .add(returnModel.getSupplement())
+                .add(afterDeadlineFee));
+        Notification.show("Total cost: " + returnModel.getTotalCost()).setPosition(Notification.Position.MIDDLE);
+        returnService.addReturn(returnModel);
+        departmentService.addCarToDepartment(carId, returnVenueId);
+        carService.setCarStatus(carId, CarStatus.AVAILABLE);
+        reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
+        closeEditor();
+        updateRentalList();
+        comments.clear();
     }
 
 
