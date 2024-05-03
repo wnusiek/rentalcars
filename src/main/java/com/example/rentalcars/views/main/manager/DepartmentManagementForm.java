@@ -21,6 +21,7 @@ public class DepartmentManagementForm extends FormLayout {
     Binder<DepartmentModel> departmentBinder = new BeanValidationBinder<>(DepartmentModel.class);
     TextField city = new TextField("Miasto");
     TextField address = new TextField("Adres oddziału");
+    TextField phone = new TextField("Telefon");
     Button save = new Button("Zapisz oddział");
     Button delete = new Button("Usuń oddział");
     Button cancel = new Button("Anuluj");
@@ -32,6 +33,7 @@ public class DepartmentManagementForm extends FormLayout {
         add(
                 city,
                 address,
+                phone,
                 createButtonLayout()
         );
     }
@@ -54,7 +56,7 @@ public class DepartmentManagementForm extends FormLayout {
     }
 
     private void validateAndSave() {
-        if(city.isEmpty() || address.isEmpty()){
+        if(city.isEmpty() || address.isEmpty() || phone.isEmpty()){
             Notification.show("Wszystkie pola są wymagane");
             return;
         }

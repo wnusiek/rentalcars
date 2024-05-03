@@ -94,8 +94,9 @@ public class DepartmentManagementView extends VerticalLayout {
     private void configureGrid(){
         grid.addClassNames("departments-grid");
         grid.setSizeFull();
-        grid.addColumn("city").setHeader("Miasto");
+        grid.addColumn("city").setHeader("Oddział");
         grid.addColumn("address").setHeader("Adres oddziału");
+        grid.addColumn("phone").setHeader("Telefon");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
