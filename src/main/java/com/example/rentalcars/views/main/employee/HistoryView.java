@@ -146,6 +146,9 @@ public class HistoryView extends VerticalLayout {
         returnGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
         returnGrid.addColumn("reservation.customer.firstName").setHeader("Imię Klienta");
         returnGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
+        returnGrid.addColumn("reservation.price").setHeader("Cena");
+        returnGrid.addColumn("supplement").setHeader("Dopłata");
+        returnGrid.addColumn("totalCost").setHeader("Całkowity koszt");
         returnGrid.addColumn("comments").setHeader("Komentarz");
         returnGrid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
