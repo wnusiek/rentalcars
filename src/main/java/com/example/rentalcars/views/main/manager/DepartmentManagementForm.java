@@ -19,7 +19,7 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class DepartmentManagementForm extends FormLayout {
     Binder<DepartmentModel> departmentBinder = new BeanValidationBinder<>(DepartmentModel.class);
-    TextField city = new TextField("Miasto");
+    TextField city = new TextField("Oddział");
     TextField address = new TextField("Adres oddziału");
     TextField phone = new TextField("Telefon");
     Button save = new Button("Zapisz oddział");
