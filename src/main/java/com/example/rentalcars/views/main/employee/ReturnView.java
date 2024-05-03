@@ -201,11 +201,9 @@ public class ReturnView extends VerticalLayout {
             returnModel.setSupplement(supplement.getValue());
             Notification.show("Dopłata: " + supplement.getValue()).setPosition(Notification.Position.MIDDLE);
         }
-        Notification.show("Total cost: " + returnModel.getTotalCost()).setPosition(Notification.Position.MIDDLE);
         returnModel.setTotalCost(reservationModel.getPrice()
                 .add(returnModel.getSupplement())
                 .add(afterDeadlineFee));
-        Notification.show("Total cost: " + returnModel.getTotalCost()).setPosition(Notification.Position.MIDDLE);
         returnService.addReturn(returnModel);
         departmentService.addCarToDepartment(carId, returnVenueId);
         carService.setCarStatus(carId, CarStatus.AVAILABLE);
