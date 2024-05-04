@@ -106,7 +106,7 @@ public class CarView extends VerticalLayout {
     private void updateCarList() {
 //        carGrid.setItems(carService.getCarList1());
 //        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
-        carGrid.setItems(carService.findWithFilter(filterText.getValue()));
+        carGrid.setItems(carService.findWithFilter(filterText.getValue(), gearboxTypeComboBox.getValue()));
     }
 
     private void configureGrid() {
