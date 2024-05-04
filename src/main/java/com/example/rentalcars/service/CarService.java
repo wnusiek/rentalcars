@@ -2,6 +2,7 @@ package com.example.rentalcars.service;
 
 import com.example.rentalcars.DTO.CarDto;
 import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.vaadin.flow.component.notification.Notification;
@@ -85,12 +86,12 @@ public class CarService {
                 .toList();
     }
 
-    public List<CarModel> findWithFilter(String filterText){
-        if (filterText == null || filterText.isEmpty()){
-            return getCarList1();
-        } else {
-            return carRepository.search(filterText);
-        }
+    public List<CarModel> findWithFilter(String filterText, GearboxType gearboxType){
+//        if (filterText == null || filterText.isEmpty()){
+//            return getCarList1();
+//        } else {
+            return carRepository.search(filterText, gearboxType);
+//        }
     }
 
 }
