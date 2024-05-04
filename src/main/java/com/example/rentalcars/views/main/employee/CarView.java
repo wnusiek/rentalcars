@@ -1,10 +1,12 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,6 +26,7 @@ public class CarView extends VerticalLayout {
     private final CarService carService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
     TextField filterText = new TextField();
+    ComboBox<GearboxType> gearboxTypeComboBox = new ComboBox<>("Skrzynia biegów");
     CarForm carForm = new CarForm();
 
     public CarView(CarService carService) {
@@ -84,8 +87,14 @@ public class CarView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCarList());
 
-        var toolbar = new HorizontalLayout(filterText, addCarButton);
+        gearboxTypeComboBox.setPlaceholder("Wybierz typ skrzyni...");
+        gearboxTypeComboBox.setItems(GearboxType.values());
+        gearboxTypeComboBox.setClearButtonVisible(true);
+        gearboxTypeComboBox.addValueChangeListener(e -> updateCarList());
+
+        var toolbar = new HorizontalLayout(filterText, gearboxTypeComboBox, addCarButton);
         toolbar.addClassName("toolbar");
+        toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
     }
 
