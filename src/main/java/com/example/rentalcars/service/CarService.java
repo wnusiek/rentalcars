@@ -87,11 +87,7 @@ public class CarService {
     }
 
     public List<CarModel> findWithFilter(String filterText, GearboxType gearboxType){
-//        if (filterText == null || filterText.isEmpty()){
-//            return getCarList1();
-//        } else {
             return carRepository.search(filterText, gearboxType);
-//        }
     }
 
 }
