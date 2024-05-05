@@ -1,7 +1,9 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.DTO.CarDto;
+import com.example.rentalcars.enums.BodyType;
 import com.example.rentalcars.enums.CarStatus;
+import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
@@ -86,8 +88,8 @@ public class CarService {
                 .toList();
     }
 
-    public List<CarModel> findWithFilter(String filterText, GearboxType gearboxType){
-            return carRepository.search(filterText, gearboxType);
+    public List<CarModel> findWithFilter(String filterText, BodyType bodyType, GearboxType gearboxType, FuelType fuelType){
+            return carRepository.search(filterText, bodyType, gearboxType, fuelType);
     }
 
 }
