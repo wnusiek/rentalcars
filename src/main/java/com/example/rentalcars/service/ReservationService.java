@@ -24,13 +24,10 @@ public class ReservationService {
     private final UserService userService;
     private final RentalService rentalService;
     public void addReservation(ReservationModel reservation) {
-
-        if (beforeAfterDatesValidation(reservation)){
             if (isCarAvailableInGivenDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())){
                 reservation.setPrice(calculateRentalCost(reservation));
                 reservationRepository.save(reservation);
             } else throw new InputMismatchException ("Samochód niedostępny w podanym terminie!");
-        } else throw new IllegalArgumentException ("Nieprawidłowa kolejność dat!");
     }
 
     public List<ReservationModel> getReservationList() {
@@ -65,13 +62,6 @@ public class ReservationService {
                 .toList();
     }
 
-    public List<ReservationModel> getReservationListByCustomerLastName(String lastName){
-        if (lastName == null || lastName.isEmpty()){
-            return getReservationList();
-        }
-        return reservationRepository.search(lastName);
-    }
-
     public void editReservation(ReservationModel editReservation) {
         reservationRepository.save(editReservation);
     }
@@ -100,9 +90,6 @@ public class ReservationService {
             || (dateFrom.isBefore(r.getDateFrom()) && dateTo.isAfter(r.getDateTo()))) {
                 return false;
             }
-            if (r.getReservationStatus().equals(ReservationStatus.RESERVED)) {
-                return false;
-            }
         }
         return true;
     }
@@ -116,13 +103,6 @@ public class ReservationService {
             }
         }
         return availableInDateRangeCarList;
-    }
-
-    public Boolean beforeAfterDatesValidation(ReservationModel reservation) {
-        if (reservation.getDateFrom().isBefore(reservation.getDateTo()) || reservation.getDateFrom().equals(reservation.getDateTo())){
-            return true;
-        }
-        return false;
     }
 
     public  BigDecimal calculateRentalCost(ReservationModel reservation) {
