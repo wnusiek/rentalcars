@@ -4,6 +4,7 @@ import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.*;
 import com.example.rentalcars.service.*;
 import com.example.rentalcars.views.main.MainLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.details.Details;
@@ -74,6 +75,9 @@ public class HistoryView extends VerticalLayout {
     }
 
     private HorizontalLayout getToolbar() {
+        Button clearFiltersButton = new Button("Wyczyść filtry");
+        clearFiltersButton.addClickListener(e -> clearFilters());
+
         customer.setPlaceholder("Klient...");
         customer.setItems(customerService.getCustomerList());
         customer.setItemLabelGenerator(CustomerModel::getName);
@@ -96,8 +100,16 @@ public class HistoryView extends VerticalLayout {
         reservationStatus.setClearButtonVisible(true);
         reservationStatus.setWidth("250px");
         reservationStatus.addValueChangeListener(e -> updateLists());
-        var toolbar = new HorizontalLayout(customer, date, receptionVenue, reservationStatus);
+        var toolbar = new HorizontalLayout(customer, date, receptionVenue, reservationStatus, clearFiltersButton);
+        toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
+    }
+
+    private void clearFilters() {
+        customer.setValue(null);
+        date.setValue(null);
+        receptionVenue.setValue(null);
+        reservationStatus.setValue(null);
     }
 
     private void updateLists() {
