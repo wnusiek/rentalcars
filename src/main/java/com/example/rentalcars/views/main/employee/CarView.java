@@ -84,6 +84,8 @@ public class CarView extends VerticalLayout {
     private HorizontalLayout getToolbar() {
         Button addCarButton = new Button("Dodaj samochód");
         addCarButton.addClickListener(e->addCar());
+        Button clearFiltersButton = new Button("Wyczyść filtry");
+        clearFiltersButton.addClickListener(e -> clearFilters());
 
         filterText.setPlaceholder("Wpisz markę lub model...");
         filterText.setClearButtonVisible(true);
@@ -110,10 +112,18 @@ public class CarView extends VerticalLayout {
                 bodyType,
                 gearboxType,
                 fuelType,
+                clearFiltersButton,
                 addCarButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
+    }
+
+    private void clearFilters() {
+        filterText.setValue("");
+        bodyType.setValue(null);
+        gearboxType.setValue(null);
+        fuelType.setValue(null);
     }
 
     private void addCar() {
