@@ -1,5 +1,7 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.BodyType;
+import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.service.CarService;
@@ -26,7 +28,9 @@ public class CarView extends VerticalLayout {
     private final CarService carService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
     TextField filterText = new TextField();
-    ComboBox<GearboxType> gearboxTypeComboBox = new ComboBox<>("Skrzynia biegów");
+    ComboBox<GearboxType> gearboxType = new ComboBox<>("Skrzynia biegów");
+    ComboBox<FuelType> fuelType = new ComboBox<>("Paliwo");
+    ComboBox<BodyType> bodyType = new ComboBox<>("Nadwozie");
     CarForm carForm = new CarForm();
 
     public CarView(CarService carService) {
@@ -87,12 +91,27 @@ public class CarView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCarList());
 
-        gearboxTypeComboBox.setPlaceholder("Wybierz typ skrzyni...");
-        gearboxTypeComboBox.setItems(GearboxType.values());
-        gearboxTypeComboBox.setClearButtonVisible(true);
-        gearboxTypeComboBox.addValueChangeListener(e -> updateCarList());
+        bodyType.setPlaceholder("Wybierz typ nadwozia...");
+        bodyType.setClearButtonVisible(true);
+        bodyType.setItems(BodyType.values());
+        bodyType.addValueChangeListener(e -> updateCarList());
 
-        var toolbar = new HorizontalLayout(filterText, gearboxTypeComboBox, addCarButton);
+        gearboxType.setPlaceholder("Wybierz typ skrzyni...");
+        gearboxType.setClearButtonVisible(true);
+        gearboxType.setItems(GearboxType.values());
+        gearboxType.addValueChangeListener(e -> updateCarList());
+
+        fuelType.setPlaceholder("Wybierz typ paliwa...");
+        fuelType.setClearButtonVisible(true);
+        fuelType.setItems(FuelType.values());
+        fuelType.addValueChangeListener(e -> updateCarList());
+
+        var toolbar = new HorizontalLayout(
+                filterText,
+                bodyType,
+                gearboxType,
+                fuelType,
+                addCarButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
@@ -106,7 +125,11 @@ public class CarView extends VerticalLayout {
     private void updateCarList() {
 //        carGrid.setItems(carService.getCarList1());
 //        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
-        carGrid.setItems(carService.findWithFilter(filterText.getValue(), gearboxTypeComboBox.getValue()));
+        carGrid.setItems(carService.findWithFilter(
+                filterText.getValue(),
+                bodyType.getValue(),
+                gearboxType.getValue(),
+                fuelType.getValue()));
     }
 
     private void configureGrid() {
