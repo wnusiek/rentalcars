@@ -65,7 +65,6 @@ public class CarView extends VerticalLayout {
     private void configureForm() {
         carForm = new CarForm();
         carForm.setWidth("25em");
-
         carForm.addSaveListener(this::saveCar);
         carForm.addDeleteListener(this::deleteCar);
         carForm.addCloseListener(event -> closeEditor());
@@ -123,8 +122,6 @@ public class CarView extends VerticalLayout {
     }
 
     private void updateCarList() {
-//        carGrid.setItems(carService.getCarList1());
-//        carGrid.setItems(carService.findCarsByMark(filterText.getValue()));
         carGrid.setItems(carService.findWithFilter(
                 filterText.getValue(),
                 bodyType.getValue(),
@@ -149,9 +146,7 @@ public class CarView extends VerticalLayout {
         carGrid.addColumn("color").setHeader("Kolor");
         carGrid.addColumn("mileage").setHeader("Przebieg");
         carGrid.addColumn("productionDate").setHeader("Rok produkcji");
-
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-
         carGrid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
     }
 
