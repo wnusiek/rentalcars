@@ -27,7 +27,7 @@ public class CarView extends VerticalLayout {
 
     private final CarService carService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
-    TextField filterText = new TextField();
+    TextField filterText = new TextField("Marka lub model");
     ComboBox<GearboxType> gearboxType = new ComboBox<>("Skrzynia biegów");
     ComboBox<FuelType> fuelType = new ComboBox<>("Paliwo");
     ComboBox<BodyType> bodyType = new ComboBox<>("Nadwozie");
@@ -86,7 +86,7 @@ public class CarView extends VerticalLayout {
         Button addCarButton = new Button("Dodaj samochód");
         addCarButton.addClickListener(e->addCar());
 
-        filterText.setPlaceholder("Filtruj po marce lub modelu...");
+        filterText.setPlaceholder("Wpisz markę lub model...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateCarList());
