@@ -61,32 +61,20 @@ public class RentalVaadinService {
         }
     }
 
-    public List<CarModel> findAvailableCarsByDates (Boolean availabilityCheckbox, DepartmentModel departmentModel, LocalDate startDate, LocalDate endDate){
+    public List<CarModel> findAvailableCarsByDates (DepartmentModel departmentModel, LocalDate startDate, LocalDate endDate){
         try {
-            return reservationService.getAvailableCarsByDateRange(findCarsByDepartment(departmentModel, availabilityCheckbox),startDate, endDate);
+            return reservationService.getAvailableCarsByDateRange(findCarsByDepartment(departmentModel),startDate, endDate);
         } catch (NullPointerException n) {
-            return findCarsByDepartment(departmentModel, availabilityCheckbox);
+            return findCarsByDepartment(departmentModel);
         }
     }
 
-    public List<CarModel> findCarsByDepartment (DepartmentModel departmentModel, Boolean availabilityCheckbox){
+    public List<CarModel> findCarsByDepartment (DepartmentModel departmentModel){
         try {
-            if (availabilityCheckbox){
-                return carService.getAvailableCars(departmentService.getAllCarsByDepartment(departmentModel.getId()));
-            } else return departmentService.getAllCarsByDepartment(departmentModel.getId());
-
+            return carService.getAvailableCars(departmentService.getAllCarsByDepartment(departmentModel.getId()));
         } catch (NullPointerException n) {
-            if (availabilityCheckbox){
-                return carService.getAvailableCars(carService.getCarList1());
-            } else return carService.getCarList1();
+            return carService.getAvailableCars(carService.getCarList1());
         }
     }
 
-
-
-    /*public List<CarModel> findCarsByAvailability (CarStatus status) {
-        try{
-
-        }
-    }*/
 }

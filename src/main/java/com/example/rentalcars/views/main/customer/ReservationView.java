@@ -42,7 +42,6 @@ public class ReservationView extends VerticalLayout {
     DatePicker endDate = new DatePicker("Data zwrotu");
     ComboBox<DepartmentModel> receptionVenueComboBox = new ComboBox<>("Oddział odbioru");
     ComboBox<DepartmentModel> returnVenueCombobox = new ComboBox<>("Oddział zwrotu");
-    Checkbox carStatusCheckBox = new Checkbox("Tylko dostępne");
     Button makeReservationButton = new Button("Zarezerwuj");
     private CarModel customerChoice;
 
@@ -84,7 +83,7 @@ public class ReservationView extends VerticalLayout {
     }
 
     private void updateCarList() {
-        carGrid.setItems(service.findAvailableCarsByDates(carStatusCheckBox.getValue(), receptionVenueComboBox.getValue(), startDate.getValue(), endDate.getValue()));
+        carGrid.setItems(service.findAvailableCarsByDates(receptionVenueComboBox.getValue(), startDate.getValue(), endDate.getValue()));
     }
 
     private void configureGrid() {
@@ -97,7 +96,6 @@ public class ReservationView extends VerticalLayout {
         carGrid.addColumn("fuelType").setHeader("Paliwo");
         carGrid.addColumn("gearbox").setHeader("Skrzynia biegów");
         carGrid.addColumn("price").setHeader("Cena");
-        carGrid.addColumn("availability").setHeader("Dostępność");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         carGrid.asSingleSelect().addValueChangeListener(e -> saveUserCarChoice(e.getValue()));
     }
@@ -148,13 +146,12 @@ public class ReservationView extends VerticalLayout {
         returnVenueCombobox.setItemLabelGenerator(DepartmentModel::getCity);
         returnVenueCombobox.setClearButtonVisible(true);
 
-        carStatusCheckBox.addValueChangeListener(e -> updateCarList());
         makeReservationButton.addClickListener(e -> validateFields());
 
         var toolbar = new HorizontalLayout(
                 new VerticalLayout(startDate, receptionVenueComboBox),
                 new VerticalLayout(endDate, returnVenueCombobox),
-                carStatusCheckBox, makeReservationButton);
+                makeReservationButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
