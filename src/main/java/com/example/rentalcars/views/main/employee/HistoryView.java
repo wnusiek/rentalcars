@@ -78,6 +78,9 @@ public class HistoryView extends VerticalLayout {
         Button clearFiltersButton = new Button("Wyczyść filtry");
         clearFiltersButton.addClickListener(e -> clearFilters());
 
+        Button cancelOutdatedReservations = new Button("Anuluj przeterminowane rezerwacje");
+        cancelOutdatedReservations.addClickListener(e -> cancelReservation());
+
         customer.setPlaceholder("Klient...");
         customer.setItems(customerService.getCustomerList());
         customer.setItemLabelGenerator(CustomerModel::getName);
@@ -100,9 +103,14 @@ public class HistoryView extends VerticalLayout {
         reservationStatus.setClearButtonVisible(true);
         reservationStatus.setWidth("250px");
         reservationStatus.addValueChangeListener(e -> updateLists());
-        var toolbar = new HorizontalLayout(customer, date, receptionVenue, reservationStatus, clearFiltersButton);
+        var toolbar = new HorizontalLayout(customer, date, receptionVenue, reservationStatus, clearFiltersButton, cancelOutdatedReservations);
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
+    }
+
+    private void cancelReservation() {
+        reservationService.cancelOutdatedReservationOfNotRentedCar();
+        updateLists();
     }
 
     private void clearFilters() {
