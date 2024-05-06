@@ -139,7 +139,7 @@ public class CarForm extends FormLayout {
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
-        return new HorizontalLayout(save, delete, cancel);
+        return new HorizontalLayout(save, cancel);
     }
 
     private void validateAndSave() {
