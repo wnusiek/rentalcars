@@ -167,6 +167,14 @@ public class ReservationService {
         }
     }
 
+    public void cancelOutdatedReservationOfNotRentedCar(){
+        List<ReservationModel> outdatedReservations = reservationRepository.findAll().stream()
+                .filter(r -> r.getReservationStatus().equals(ReservationStatus.RESERVED))
+                .filter(r -> r.getDateFrom().isBefore(LocalDate.now())).collect(Collectors.toList());
+        outdatedReservations.forEach(r -> r.setReservationStatus(ReservationStatus.CANCELLED));
+        outdatedReservations.forEach(r -> editReservation(r));
+    }
+
     public List<ReservationModel> getReservationListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
         return reservationRepository.findWithFilters(customer, date, receptionVenue, reservationStatus);
     }
