@@ -17,10 +17,6 @@ public interface ReturnRepository extends JpaRepository<ReturnModel, Long> {
     Optional<ReturnModel> findByReservation(ReservationModel reservationModel);
 
     @Query("select r from ReturnModel r " +
-            "where lower(r.reservation.customer.lastName) like lower(concat('%', :searchTerm, '%'))")
-    List<ReturnModel> search(@Param("searchTerm") String searchTerm);
-
-    @Query("select r from ReturnModel r " +
             "where (:searchTerm is null or r.reservation.customer = :searchTerm)" +
             "and (:searchDate is null or r.reservation.dateFrom = :searchDate)" +
             "and (:searchDepartment is null or r.reservation.receptionVenue = :searchDepartment)" +

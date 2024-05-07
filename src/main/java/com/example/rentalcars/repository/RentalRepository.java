@@ -19,10 +19,6 @@ public interface RentalRepository extends JpaRepository<RentalModel, Long> {
     Optional<RentalModel> findByReservation(ReservationModel reservationModel);
 
     @Query("select r from RentalModel r " +
-            "where lower(r.reservation.customer.lastName) like lower(concat('%', :searchTerm, '%'))")
-    List<RentalModel> search(@Param("searchTerm") String searchTerm);
-
-    @Query("select r from RentalModel r " +
             "where (:searchTerm is null or r.reservation.customer = :searchTerm)" +
             "and (:searchDate is null or r.reservation.dateFrom = :searchDate)" +
             "and (:searchDepartment is null or r.reservation.receptionVenue = :searchDepartment)" +

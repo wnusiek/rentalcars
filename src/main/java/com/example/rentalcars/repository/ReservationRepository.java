@@ -13,11 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<ReservationModel, Long > {
-    @Query("select r from ReservationModel r " +
-            "where lower(r.customer.lastName) like lower(concat('%', :searchTerm, '%'))")
-    List<ReservationModel> search(@Param("searchTerm") String searchTerm);
-
+public interface ReservationRepository extends JpaRepository<ReservationModel, Long> {
     @Query("select r from ReservationModel r " +
             "where (:searchTerm is null or r.customer = :searchTerm)" +
             "and (:searchDate is null or r.dateFrom = :searchDate)" +
