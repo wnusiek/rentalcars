@@ -35,9 +35,6 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-//    public List<ReservationDto> getReservationList() {
-//        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
-//    }
 
     public List<ReservationModel> getReservationListOfNotRentedCarsByReceptionDepartment(DepartmentModel departmentModel) {
         if (departmentModel == null) {
