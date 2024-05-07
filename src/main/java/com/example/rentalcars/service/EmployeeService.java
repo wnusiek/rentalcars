@@ -17,19 +17,19 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public void saveEmployee(EmployeeModel employeeModel){
-        if (employeeModel == null ){
+    public void saveEmployee(EmployeeModel employeeModel) {
+        if (employeeModel == null) {
             System.err.println("Employee is null.");
             return;
         }
         employeeRepository.save(employeeModel);
     }
 
-    public void deleteEmployee(EmployeeModel employeeModel){
+    public void deleteEmployee(EmployeeModel employeeModel) {
         employeeRepository.delete(employeeModel);
     }
 
-    public EmployeeModel getEmployeeByUserName(String userName){
+    public EmployeeModel getEmployeeByUserName(String userName) {
         var employee = getEmployeeList().stream().filter(employeeModel -> employeeModel.getUser().getName().equals(userName)).findFirst();
         if (employee.isPresent())
             return employee.get();

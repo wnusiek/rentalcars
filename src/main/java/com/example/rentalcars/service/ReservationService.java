@@ -23,11 +23,12 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserService userService;
     private final RentalService rentalService;
+
     public void addReservation(ReservationModel reservation) {
-            if (isCarAvailableInGivenDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())){
-                reservation.setPrice(calculateRentalCost(reservation));
-                reservationRepository.save(reservation);
-            } else throw new InputMismatchException ("Samochód niedostępny w podanym terminie!");
+        if (isCarAvailableInGivenDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())) {
+            reservation.setPrice(calculateRentalCost(reservation));
+            reservationRepository.save(reservation);
+        } else throw new InputMismatchException("Samochód niedostępny w podanym terminie!");
     }
 
     public List<ReservationModel> getReservationList() {
@@ -38,8 +39,8 @@ public class ReservationService {
 //        return reservationRepository.findAll().stream().map(r -> new ReservationDto(r.getCar(),r.getDateFrom(),r.getDateTo(),r.getPrice(),r.getReceptionVenue(),r.getReturnVenue(),r.getCustomer())).toList();
 //    }
 
-    public List<ReservationModel> getReservationListOfNotRentedCarsByReceptionDepartment(DepartmentModel departmentModel){
-        if (departmentModel == null){
+    public List<ReservationModel> getReservationListOfNotRentedCarsByReceptionDepartment(DepartmentModel departmentModel) {
+        if (departmentModel == null) {
             return getReservationListOfNotRentedCarsAllReceptionDepartments();
         } else {
             return getReservationList()
@@ -49,7 +50,8 @@ public class ReservationService {
                     .toList();
         }
     }
-    public List<ReservationModel> getReservationListOfNotRentedCarsAllReceptionDepartments(){
+
+    public List<ReservationModel> getReservationListOfNotRentedCarsAllReceptionDepartments() {
         List<Long> rentedCarsReservationsIds = rentalService.getRentalList()
                 .stream()
                 .map(rentalModel -> rentalModel.getReservation().getId())
@@ -83,11 +85,10 @@ public class ReservationService {
     public Boolean isCarAvailableInGivenDateRange(Long carId, LocalDate dateFrom, LocalDate dateTo) {
         var reservationList = getReservationListByCarId(carId);
         for (ReservationModel r : reservationList) {
-            if (dateFrom.equals(r.getDateFrom()) || dateFrom.equals(r.getDateTo()) || dateTo.equals(r.getDateFrom()) || dateTo.equals(r.getDateTo())){
+            if (dateFrom.equals(r.getDateFrom()) || dateFrom.equals(r.getDateTo()) || dateTo.equals(r.getDateFrom()) || dateTo.equals(r.getDateTo())) {
                 return false;
-            }
-            else if ((dateFrom.isAfter(r.getDateFrom()) && dateFrom.isBefore(r.getDateTo())) || (dateTo.isBefore(r.getDateTo()) && dateTo.isAfter(r.getDateFrom()))
-            || (dateFrom.isBefore(r.getDateFrom()) && dateTo.isAfter(r.getDateTo()))) {
+            } else if ((dateFrom.isAfter(r.getDateFrom()) && dateFrom.isBefore(r.getDateTo())) || (dateTo.isBefore(r.getDateTo()) && dateTo.isAfter(r.getDateFrom()))
+                    || (dateFrom.isBefore(r.getDateFrom()) && dateTo.isAfter(r.getDateTo()))) {
                 return false;
             }
         }
@@ -105,7 +106,7 @@ public class ReservationService {
         return availableInDateRangeCarList;
     }
 
-    public  BigDecimal calculateRentalCost(ReservationModel reservation) {
+    public BigDecimal calculateRentalCost(ReservationModel reservation) {
         BigDecimal dailyRentalPrice = reservation.getCar().getPrice();
         LocalDate startDate = reservation.getDateFrom();
         LocalDate endDate = reservation.getDateTo();
@@ -116,19 +117,19 @@ public class ReservationService {
         // Obliczamy koszt rezerwacji (cena za dzień * liczba dni)
         BigDecimal totalCost = dailyRentalPrice.multiply(BigDecimal.valueOf(numberOfDays));
 
-        if (reservation.getReceptionVenue().equals(reservation.getReturnVenue())){
+        if (reservation.getReceptionVenue().equals(reservation.getReturnVenue())) {
             return totalCost;
         } else {
             return totalCost.add(BigDecimal.valueOf(100l));
         }
     }
 
-    public List<ReservationModel> getReservationListLoggedUser(){
+    public List<ReservationModel> getReservationListLoggedUser() {
         String loggedUserName = userService.getNameOfLoggedUser();
         return getReservationList().stream().filter(reservation -> reservation.getCustomer().getUser().getName().equals(loggedUserName)).toList();
     }
 
-    public void cancelReservation(ReservationModel reservationModel){
+    public void cancelReservation(ReservationModel reservationModel) {
         LocalDate reservationStartDate = reservationModel.getDateFrom();
         LocalDate today = LocalDate.now();
         Long difference = ChronoUnit.DAYS.between(today, reservationStartDate);
@@ -140,9 +141,8 @@ public class ReservationService {
                 reservationModel.setPrice(BigDecimal.valueOf(0));
                 editReservation(reservationModel);
             }
-        }
-        else if (difference < 2 && difference >= 0){
-            if (reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED)){
+        } else if (difference < 2 && difference >= 0) {
+            if (reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED)) {
                 Notification.show("Zostanie pobrana opłata 20% ceny rezerwacji").setPosition(Notification.Position.MIDDLE);
                 reservationModel.setReservationStatus(ReservationStatus.CANCELLED);
                 BigDecimal handlingFee = reservationModel.getPrice().multiply(BigDecimal.valueOf(0.2));
@@ -158,7 +158,7 @@ public class ReservationService {
 
     public void setReservationStatus(Long id, ReservationStatus reservationStatus) {
         var reservation = findById(id);
-        if (reservation.isPresent()){
+        if (reservation.isPresent()) {
             var r = reservation.get();
             r.setReservationStatus(reservationStatus);
             editReservation(r);
@@ -167,7 +167,7 @@ public class ReservationService {
         }
     }
 
-    public void cancelOutdatedReservationOfNotRentedCar(){
+    public void cancelOutdatedReservationOfNotRentedCar() {
         List<ReservationModel> outdatedReservations = reservationRepository.findAll().stream()
                 .filter(r -> r.getReservationStatus().equals(ReservationStatus.RESERVED))
                 .filter(r -> r.getDateFrom().isBefore(LocalDate.now())).collect(Collectors.toList());

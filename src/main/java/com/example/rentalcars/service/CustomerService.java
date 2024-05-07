@@ -24,7 +24,7 @@ public class CustomerService {
     }
 
     public List<CustomerModel> findWithFilter(String filterText) {
-        if (filterText == null || filterText.isEmpty()){
+        if (filterText == null || filterText.isEmpty()) {
             return getCustomerList();
         } else {
             return customerRepository.search(filterText);
@@ -43,19 +43,19 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    public void saveCustomer(CustomerModel customerModel){
-        if (customerModel == null ){
+    public void saveCustomer(CustomerModel customerModel) {
+        if (customerModel == null) {
             System.err.println("Employee is null.");
-        }else {
+        } else {
             customerRepository.save(customerModel);
         }
     }
 
-    public void deleteCustomer(CustomerModel customerModel){
+    public void deleteCustomer(CustomerModel customerModel) {
         customerRepository.delete(customerModel);
     }
 
-    public CustomerModel getCustomerByUserName(String userName){
+    public CustomerModel getCustomerByUserName(String userName) {
         var customer = getCustomerList().stream().filter(customerModel -> customerModel.getUser().getName().equals(userName)).findFirst();
         if (customer.isPresent())
             return customer.get();
@@ -67,8 +67,8 @@ public class CustomerService {
 
     }
 
-    public boolean checkIfCustomerExist(){
-        if(getCustomerByUserName(userService.getNameOfLoggedUser()).equals(null)){
+    public boolean checkIfCustomerExist() {
+        if (getCustomerByUserName(userService.getNameOfLoggedUser()).equals(null)) {
             return false;
         }
         return true;

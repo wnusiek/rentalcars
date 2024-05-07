@@ -21,7 +21,7 @@ public class CompanyService {
         companyRepository.save(companyModel);
     }
 
-    public String getCompanyName(){
+    public String getCompanyName() {
         return getCompanyModelList().get(0).getCompanyName();
     }
 }

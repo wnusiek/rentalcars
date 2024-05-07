@@ -18,9 +18,7 @@ import java.util.stream.Collectors;
 public class DepartmentService {
 
     private final EmployeeRepository employeeRepository;
-
     private final DepartmentRepository departmentRepository;
-
     private final CarRepository carRepository;
 
     public void addDepartment(DepartmentModel department) {

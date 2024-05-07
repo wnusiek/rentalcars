@@ -15,31 +15,31 @@ public class CrmService {
     private final RentalRepository rentalRepository;
     private final ReturnRepository returnRepository;
 
-    public long countCars(){
+    public long countCars() {
         return carRepository.count();
     }
 
-    public long countEmployees(){
+    public long countEmployees() {
         return employeeRepository.count();
     }
 
-    public long countCustomers(){
+    public long countCustomers() {
         return customerRepository.count();
     }
 
-    public long countReservations(){
+    public long countReservations() {
         return reservationRepository.count();
     }
 
-    public long countRentals(){
+    public long countRentals() {
         return rentalRepository.count();
     }
 
-    public long countReturns(){
+    public long countReturns() {
         return returnRepository.count();
     }
 
-    public long countDepartments(){
+    public long countDepartments() {
         return departmentRepository.count();
     }
 }
