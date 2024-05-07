@@ -26,10 +26,10 @@ public class CarService {
     public void saveCar(CarModel carModel) {
         if (carModel == null) {
             System.err.println("Car is null.");
-            return;
+            Notification.show("Null. Samochód nie został dodany").setPosition(Notification.Position.MIDDLE);
         }
         carRepository.save(carModel);
-        Notification.show("Samochód został dodany pomyślnie");
+        Notification.show("Samochód został dodany pomyślnie").setPosition(Notification.Position.MIDDLE);
     }
 
     public void deleteCar(CarModel carModel) {
