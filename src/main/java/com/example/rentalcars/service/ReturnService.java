@@ -38,8 +38,8 @@ public class ReturnService {
         return returnRepository.findAll();
     }
 
-    public List<ReturnModel> getReturnListByCustomerLastName(String lastName){
-        if (lastName == null || lastName.isEmpty()){
+    public List<ReturnModel> getReturnListByCustomerLastName(String lastName) {
+        if (lastName == null || lastName.isEmpty()) {
             return getReturnModelList();
         }
         return returnRepository.search(lastName);
@@ -57,7 +57,7 @@ public class ReturnService {
         return returnRepository.findById(id).orElse(null);
     }
 
-    public BigDecimal getIncome (List<ReturnModel> returnModelList) {
+    public BigDecimal getIncome(List<ReturnModel> returnModelList) {
         BigDecimal income = null;
         returnModelList.stream().forEach(e -> income.add(e.getTotalCost()));
         return income;
@@ -65,7 +65,7 @@ public class ReturnService {
 
     public ReturnModel findByReservation(ReservationModel reservationModel) {
         var ret = returnRepository.findByReservation(reservationModel);
-        if (ret.isPresent()){
+        if (ret.isPresent()) {
             return ret.get();
         } else {
             return null;

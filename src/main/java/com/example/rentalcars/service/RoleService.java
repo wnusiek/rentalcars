@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 public class RoleService {
     private final RoleRepository roleRepository;
 
-    public RoleModel getRoleByName(String name){
+    public RoleModel getRoleByName(String name) {
         var role = roleRepository.findByName(name);
-        if (role.isPresent()){
+        if (role.isPresent()) {
             return role.get();
         } else {
             System.err.println("Nie ma takiej roli");

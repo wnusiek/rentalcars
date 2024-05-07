@@ -19,14 +19,12 @@ public class CarService {
 
     private final CarRepository carRepository;
 
-
-
     public List<CarModel> getCarList1() {
         return carRepository.findAll();
     }
 
-    public void saveCar(CarModel carModel){
-        if (carModel == null){
+    public void saveCar(CarModel carModel) {
+        if (carModel == null) {
             System.err.println("Car is null.");
             return;
         }
@@ -34,7 +32,7 @@ public class CarService {
         Notification.show("Samochód został dodany pomyślnie");
     }
 
-    public void deleteCar(CarModel carModel){
+    public void deleteCar(CarModel carModel) {
         carRepository.delete(carModel);
     }
 
@@ -43,8 +41,9 @@ public class CarService {
     }
 
     public List<CarDto> getCarList() {
-        return carRepository.findAll().stream().map(i -> new CarDto(i.getId(),i.getMark(),i.getModel(),i.getAvailability(), i.getMileage(), i.getProductionDate(),i.getPrice(),i.getBody(), i.getColor(),i.getFuelType(),i.getGearbox())).toList();
+        return carRepository.findAll().stream().map(i -> new CarDto(i.getId(), i.getMark(), i.getModel(), i.getAvailability(), i.getMileage(), i.getProductionDate(), i.getPrice(), i.getBody(), i.getColor(), i.getFuelType(), i.getGearbox())).toList();
     }
+
     public CarModel findById(Long id) {
         return carRepository.findById(id).orElse(null);
     }
@@ -57,7 +56,7 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
-    public List<CarModel> getAvailableCars(List <CarModel> cars) {
+    public List<CarModel> getAvailableCars(List<CarModel> cars) {
         return cars.stream()
                 .filter(car -> car.getAvailability() != null)
                 .filter(car -> car.getAvailability().equals(CarStatus.AVAILABLE))
@@ -73,7 +72,7 @@ public class CarService {
         }
     }
 
-    public List<CarModel> findCarsByMark (String filterText) {
+    public List<CarModel> findCarsByMark(String filterText) {
         if (filterText == null || filterText.isEmpty()) {
             return getCarList1();
         } else {
@@ -88,8 +87,8 @@ public class CarService {
                 .toList();
     }
 
-    public List<CarModel> findWithFilter(String filterText, BodyType bodyType, GearboxType gearboxType, FuelType fuelType){
-            return carRepository.search(filterText, bodyType, gearboxType, fuelType);
+    public List<CarModel> findWithFilter(String filterText, BodyType bodyType, GearboxType gearboxType, FuelType fuelType) {
+        return carRepository.search(filterText, bodyType, gearboxType, fuelType);
     }
 
 }

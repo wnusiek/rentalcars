@@ -51,11 +51,11 @@ public class UserService {
         return false;
     }
 
-    public boolean isUserLogged(){
+    public boolean isUserLogged() {
         return !getNameOfLoggedUser().equals("anonymousUser") && !getNameOfLoggedUser().isEmpty();
     }
 
-    public String getNameOfLoggedUser(){
+    public String getNameOfLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }

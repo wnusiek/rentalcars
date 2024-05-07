@@ -35,7 +35,7 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
-    public List<RentalModel> getRentalListOfNotReturnedCarsAllDepartments(){
+    public List<RentalModel> getRentalListOfNotReturnedCarsAllDepartments() {
         List<Long> returnedCarsReservationsIds = returnService.getReturnModelList()
                 .stream()
                 .map(returnModel -> returnModel.getReservation().getId())
@@ -47,8 +47,8 @@ public class RentalService {
                 .toList();
     }
 
-    public List<RentalModel> getRentalListByCustomerLastName(String lastName){
-        if (lastName == null || lastName.isEmpty()){
+    public List<RentalModel> getRentalListByCustomerLastName(String lastName) {
+        if (lastName == null || lastName.isEmpty()) {
             return getRentalList();
         }
         return rentalRepository.search(lastName);
@@ -66,9 +66,9 @@ public class RentalService {
         rentalRepository.deleteById(id);
     }
 
-    public RentalModel findByReservation(ReservationModel reservationModel){
+    public RentalModel findByReservation(ReservationModel reservationModel) {
         var rental = rentalRepository.findByReservation(reservationModel);
-        if (rental.isPresent()){
+        if (rental.isPresent()) {
             return rental.get();
         } else {
             return null;
@@ -80,7 +80,7 @@ public class RentalService {
     }
 
     public List<RentalModel> getRentalListOfNotReturnedCarsByReturnDepartment(DepartmentModel departmentModel) {
-        if (departmentModel == null){
+        if (departmentModel == null) {
             return getRentalListOfNotReturnedCarsAllDepartments();
         } else {
             return getRentalList()
