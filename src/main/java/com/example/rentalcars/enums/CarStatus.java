@@ -7,7 +7,7 @@ public enum CarStatus {
 
     private String name;
 
-    private CarStatus(String name) {
+    CarStatus(String name) {
         this.name = name;
     }
 
