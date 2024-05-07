@@ -22,6 +22,6 @@ public class CompanyService {
     }
 
     public String getCompanyName() {
-        return getCompanyModelList().get(0).getCompanyName();
+        return getCompanyModelList().isEmpty() ? "" : getCompanyModelList().get(0).getCompanyName();
     }
 }
