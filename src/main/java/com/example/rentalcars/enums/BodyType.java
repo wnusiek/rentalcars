@@ -12,7 +12,7 @@ public enum BodyType {
 
     private String name;
 
-    private BodyType(String name) {
+    BodyType(String name) {
         this.name = name;
     }
 

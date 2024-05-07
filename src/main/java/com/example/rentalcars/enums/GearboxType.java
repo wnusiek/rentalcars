@@ -6,7 +6,7 @@ public enum GearboxType {
 
     private String name;
 
-    private GearboxType(String name) {
+    GearboxType(String name) {
         this.name = name;
     }
 
