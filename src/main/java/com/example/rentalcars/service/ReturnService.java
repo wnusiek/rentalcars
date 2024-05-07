@@ -38,13 +38,6 @@ public class ReturnService {
         return returnRepository.findAll();
     }
 
-    public List<ReturnModel> getReturnListByCustomerLastName(String lastName) {
-        if (lastName == null || lastName.isEmpty()) {
-            return getReturnModelList();
-        }
-        return returnRepository.search(lastName);
-    }
-
     public void updateReturn(ReturnModel returnModel) {
         returnRepository.save(returnModel);
     }
