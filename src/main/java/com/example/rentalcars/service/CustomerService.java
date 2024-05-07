@@ -13,7 +13,6 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private UserService userService;
 
     public void postAddCustomer(CustomerModel customer) {
         customerRepository.save(customer);
@@ -35,24 +34,12 @@ public class CustomerService {
         return customerRepository.findById(id).orElse(null);
     }
 
-    public void updateCustomer(CustomerModel customer) {
-        customerRepository.save(customer);
-    }
-
-    public void removeCustomer(Long id) {
-        customerRepository.deleteById(id);
-    }
-
     public void saveCustomer(CustomerModel customerModel) {
         if (customerModel == null) {
             System.err.println("Employee is null.");
         } else {
             customerRepository.save(customerModel);
         }
-    }
-
-    public void deleteCustomer(CustomerModel customerModel) {
-        customerRepository.delete(customerModel);
     }
 
     public CustomerModel getCustomerByUserName(String userName) {
@@ -64,14 +51,6 @@ public class CustomerService {
             Notification.show("Nie ma takiego klienta").setPosition(Notification.Position.MIDDLE);
             return null;
         }
-
-    }
-
-    public boolean checkIfCustomerExist() {
-        if (getCustomerByUserName(userService.getNameOfLoggedUser()).equals(null)) {
-            return false;
-        }
-        return true;
     }
 
 
