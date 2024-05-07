@@ -72,21 +72,6 @@ public class CarService {
         }
     }
 
-    public List<CarModel> findCarsByMark(String filterText) {
-        if (filterText == null || filterText.isEmpty()) {
-            return getCarList1();
-        } else {
-            return getCarsByMark(filterText);
-        }
-    }
-
-    public List<CarModel> getCarsByMark(String mark) {
-        return getCarList1().stream()
-                .filter(car -> car.getMark() != null)
-                .filter(car -> car.getMark().toLowerCase().startsWith(mark.toLowerCase()))
-                .toList();
-    }
-
     public List<CarModel> findWithFilter(String filterText, BodyType bodyType, GearboxType gearboxType, FuelType fuelType) {
         return carRepository.search(filterText, bodyType, gearboxType, fuelType);
     }
