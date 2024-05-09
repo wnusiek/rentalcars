@@ -1,8 +1,8 @@
 package com.example.rentalcars.enums;
 
 public enum GearboxType {
-    MANUAL("Manual"),
-    AUTOMATIC("Automatic");
+    MANUAL("Manualna"),
+    AUTOMATIC("Automatyczna");
 
     private String name;
 
