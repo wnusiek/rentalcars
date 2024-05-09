@@ -1,9 +1,9 @@
 package com.example.rentalcars.enums;
 
 public enum CarStatus {
-    AVAILABLE("Available"),
-    HIRED("Hired"),
-    UNAVAILABLE("Unavailable");
+    AVAILABLE("Dostępny"),
+    HIRED("Wypożyczony"),
+    UNAVAILABLE("Niedostępny");
 
     private String name;
 
