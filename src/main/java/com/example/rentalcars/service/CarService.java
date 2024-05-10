@@ -10,6 +10,7 @@ import com.example.rentalcars.repository.CarRepository;
 import com.vaadin.flow.component.notification.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -74,6 +75,15 @@ public class CarService {
 
     public List<CarModel> findWithFilter(String filterText, BodyType bodyType, GearboxType gearboxType, FuelType fuelType) {
         return carRepository.search(filterText, bodyType, gearboxType, fuelType);
+    }
+
+    public void setMileageByCarId(Long carId, Integer mileage){
+        var car = carRepository.findById(carId);
+        if (car.isPresent()) {
+            var c = car.get();
+            c.setMileage(mileage);
+            carRepository.save(c);
+        }
     }
 
 }
