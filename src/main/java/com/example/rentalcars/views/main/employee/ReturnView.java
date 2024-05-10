@@ -49,6 +49,7 @@ public class ReturnView extends VerticalLayout {
     TextField comments = new TextField("Komentarz");
     BigDecimalField supplement = new BigDecimalField("Dopłata");
     ComboBox<DepartmentModel> returnVenue = new ComboBox<>("Oddział zwrotu");
+    TextField mileage = new TextField("Przebieg");
     ReturnForm form;
     RentalModel employeeChoice;
 
@@ -134,8 +135,9 @@ public class ReturnView extends VerticalLayout {
         Div plnPrefix = new Div();
         plnPrefix.setText("PLN");
         supplement.setPrefixComponent(plnPrefix);
+        mileage.setPlaceholder("Zaktualizuj przebieg");
         HorizontalLayout toolbar = new HorizontalLayout();
-        toolbar.add(dateOfReturn, comments, supplement, returnACarButton);
+        toolbar.add(dateOfReturn, comments, supplement, returnACarButton, mileage);
         toolbar.addAndExpand(new Span());
         toolbar.add(returnVenue);
         toolbar.addClassName("toolbar");
@@ -207,6 +209,7 @@ public class ReturnView extends VerticalLayout {
         returnService.addReturn(returnModel);
         departmentService.addCarToDepartment(carId, returnVenueId);
         carService.setCarStatus(carId, CarStatus.AVAILABLE);
+        carService.setMileageByCarId(carId, Integer.parseInt(mileage.getValue()));
         reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
         closeEditor();
         updateRentalList();

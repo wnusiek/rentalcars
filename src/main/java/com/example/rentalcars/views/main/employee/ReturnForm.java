@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.shared.Registration;
 import jakarta.annotation.security.PermitAll;
 
@@ -29,6 +30,7 @@ public class ReturnForm extends FormLayout {
     DatePicker dateOfReturn = new DatePicker("Data zwrotu");
     TextField comments = new TextField("Komentarz");
     BigDecimalField supplement = new BigDecimalField("Dopłata");
+    TextField mileage = new TextField("Przebieg");
     Button save = new Button("Zwróć auto");
     Button cancel = new Button("Anuluj");
     private ReturnModel returnModel;
@@ -45,12 +47,16 @@ public class ReturnForm extends FormLayout {
         returnBinder.forField(dateOfReturn).bind(ReturnModel::getDateOfReturn, ReturnModel::setDateOfReturn);
         returnBinder.forField(comments).bind(ReturnModel::getComments, ReturnModel::setComments);
         returnBinder.forField(supplement).bind(ReturnModel::getSupplement, ReturnModel::setSupplement);
+        returnBinder.forField(mileage)
+                .withConverter(new StringToIntegerConverter("Tylko liczby"))
+                .bind(r -> r.getReservation().getCar().getMileage(), (r, mileage) -> r.getReservation().getCar().setMileage(mileage));
 
         add(
             employee,
             reservation,
             dateOfReturn,
             comments,
+            mileage,
             createButtonLayout()
         );
     }
