@@ -213,7 +213,11 @@ public class ReturnView extends VerticalLayout {
         reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
         closeEditor();
         updateRentalList();
+
         comments.clear();
+        dateOfReturn.clear();
+        supplement.clear();
+        mileage.clear();
     }
 
 
