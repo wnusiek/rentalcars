@@ -137,7 +137,7 @@ public class ReturnView extends VerticalLayout {
         supplement.setPrefixComponent(plnPrefix);
         mileage.setPlaceholder("Zaktualizuj przebieg");
         HorizontalLayout toolbar = new HorizontalLayout();
-        toolbar.add(dateOfReturn, comments, supplement, returnACarButton, mileage);
+        toolbar.add(dateOfReturn, mileage, supplement, comments, returnACarButton);
         toolbar.addAndExpand(new Span());
         toolbar.add(returnVenue);
         toolbar.addClassName("toolbar");
