@@ -148,8 +148,8 @@ public class CarView extends VerticalLayout {
         carGrid.addColumn("bail").setHeader("Kaucja");
         carGrid.addColumn("body").setHeader("Nadwozie");
         carGrid.addColumn("gearbox").setHeader("Skrzynia biegów");
-        carGrid.addColumn("numberOfSeats").setHeader("Liczba miejsc");
-        carGrid.addColumn("numberOfDoors").setHeader("Liczba drzwi");
+        carGrid.addColumn("numberOfSeats").setHeader("Miejsc");
+        carGrid.addColumn("numberOfDoors").setHeader("Drzwi");
         carGrid.addColumn("fuelType").setHeader("Paliwo");
         carGrid.addColumn("trunk").setHeader("Bagażnik");
         carGrid.addColumn("availability").setHeader("Dostępność");
