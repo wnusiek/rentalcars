@@ -100,7 +100,7 @@ public class UserServiceTests {
     }
 
     @Test
-    public void givenUserObject_whenAddUser_thenReturnUserObject(){
+    public void givenUserObject_whenAddUser_thenReturnTrue(){
 
         // given
         given(userRepository.save(userModel))
@@ -114,5 +114,17 @@ public class UserServiceTests {
         // then
         assertThat(savedUser).isTrue();
 
+    }
+
+    @Test
+    public void givenNull_whenAddUser_thenReturnFalse(){
+
+        // given
+
+        // when
+        Boolean savedUser = userService.addUser(null);
+
+        // then
+        assertThat(savedUser).isFalse();
     }
 }
