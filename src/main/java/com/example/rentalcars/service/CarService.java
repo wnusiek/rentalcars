@@ -24,13 +24,20 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public void saveCar(CarModel carModel) {
-        if (carModel == null) {
-            System.err.println("Car is null.");
-            Notification.show("Null. Samochód nie został dodany").setPosition(Notification.Position.MIDDLE);
+    public boolean saveCar(CarModel carModel) {
+        try {
+            CarModel savedCar = carRepository.save(carModel);
+            if (savedCar != null){
+                Notification.show("Samochód został dodany pomyślnie").setPosition(Notification.Position.MIDDLE);
+                return true;
+            } else {
+                Notification.show("Samochód nie został dodany").setPosition(Notification.Position.MIDDLE);
+                return false;
+            }
+        } catch (Exception e) {
+            Notification.show("Błąd podczas dodawania samochodu: " + e.getMessage()).setPosition(Notification.Position.MIDDLE);
+            return false;
         }
-        carRepository.save(carModel);
-        Notification.show("Samochód został dodany pomyślnie").setPosition(Notification.Position.MIDDLE);
     }
 
     public void deleteCar(CarModel carModel) {
