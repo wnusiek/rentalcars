@@ -127,4 +127,48 @@ public class UserServiceTests {
         // then
         assertThat(savedUser).isFalse();
     }
+
+    @Test
+    public void givenUserModelExistingUsername_whenCheckIfUserExists_thenReturnTrue(){
+
+        // given
+        given(userRepository.save(userModel))
+                .willReturn(userModel);
+        UserModel bolek = new UserModel(1l, "Bolek","bolo123","bolo@gmail.com",true,roleModel);
+
+        // when
+        Boolean isUserInRepository = userService.checkIfUserExists(bolek);
+
+        // then
+        assertThat(isUserInRepository).isTrue();
+    }
+
+    @Test
+    public void givenUserModelExistingEmail_whenCheckIfUserExists_thenReturnTrue(){
+
+        // given
+        given(userRepository.save(userModel))
+                .willReturn(userModel);
+        UserModel bolo = new UserModel(1l, "Bolo","bolo123","bolek@gmail.com",true,roleModel);
+
+        // when
+        Boolean isUserInRepository = userService.checkIfUserExists(bolo);
+
+        // then
+        assertThat(isUserInRepository).isTrue();
+
+    }
+    @Test
+    public void givenUserModel_whenCheckIfUserExists_thenReturnFalse(){
+
+        // given
+        UserModel dzesa = new UserModel(1l, "Dżesa","dzesa123","dzesa@gmail.com",true,roleModel);
+
+        // when
+        Boolean isUserInRepository = userService.checkIfUserExists(dzesa);
+
+        // then
+        assertThat(isUserInRepository).isFalse();
+
+    }
 }
