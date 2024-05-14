@@ -26,10 +26,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-        public UserModel findById(Long id) {
-                Optional<UserModel> userModel = userRepository.findById(id);
-                return userModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o id = " + id));
-        }
+    public UserModel findById(Long id) {
+        Optional<UserModel> userModel = userRepository.findById(id);
+        return userModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o id = " + id));
+    }
 
     public UserModel saveUser(UserModel userModel) {
         try {
