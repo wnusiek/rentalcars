@@ -1,14 +1,16 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.UserAdditionException;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.UserRepository;
-import com.vaadin.flow.component.notification.Notification;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,30 +27,22 @@ public class UserService {
     }
 
     public UserModel findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        Optional<UserModel> userModel = userRepository.findById(id);
+        return userModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o id = " + id));
     }
 
-    public boolean addUser(UserModel userModel) {
-        if (userModel == null) {
-            return false;
-        } else {
-            userRepository.save(userModel);
-            return true;
+    public UserModel saveUser(UserModel userModel) {
+        try {
+            UserModel savedUser = userRepository.save(userModel);
+            System.out.println("Użytkownik został dodany pomyślnie");
+            return savedUser;
+        } catch (Exception e){
+            throw new UserAdditionException("Błąd podczas dodawania użytkownika.", e);
         }
     }
 
     public boolean checkIfUserExists(UserModel userModel) {
-        var name = userRepository.findByName(userModel.getName());
-        var email = userRepository.findByEmail(userModel.getEmail());
-        if (name.isPresent()) {
-            Notification.show("Podaj inną nazwę użytkownika niż " + name.get().getName()).setPosition(Notification.Position.BOTTOM_CENTER);
-            return true;
-        }
-        if (email.isPresent()) {
-            Notification.show("Podaj inny email niż " + email.get().getEmail()).setPosition(Notification.Position.BOTTOM_CENTER);
-            return true;
-        }
-        return false;
+        return userRepository.findByName(userModel.getName()).isPresent();
     }
 
     public boolean isUserLogged() {
