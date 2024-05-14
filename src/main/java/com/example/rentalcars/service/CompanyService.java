@@ -17,8 +17,8 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public void updateCompany(CompanyModel companyModel) {
-        companyRepository.save(companyModel);
+    public CompanyModel updateCompany(CompanyModel companyModel) {
+        return companyRepository.save(companyModel);
     }
 
     public String getCompanyName() {
