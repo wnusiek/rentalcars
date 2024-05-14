@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerModel, Long> {
     @Query("select c from CustomerModel c " +
-            "where lower(c.firstName) like lower(concat('%', :searchTerm, '%')) " +
-            "or lower(c.lastName) like lower(concat('%', :searchTerm, '%'))")
+            "where (:searchTerm is null or lower(c.firstName) like lower(concat('%', :searchTerm, '%')) " +
+            "or lower(c.lastName) like lower(concat('%', :searchTerm, '%')))")
     List<CustomerModel> search(@Param("searchTerm") String searchTerm);
 }
