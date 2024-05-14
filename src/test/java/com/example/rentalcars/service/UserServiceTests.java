@@ -12,13 +12,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
@@ -34,11 +39,12 @@ public class UserServiceTests {
     private UserService userService;
     private UserModel userModel;
     private RoleModel roleModel;
-
+    private String username;
     @BeforeEach
     public void setup(){
         roleModel = new RoleModel(1L, "ADMIN");
         userModel = new UserModel(1L, "Bolek", "bolek123", "bolek@gmail.com", true, roleModel);
+        username = "user1111";
     }
 
     @Test
@@ -121,5 +127,39 @@ public class UserServiceTests {
         boolean userExists = userService.checkIfUserExists(userModel);
 
         assertThat(userExists).isFalse();
+    }
+
+    @Test
+    public void testGetNameOfLoggedUser(){
+        Authentication authentication = new TestingAuthenticationToken(username, null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        userService = new UserService(userRepository);
+        String loggedUsername = userService.getNameOfLoggedUser();
+
+        assertThat(username).isEqualTo(loggedUsername);
+    }
+
+    @Test
+    public void testIsUserLogged_UserAuthenticated() {
+        Authentication authentication = new TestingAuthenticationToken(username, "password", "ROLE_USER");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        userService = new UserService(userRepository);
+
+        boolean result = userService.isUserLogged();
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void testIsUserLogged_UserNotAuthenticated() {
+        //
+        Authentication authentication = new AnonymousAuthenticationToken("key", "anonymousUser",
+                List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        userService = new UserService(userRepository);
+        //
+        boolean result = userService.isUserLogged();
+        //
+        assertThat(result).isFalse();
     }
 }
