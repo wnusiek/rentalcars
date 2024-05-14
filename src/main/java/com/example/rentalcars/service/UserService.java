@@ -46,7 +46,8 @@ public class UserService {
     }
 
     public boolean isUserLogged() {
-        return !getNameOfLoggedUser().equals("anonymousUser") && !getNameOfLoggedUser().isEmpty();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser");
     }
 
     public String getNameOfLoggedUser() {
