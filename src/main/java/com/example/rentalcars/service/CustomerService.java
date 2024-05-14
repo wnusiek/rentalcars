@@ -1,12 +1,15 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.CustomerAdditionException;
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.repository.CustomerRepository;
 import com.vaadin.flow.component.notification.Notification;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,44 +17,31 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public void postAddCustomer(CustomerModel customer) {
-        customerRepository.save(customer);
-    }
-
     public List<CustomerModel> getCustomerList() {
         return customerRepository.findAll();
     }
 
     public List<CustomerModel> findWithFilter(String filterText) {
-        if (filterText == null || filterText.isEmpty()) {
-            return getCustomerList();
-        } else {
             return customerRepository.search(filterText);
-        }
     }
 
     public CustomerModel findById(Long id) {
-        return customerRepository.findById(id).orElse(null);
+        var customerModel = customerRepository.findById(id);
+        return customerModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono klienta o id = " + id));
     }
 
-    public void saveCustomer(CustomerModel customerModel) {
-        if (customerModel == null) {
-            System.err.println("Employee is null.");
-        } else {
-            customerRepository.save(customerModel);
+    public CustomerModel saveCustomer(CustomerModel customerModel) {
+        try {
+            CustomerModel savedCustomer = customerRepository.save(customerModel);
+            System.out.println("Klient został dodany pomyślnie");
+            return savedCustomer;
+        } catch (Exception e) {
+            throw new CustomerAdditionException("Błąd podczas dodawania klienta", e);
         }
     }
 
     public CustomerModel getCustomerByUserName(String userName) {
-        var customer = getCustomerList().stream().filter(customerModel -> customerModel.getUser().getName().equals(userName)).findFirst();
-        if (customer.isPresent())
-            return customer.get();
-        else {
-            System.err.println("Nie ma takiego klienta");
-            Notification.show("Nie ma takiego klienta").setPosition(Notification.Position.MIDDLE);
-            return null;
-        }
+        var customerModel = getCustomerList().stream().filter(c -> c.getUser().getName().equals(userName)).findFirst();
+        return customerModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono klienta"));
     }
-
-
 }
