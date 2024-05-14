@@ -70,6 +70,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
     }
 
     private void saveUser(RegisterForm.SaveEvent event){
-        userService.addUser(event.getUser());
+        userService.saveUser(event.getUser());
     }
 }
