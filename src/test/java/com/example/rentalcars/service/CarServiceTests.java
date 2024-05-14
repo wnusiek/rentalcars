@@ -14,10 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -134,4 +131,58 @@ public class CarServiceTests {
         assertThat(availableCars).isEmpty();
     }
 
+    @Test
+    public void testSetCarStatus_CarExists(){
+        Long id = carModel.getId();
+        CarStatus newStatus = CarStatus.UNAVAILABLE;
+        when(carRepository.findById(id)).thenReturn(Optional.of(carModel));
+
+        carService.setCarStatus(id, newStatus);
+
+        assertThat(carModel.getAvailability()).isEqualTo(newStatus);
+        verify(carRepository, times(1)).save(carModel);
+    }
+
+    @Test
+    public void testSetCarStatus_CarDoesNotExist(){
+        Long id = 1L;
+        CarStatus newStatus = CarStatus.HIRED;
+        when(carRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertDoesNotThrow(() -> carService.setCarStatus(id, newStatus));
+
+        verify(carRepository, never()).save(any());
+    }
+
+    @Test
+    public void testSetMileage_CarExists(){
+        Long id = carModel.getId();
+        Integer newMileage = 1;
+        when(carRepository.findById(id)).thenReturn(Optional.of(carModel));
+
+        carService.setMileageByCarId(id, newMileage);
+
+        assertThat(carModel.getMileage()).isEqualTo(newMileage);
+        verify(carRepository, times(1)).save(carModel);
+    }
+
+    @Test
+    public void testSetMileage_CarDoesNotExist(){
+        Long id = 1L;
+        Integer newMileage = 1;
+        when(carRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertDoesNotThrow(() -> carService.setMileageByCarId(id, newMileage));
+
+        verify(carRepository, never()).save(any());
+    }
+
+    @Test
+    public void testFindWithFilter_NoCriteria_NoEmptyResult(){
+        when(carRepository.search(null, null, null, null)).thenReturn(Arrays.asList(new CarModel(), new CarModel()));
+
+        List<CarModel> carModelList = carService.findWithFilter(null, null, null, null);
+
+        assertFalse(carModelList.isEmpty());
+    }
 }
