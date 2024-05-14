@@ -1,28 +1,27 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.UserAdditionException;
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.*;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -38,137 +37,89 @@ public class UserServiceTests {
 
     @BeforeEach
     public void setup(){
-        roleModel = new RoleModel(1l, "ADMIN");
+        roleModel = new RoleModel(1L, "ADMIN");
         userModel = new UserModel(1L, "Bolek", "bolek123", "bolek@gmail.com", true, roleModel);
     }
 
     @Test
-    public void givenUserId_whenFindById_thenReturnUser(){
+    public void testFindUserById_UserFound(){
+        Long id = userModel.getId();
+        given(userRepository.findById(id)).willReturn(Optional.of(userModel));
 
-        // given
-        given(userRepository.findById(1L)).willReturn(Optional.of(userModel));
+        UserModel savedUser = userService.findById(id);
 
-        // when
-        UserModel savedUser = userService.findById(userModel.getId());
-
-        // then
         assertThat(savedUser).isNotNull();
+        assertThat(savedUser).isEqualTo(userModel);
+    }
 
+    @Test
+    public void testFindUserById_ExceptionThrown(){
+        Long id = userModel.getId();
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> userService.findById(id));
     }
 
     @Test
     public void givenUsersList_whenGetAllUsers_thenReturnUsersList(){
-
-        // given
         UserModel userModel1 = new UserModel(2L, "JimiHendrix", "jimi123", "jhendrix@gmail.com", true, roleModel);
         given(userRepository.findAll()).willReturn(List.of(userModel,userModel1));
 
-        // when
         List<UserModel> userModelList = userService.getAllUsers();
 
-        // then
         assertThat(userModelList).isNotNull();
         assertThat(userModelList.size()).isEqualTo(2);
     }
 
     @Test
     public void givenEmptyUsersList_whenGetAllUsers_thenReturnEmptyUsersList(){
-
-        // given
         given(userRepository.findAll()).willReturn(Collections.emptyList());
 
-        // when
         List<UserModel> userModelList = userService.getAllUsers();
 
-        // then
         assertThat(userModelList).isEmpty();
-        assertThat(userModelList.size()).isEqualTo(0);
     }
 
     @Test
     public void givenUserId_whenDeleteUser_thenNothing(){
-
-        // given
         long userId = 1L;
         willDoNothing().given(userRepository).deleteById(userId);
 
-        // when
         userService.deleteUser(userId);
 
-        // then
         verify(userRepository, times(1)).deleteById(userId);
     }
 
     @Test
-    public void givenUserObject_whenAddUser_thenReturnTrue(){
+    public void givenUserObject_whenSaveUser_thenReturnUser(){
+        given(userRepository.save(userModel)).willReturn(userModel);
 
-        // given
-        given(userRepository.save(userModel))
-                .willReturn(userModel);
+        UserModel savedUser = userService.saveUser(userModel);
 
-        // when
-        Boolean savedUser = userService.addUser(userModel);
-
-        System.out.println(savedUser);
-
-        // then
-        assertThat(savedUser).isTrue();
+        assertThat(savedUser).isNotNull();
 
     }
 
     @Test
-    public void givenNull_whenAddUser_thenReturnFalse(){
-
-        // given
-
-        // when
-        Boolean savedUser = userService.addUser(null);
-
-        // then
-        assertThat(savedUser).isFalse();
+    public void givenUserModel_whenSaveUser_thenExceptionThrown(){
+        when(userRepository.save(userModel)).thenThrow(new RuntimeException());
+        assertThrows(UserAdditionException.class, () -> userService.saveUser(userModel));
     }
 
     @Test
-    public void givenUserModelExistingUsername_whenCheckIfUserExists_thenReturnTrue(){
+    public void testCheckIfUserExists_UserExists(){
+        given(userRepository.findByName("Bolek")).willReturn(Optional.of(userModel));
 
-        // given
-        given(userRepository.save(userModel))
-                .willReturn(userModel);
-        UserModel bolek = new UserModel(1l, "Bolek","bolo123","bolo@gmail.com",true,roleModel);
+        boolean userExists = userService.checkIfUserExists(userModel);
 
-        // when
-        Boolean isUserInRepository = userService.checkIfUserExists(bolek);
-
-        // then
-        assertThat(isUserInRepository).isTrue();
+        assertThat(userExists).isTrue();
     }
 
     @Test
-    public void givenUserModelExistingEmail_whenCheckIfUserExists_thenReturnTrue(){
+    public void testCheckIfUserExists_UserDoesNotExists(){
+        given(userRepository.findByName("Bolek")).willReturn(Optional.empty());
 
-        // given
-        given(userRepository.save(userModel))
-                .willReturn(userModel);
-        UserModel bolo = new UserModel(1l, "Bolo","bolo123","bolek@gmail.com",true,roleModel);
+        boolean userExists = userService.checkIfUserExists(userModel);
 
-        // when
-        Boolean isUserInRepository = userService.checkIfUserExists(bolo);
-
-        // then
-        assertThat(isUserInRepository).isTrue();
-
-    }
-    @Test
-    public void givenUserModel_whenCheckIfUserExists_thenReturnFalse(){
-
-        // given
-        UserModel dzesa = new UserModel(1l, "Dżesa","dzesa123","dzesa@gmail.com",true,roleModel);
-
-        // when
-        Boolean isUserInRepository = userService.checkIfUserExists(dzesa);
-
-        // then
-        assertThat(isUserInRepository).isFalse();
-
+        assertThat(userExists).isFalse();
     }
 }
