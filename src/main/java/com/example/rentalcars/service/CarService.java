@@ -1,18 +1,19 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.DTO.CarDto;
+import com.example.rentalcars.Exceptions.CarAdditionException;
 import com.example.rentalcars.enums.BodyType;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.FuelType;
 import com.example.rentalcars.enums.GearboxType;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.repository.CarRepository;
-import com.vaadin.flow.component.notification.Notification;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +28,10 @@ public class CarService {
     public CarModel saveCar(CarModel carModel) {
         try {
             CarModel savedCar = carRepository.save(carModel);
-            if (savedCar != null){
-                System.out.println("Samochód został dodany pomyślnie");
-                return savedCar;
-            } else {
-                System.err.println("Samochód nie został dodany");
-                return null;
-            }
+            System.out.println("Samochód został dodany pomyślnie");
+            return savedCar;
         } catch (Exception e) {
-            System.err.println("Błąd podczas dodawania samochodu: " + e.getMessage());
-            return null;
+            throw new CarAdditionException("Błąd podczas dodawania samochodu.", e);
         }
     }
 
@@ -53,7 +48,8 @@ public class CarService {
     }
 
     public CarModel findById(Long id) {
-        return carRepository.findById(id).orElse(null);
+        Optional<CarModel> carModel = carRepository.findById(id);
+        return carModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono samochodu o id = " + id));
     }
 
     public void updateCar(CarModel car) {
