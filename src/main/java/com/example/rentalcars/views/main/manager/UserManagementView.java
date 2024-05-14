@@ -1,6 +1,5 @@
 package com.example.rentalcars.views.main.manager;
 
-import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.RoleRepository;
@@ -78,7 +77,7 @@ public class UserManagementView extends VerticalLayout {
     }
 
     private void saveUser(UserManagementForm.SaveEvent event){
-        userService.addUser(event.getUser());
+        userService.saveUser(event.getUser());
         updateUserList();
         closeEditor();
     }

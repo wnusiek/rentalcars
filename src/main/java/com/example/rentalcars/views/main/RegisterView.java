@@ -76,9 +76,9 @@ public class RegisterView extends VerticalLayout {
             newUser.setState(true);
 
             if (userService.checkIfUserExists(newUser)) {
-                Notification.show("Taki użytkownik już istnieje").setPosition(Notification.Position.BOTTOM_CENTER);
+                Notification.show("Taki użytkownik już istnieje. Wybierz inną nazwę.").setPosition(Notification.Position.BOTTOM_CENTER);
             } else {
-                userService.addUser(newUser);
+                userService.saveUser(newUser);
                 CustomerModel newCustomer = new CustomerModel(1L,"","","","","","","",newUser);
                 customerService.postAddCustomer(newCustomer);
 
