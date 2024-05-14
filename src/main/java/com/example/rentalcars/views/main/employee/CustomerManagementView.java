@@ -68,7 +68,7 @@ public class CustomerManagementView extends VerticalLayout {
 
 
     private void saveCustomer(CustomerDataForm.SaveEvent event){
-        customerService.postAddCustomer(event.getCustomer());
+        customerService.saveCustomer(event.getCustomer());
         updateCustomerList();
         closeEditor();
     }

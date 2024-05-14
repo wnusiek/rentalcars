@@ -80,7 +80,7 @@ public class RegisterView extends VerticalLayout {
             } else {
                 userService.saveUser(newUser);
                 CustomerModel newCustomer = new CustomerModel(1L,"","","","","","","",newUser);
-                customerService.postAddCustomer(newCustomer);
+                customerService.saveCustomer(newCustomer);
 
                 Notification.show("Rejestracja zakończona sukcesem!").setPosition(Notification.Position.BOTTOM_CENTER);
                 UI.getCurrent().navigate("login");
