@@ -1,7 +1,10 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.CustomerAdditionException;
+import com.example.rentalcars.Exceptions.EmployeeAdditionException;
 import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.EmployeeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +20,14 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public void saveEmployee(EmployeeModel employeeModel) {
-        if (employeeModel == null) {
-            System.err.println("Employee is null.");
-            return;
+    public EmployeeModel saveEmployee(EmployeeModel employeeModel) {
+        try {
+            EmployeeModel savedEmployee = employeeRepository.save(employeeModel);
+            System.out.println("Pracownik został dodany pomyślnie");
+            return savedEmployee;
+        } catch (Exception e) {
+            throw new EmployeeAdditionException("Błąd podczas dodawania pracownika", e);
         }
-        employeeRepository.save(employeeModel);
     }
 
     public void deleteEmployee(EmployeeModel employeeModel) {
@@ -30,16 +35,9 @@ public class EmployeeService {
     }
 
     public EmployeeModel getEmployeeByUserName(String userName) {
-        var employee = getEmployeeList().stream().filter(employeeModel -> employeeModel.getUser().getName().equals(userName)).findFirst();
-        if (employee.isPresent())
-            return employee.get();
-        else {
-            System.err.println("Nie ma takiego pracownika");
-            return null;
-        }
-
+        var employeeModel = getEmployeeList().stream().filter(e -> e.getUser().getName().equals(userName)).findFirst();
+        return employeeModel.orElseThrow(() -> new EntityNotFoundException("Nie ma takiego pracownika"));
     }
-
 
 }
 
