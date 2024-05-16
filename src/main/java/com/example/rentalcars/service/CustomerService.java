@@ -3,13 +3,11 @@ package com.example.rentalcars.service;
 import com.example.rentalcars.Exceptions.CustomerAdditionException;
 import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.repository.CustomerRepository;
-import com.vaadin.flow.component.notification.Notification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
