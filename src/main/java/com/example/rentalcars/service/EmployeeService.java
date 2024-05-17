@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +40,9 @@ public class EmployeeService {
         return employeeModel.orElseThrow(() -> new EntityNotFoundException("Nie ma takiego pracownika"));
     }
 
+    public EmployeeModel findById(Long id) {
+        Optional<EmployeeModel> employeeModel = employeeRepository.findById(id);
+        return employeeModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono pracownika o id = " + id));
+    }
 }
 
