@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.DepartmentAdditionException;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.EmployeeModel;
@@ -21,8 +22,14 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final CarRepository carRepository;
 
-    public void addDepartment(DepartmentModel department) {
-        departmentRepository.save(department);
+    public DepartmentModel addDepartment(DepartmentModel department) {
+        try {
+            DepartmentModel savedDepartment = departmentRepository.save(department);
+            System.out.println("Oddział został dodany pomyślnie");
+            return savedDepartment;
+        } catch (Exception e) {
+            throw new DepartmentAdditionException("Błąd podczas dodawania oddziału.", e);
+        }
     }
 
     public List<DepartmentModel> getDepartmentList() {
