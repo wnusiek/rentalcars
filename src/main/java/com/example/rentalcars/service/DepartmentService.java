@@ -7,10 +7,12 @@ import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
 import com.example.rentalcars.repository.EmployeeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -67,15 +69,10 @@ public class DepartmentService {
     }
 
     public DepartmentModel getDepartmentByEmployee(EmployeeModel employeeModel){
-        var department = getDepartmentList().stream()
-                .filter(d -> d.getEmployees().contains(employeeModel))
-                .findFirst();
-        if (department.isPresent())
-            return department.get();
-        else {
-            System.err.println("Nie znaleziono oddziału");
-            return null;
-        }
+        Optional<DepartmentModel> department = getDepartmentList().stream()
+            .filter(d -> d.getEmployees().contains(employeeModel))
+            .findFirst();
+        return department.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono oddziału"));
     }
 
     public Long countEmployeesInDepartment(Long departmentId){
