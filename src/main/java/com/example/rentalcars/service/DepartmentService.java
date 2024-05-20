@@ -7,10 +7,12 @@ import com.example.rentalcars.model.EmployeeModel;
 import com.example.rentalcars.repository.CarRepository;
 import com.example.rentalcars.repository.DepartmentRepository;
 import com.example.rentalcars.repository.EmployeeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,13 +39,8 @@ public class DepartmentService {
     }
 
     public DepartmentModel findById(Long id) {
-        var dep = departmentRepository.findById(id);
-        var d = dep.get();
-        if (dep.isPresent()){
-            return d;
-        } else{
-       return new DepartmentModel();
-        }
+        Optional<DepartmentModel> departmentModel = departmentRepository.findById(id);
+        return departmentModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono oddziału o id = " + id));
     }
 
     public void updateDepartment(DepartmentModel department) {
@@ -59,7 +56,7 @@ public class DepartmentService {
     }
 
     public Set<EmployeeModel> getDepartmentEmployees(Long departmentId) {
-        return departmentRepository.findAll().stream()
+        return getDepartmentList().stream()
                 .filter(department -> department.getId() != null && department.getId().equals(departmentId))
                 .map(DepartmentModel::getEmployees)
                 .flatMap(Set::stream)
@@ -67,15 +64,10 @@ public class DepartmentService {
     }
 
     public DepartmentModel getDepartmentByEmployee(EmployeeModel employeeModel){
-        var department = getDepartmentList().stream()
-                .filter(d -> d.getEmployees().contains(employeeModel))
-                .findFirst();
-        if (department.isPresent())
-            return department.get();
-        else {
-            System.err.println("Nie znaleziono oddziału");
-            return null;
-        }
+        Optional<DepartmentModel> department = getDepartmentList().stream()
+            .filter(d -> d.getEmployees().contains(employeeModel))
+            .findFirst();
+        return department.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono oddziału"));
     }
 
     public Long countEmployeesInDepartment(Long departmentId){
@@ -83,7 +75,7 @@ public class DepartmentService {
     }
 
     public List<CarModel> getAllCarsByDepartment(Long departmentId) {
-        return departmentRepository.findAll().stream()
+        return getDepartmentList().stream()
                 .filter(department -> department.getId() != null && department.getId().equals(departmentId))
                 .map(DepartmentModel::getCars)
                 .flatMap(List::stream)
@@ -144,7 +136,7 @@ public class DepartmentService {
     }
 
     public boolean isEmployeeInAnyDepartment(Long employeeId){
-        return departmentRepository.findAll().stream()
+        return getDepartmentList().stream()
                 .anyMatch(department -> department.getEmployees().stream().anyMatch(employee -> employee.getId().equals(employeeId)));
     }
 
@@ -160,7 +152,7 @@ public class DepartmentService {
     }
 
     public boolean isCarInAnyDepartment(Long carId){
-        return departmentRepository.findAll().stream()
+        return getDepartmentList().stream()
                 .anyMatch(department -> department.getCars().stream().anyMatch(car -> car.getId().equals(carId)));
     }
 
