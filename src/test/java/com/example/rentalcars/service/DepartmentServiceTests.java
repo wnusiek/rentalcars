@@ -91,6 +91,13 @@ public class DepartmentServiceTests {
     }
 
     @Test
+    public void testUpdateDepartment_Success() {
+        when(departmentRepository.save(departmentModel0)).thenReturn(departmentModel0);
+        departmentService.updateDepartment(departmentModel0);
+        verify(departmentRepository, times(1)).save(departmentModel0);
+    }
+
+    @Test
     public void testDeleteDepartmentById_thenNothing() {
         Long id = 1L;
         willDoNothing().given(departmentRepository).deleteById(id);
