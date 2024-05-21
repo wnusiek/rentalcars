@@ -452,16 +452,33 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void testCountEmployeesInDepartmentWithoutEmployees() {
+    public void testCountEmployeesInDepartmentWithEmployees() {
         Long departmentId = 1L;
-        assertThat(departmentService.countEmployeesInDepartment(departmentId)).isEqualTo(0);
+        departmentModel0.getEmployees().add(employeeModel0);
+        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0));
+
+        Long result = departmentService.countEmployeesInDepartment(departmentId);
+
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
-    public void testCountEmployeesInDepartmentWithEmployees() {
+    public void testCountEmployeesInDepartmentWithoutEmployees() {
         Long departmentId = 1L;
-        Long employeeId = 1L;
-        departmentService.addEmployeeToDepartment(employeeId, departmentId);
-        assertThat(departmentService.countEmployeesInDepartment(departmentId)).isEqualTo(0);
+        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0, new DepartmentModel()));
+
+        Long result = departmentService.countEmployeesInDepartment(departmentId);
+
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void testCountEmployeesInNonexistentDepartment() {
+        Long departmentId = 2L;
+        when(departmentRepository.findAll()).thenReturn(Collections.emptyList());
+
+        Long result = departmentService.countEmployeesInDepartment(departmentId);
+
+        assertThat(result).isEqualTo(0);
     }
 }
