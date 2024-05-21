@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -109,4 +110,23 @@ public class EmployeeServiceTests {
         assertDoesNotThrow(() -> employeeService.getEmployeeByUserName("mądrajola"));
         assertDoesNotThrow(() -> employeeService.getEmployeeByUserName("graża"));
     }
+
+    @Test
+    public void testFindById_EmployeeFound() {
+        Long employeeId = 1L;
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel));
+
+        EmployeeModel employee = employeeService.findById(employeeId);
+
+        assertThat(employee).isNotNull();
+        assertThat(employee).isEqualTo(employeeModel);
+    }
+
+    @Test
+    public void testFindById_ExceptionThrown() {
+        Long employeeId = 1L;
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> employeeService.findById(employeeId));
+    }
+
 }
