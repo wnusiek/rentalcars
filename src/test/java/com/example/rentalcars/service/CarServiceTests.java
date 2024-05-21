@@ -19,6 +19,7 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,6 +45,13 @@ public class CarServiceTests {
     public void givenCarModel_whenSaveCar_thenExceptionThrown(){
         when(carRepository.save(carModel)).thenThrow(new RuntimeException());
         assertThrows(CarAdditionException.class, () -> carService.saveCar(carModel));
+    }
+
+    @Test
+    public void testPostAddCar() {
+        when(carRepository.save(carModel)).thenReturn(carModel);
+        carService.postAddCar(carModel);
+        verify(carRepository, times(1)).save(carModel);
     }
 
     @Test
@@ -184,5 +192,22 @@ public class CarServiceTests {
         List<CarModel> carModelList = carService.findWithFilter(null, null, null, null);
 
         assertFalse(carModelList.isEmpty());
+    }
+
+    @Test
+    public void testUpdateCar_Success() {
+        when(carRepository.save(carModel)).thenReturn(carModel);
+        carModel.setMileage(1000);
+        carService.updateCar(carModel);
+        verify(carRepository, times(1)).save(carModel);
+        assertThat(carModel.getMileage()).isEqualTo(1000);
+    }
+
+    @Test
+    public void testRemoveCar_Success() {
+        Long carId = 1L;
+        willDoNothing().given(carRepository).deleteById(carId);
+        carService.removeCar(carId);
+        verify(carRepository, times(1)).deleteById(carId);
     }
 }
