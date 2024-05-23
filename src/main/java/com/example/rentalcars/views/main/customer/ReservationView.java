@@ -26,6 +26,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.InputMismatchException;
+import java.util.Optional;
 
 @Route(value = "reservationView", layout = MainLayout.class)
 @PageTitle("Rezerwowanie")
@@ -189,7 +190,17 @@ public class ReservationView extends VerticalLayout {
 
     private void saveReservation(ReservationForm.SaveEvent event) {
         try {
-            reservationService.addReservation(event.getReservation());
+            ReservationModel reservation = event.getReservation();
+            Boolean isCarAvailable = reservationService.isCarAvailableInGivenDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo());
+            if (isCarAvailable) {
+                reservation.setPrice(reservationService.calculateRentalCost(reservation));
+                ReservationModel savedReservation = reservationService.addReservation(reservation);
+                if (savedReservation != null) {
+                    Notification.show("Rezerwacja samochodu zakończona sukcesem!").setPosition(Notification.Position.MIDDLE);
+                }
+            } else {
+                Notification.show("Samochód niedostępny w podanym terminie!").setPosition(Notification.Position.MIDDLE);
+            }
             closeEditor();
             updateCarList();
         } catch (IllegalArgumentException | InputMismatchException e) {

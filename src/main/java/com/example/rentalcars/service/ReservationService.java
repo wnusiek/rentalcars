@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.ReservationAdditionException;
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.model.CustomerModel;
@@ -7,6 +8,7 @@ import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.repository.ReservationRepository;
 import com.vaadin.flow.component.notification.Notification;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,12 @@ public class ReservationService {
     private final UserService userService;
     private final RentalService rentalService;
 
-    public void addReservation(ReservationModel reservation) {
-        if (isCarAvailableInGivenDateRange(reservation.getCar().getId(), reservation.getDateFrom(), reservation.getDateTo())) {
-            reservation.setPrice(calculateRentalCost(reservation));
-            reservationRepository.save(reservation);
-        } else throw new InputMismatchException("Samochód niedostępny w podanym terminie!");
+    public ReservationModel addReservation(ReservationModel reservation) {
+        try {
+            return reservationRepository.save(reservation);
+        } catch (Exception e) {
+            throw new ReservationAdditionException("Błąd podczas dodawania rezerwacji", e);
+        }
     }
 
     public List<ReservationModel> getReservationList() {
@@ -49,15 +52,18 @@ public class ReservationService {
     }
 
     public List<ReservationModel> getReservationListOfNotRentedCarsAllReceptionDepartments() {
-        List<Long> rentedCarsReservationsIds = rentalService.getRentalList()
-                .stream()
-                .map(rentalModel -> rentalModel.getReservation().getId())
-                .toList();
-
         return getReservationList()
                 .stream()
                 .filter(reservationModel -> reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED))
-                .filter(reservationModel -> !rentedCarsReservationsIds.contains(reservationModel.getId()))
+                .filter(reservationModel -> !getRentedCarsReservationsIds().contains(reservationModel.getId()))
+                .toList();
+    }
+
+    // Przerzucić metodę do RentalService
+    List<Long> getRentedCarsReservationsIds() {
+        return rentalService.getRentalList()
+                .stream()
+                .map(rentalModel -> rentalModel.getReservation().getId())
                 .toList();
     }
 
@@ -73,7 +79,7 @@ public class ReservationService {
         return reservationRepository.findById(id);
     }
 
-    private List<ReservationModel> getReservationListByCarId(Long carId) {
+    List<ReservationModel> getReservationListByCarId(Long carId) {
         return getReservationList().stream()
                 .filter(r -> r.getCar().getId().equals(carId))
                 .collect(Collectors.toList());
@@ -153,14 +159,16 @@ public class ReservationService {
         }
     }
 
-    public void setReservationStatus(Long id, ReservationStatus reservationStatus) {
-        var reservation = findById(id);
-        if (reservation.isPresent()) {
-            var r = reservation.get();
-            r.setReservationStatus(reservationStatus);
-            editReservation(r);
-        } else {
-            Notification.show("Wystąpił błąd. Status rezerwacji nie został zmieniony").setPosition(Notification.Position.MIDDLE);
+    public void setReservationStatus(Long reservationId, ReservationStatus reservationStatus) {
+        try {
+            var reservation = findById(reservationId);
+            if (reservation.isPresent()) {
+                var r = reservation.get();
+                r.setReservationStatus(reservationStatus);
+                editReservation(r);
+            }
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Wystąpił błąd. Status rezerwacji nie został zmieniony");
         }
     }
 

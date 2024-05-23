@@ -83,7 +83,6 @@ public class ReservationForm extends FormLayout {
         try {
             binder.writeBean(reservationModel);
             fireEvent(new ReservationForm.SaveEvent(this, reservationModel));
-            Notification.show("Rezerwacja samochodu zakończona sukcesem!").setPosition(Notification.Position.MIDDLE);
         } catch (ValidationException e) {
             Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(").setPosition(Notification.Position.MIDDLE);
             e.printStackTrace();
