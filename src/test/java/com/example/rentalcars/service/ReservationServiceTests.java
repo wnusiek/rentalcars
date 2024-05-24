@@ -33,6 +33,8 @@ public class ReservationServiceTests {
     @Mock
     private RentalService rentalService;
     @Mock
+    private UserService userService;
+    @Mock
     private ReservationRepository reservationRepository;
     @InjectMocks
     private ReservationService reservationService;
@@ -61,6 +63,13 @@ public class ReservationServiceTests {
         when(reservationRepository.findAll()).thenReturn(List.of(reservationModel0, new ReservationModel(), new ReservationModel()));
         List<ReservationModel> savedReservationList = reservationService.getReservationList();
         assertThat(savedReservationList.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void testGetReservationList_ReturnEmptyList() {
+        when(reservationRepository.findAll()).thenReturn(List.of());
+        List<ReservationModel> savedReservationList = reservationService.getReservationList();
+        assertThat(savedReservationList).isEmpty();
     }
 
     @Test
@@ -143,6 +152,24 @@ public class ReservationServiceTests {
         assertThat(rentedCarsReservationsIds).containsExactlyInAnyOrder(1L, 2L);
     }
 
+    @Test
+    public void testGetRentedCarsReservationsIds_NoRentals() {
+        when(rentalService.getRentalList()).thenReturn(List.of());
+
+        List<Long> rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
+
+        assertThat(rentedCarsReservationsIds).isEmpty();
+    }
+
+    @Test
+    public void testGetReservationListOfNotRentedCarsAllReceptionDepartments_NoReservations() {
+        when(reservationRepository.findAll()).thenReturn(List.of());
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments();
+
+        assertThat(reservationModelList).isEmpty();
+    }
+
 //    @Test
 //    public void testGetReservationListOfNotRentedCarsAllReceptionDepartments_ListReturned() {
 //        ReservationModel reservationModel1 = new ReservationModel();
@@ -155,11 +182,8 @@ public class ReservationServiceTests {
 //        reservationModel2.setReservationStatus(ReservationStatus.RENTED);
 //        reservationModel3.setReservationStatus(ReservationStatus.RESERVED);
 //
-////        RentalModel rentalModel1 = new RentalModel();
-////        rentalModel1.setReservation(reservationModel2);
-//        when(rentalService.getRentalList()).thenReturn(List.of());
-//        when(reservationService.getRentedCarsReservationsIds()).thenReturn(List.of(2L));
 //        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2, reservationModel3));
+//        when(reservationService.getRentedCarsReservationsIds()).thenReturn(List.of(2L));
 //
 //        List<ReservationModel> savedReservationList = reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments();
 //
@@ -167,5 +191,150 @@ public class ReservationServiceTests {
 //        assertThat(savedReservationList).containsExactlyInAnyOrder(reservationModel1, reservationModel3);
 //    }
 
+    @Test
+    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_NullDepartment() {
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setId(1L);
+        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
 
+        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of(reservationModel1));
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(null);
+
+        assertThat(reservationModelList).containsExactly(reservationModel1);
+    }
+
+    @Test
+    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentNoReservationsEmptyListReturned() {
+        DepartmentModel departmentModel1 = new DepartmentModel();
+        departmentModel1.setId(1L);
+        departmentModel1.setCity("Bytom");
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setId(1L);
+        reservationModel1.setReservationStatus(ReservationStatus.RENTED);
+        reservationModel1.setReceptionVenue(departmentModel1);
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setId(2L);
+        reservationModel2.setReservationStatus(ReservationStatus.RETURNED);
+        reservationModel2.setReceptionVenue(departmentModel1);
+
+        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of());
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(departmentModel1);
+
+        assertThat(reservationModelList).isEmpty();
+    }
+
+    @Test
+    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentWithReservationsInDifferentDepartmentEmptyListReturned() {
+        DepartmentModel departmentModel1 = new DepartmentModel();
+        departmentModel1.setId(1L);
+        departmentModel1.setCity("Bytom");
+
+        DepartmentModel departmentModel2 = new DepartmentModel();
+        departmentModel2.setId(2L);
+        departmentModel2.setCity("Gdańsk");
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setId(1L);
+        reservationModel1.setReservationStatus(ReservationStatus.RENTED);
+        reservationModel1.setReceptionVenue(departmentModel1);
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setId(2L);
+        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel2.setReceptionVenue(departmentModel2);
+
+        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of());
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(departmentModel1);
+
+        assertThat(reservationModelList).isEmpty();
+    }
+
+    @Test
+    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentListReturned() {
+        DepartmentModel departmentModel1 = new DepartmentModel();
+        departmentModel1.setId(1L);
+        departmentModel1.setCity("Bytom");
+        DepartmentModel departmentModel2 = new DepartmentModel();
+        departmentModel2.setId(2L);
+        departmentModel2.setCity("Gdańsk");
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setId(1L);
+        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel1.setReceptionVenue(departmentModel1);
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setId(2L);
+        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel2.setReceptionVenue(departmentModel2);
+
+        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of(reservationModel1, reservationModel2));
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(departmentModel1);
+
+        assertThat(reservationModelList).containsExactly(reservationModel1);
+    }
+
+    @Test
+    public void testGetReservationListLoggedUser_ListReturned() {
+        String loggedUserName = "Franek";
+        UserModel userModel1 = new UserModel();
+        userModel1.setName(loggedUserName);
+
+        CustomerModel customerModel1 = new CustomerModel();
+        customerModel1.setUser(userModel1);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCustomer(customerModel1);
+
+        when(userService.getNameOfLoggedUser()).thenReturn(loggedUserName);
+        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1));
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListLoggedUser();
+
+        assertThat(reservationModelList).containsExactly(reservationModel1);
+    }
+
+    @Test
+    public void testGetReservationListLoggedUser_NoReservationsEmptyListReturned() {
+        String loggedUserName = "Franek";
+        when(userService.getNameOfLoggedUser()).thenReturn(loggedUserName);
+        when(reservationRepository.findAll()).thenReturn(List.of());
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListLoggedUser();
+
+        assertThat(reservationModelList).isEmpty();
+    }
+
+    @Test
+    public void testGetReservationListLoggedUser_ReservationsOnDifferentUserEmptyListReturned() {
+        String loggedUserName = "Franek";
+        UserModel userModel1 = new UserModel();
+        userModel1.setName("Zdzichu");
+
+        CustomerModel customerModel1 = new CustomerModel();
+        customerModel1.setUser(userModel1);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCustomer(customerModel1);
+
+        when(userService.getNameOfLoggedUser()).thenReturn(loggedUserName);
+        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1));
+
+        List<ReservationModel> reservationModelList = reservationService.getReservationListLoggedUser();
+
+        assertThat(reservationModelList).isEmpty();
+    }
+
+    @Test
+    public void testGetReservationListWithFilters_NoCriteria_NoEmptyResult() {
+        when(reservationRepository.findWithFilters(null, null, null, null)).thenReturn(List.of(new ReservationModel(), new ReservationModel()));
+        List<ReservationModel> reservationModelList = reservationService.getReservationListWithFilters(null, null, null, null);
+        assertThat(reservationModelList.size()).isEqualTo(2);
+    }
 }
