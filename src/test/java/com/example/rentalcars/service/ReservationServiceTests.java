@@ -379,4 +379,106 @@ public class ReservationServiceTests {
         verify(reservationRepository, times(0)).save(any(ReservationModel.class));
     }
 
+    @Test
+    public void testIsCarAvailableInGivenDateRange_CarAvailable() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        Long carId = carModel1.getId();
+
+        LocalDate dateFrom = LocalDate.now().plusDays(1);
+        LocalDate dateTo = LocalDate.now().plusDays(2);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setDateFrom(LocalDate.now().minusDays(1));
+        reservationModel1.setDateTo(LocalDate.now());
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setCar(carModel1);
+        reservationModel2.setDateFrom(LocalDate.now().plusDays(3));
+        reservationModel2.setDateTo(LocalDate.now().plusDays(4));
+
+        when(reservationService.getReservationListByCarId(carId))
+                .thenReturn(List.of(reservationModel1, reservationModel2));
+
+        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void testIsCarAvailableInGivenDateRange_CarUnavailablePreviousReservationLasts() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        Long carId = carModel1.getId();
+
+        LocalDate dateFrom = LocalDate.now().plusDays(1);
+        LocalDate dateTo = LocalDate.now().plusDays(2);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setDateFrom(LocalDate.now().minusDays(1));
+        reservationModel1.setDateTo(dateFrom);
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setCar(carModel1);
+        reservationModel2.setDateFrom(LocalDate.now().plusDays(3));
+        reservationModel2.setDateTo(LocalDate.now().plusDays(4));
+
+        when(reservationService.getReservationListByCarId(carId))
+                .thenReturn(List.of(reservationModel1, reservationModel2));
+
+        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void testIsCarAvailableInGivenDateRange_CarUnavailableNextReservationStarts() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        Long carId = carModel1.getId();
+
+        LocalDate dateFrom = LocalDate.now().plusDays(1);
+        LocalDate dateTo = LocalDate.now().plusDays(2);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setDateFrom(LocalDate.now().minusDays(1));
+        reservationModel1.setDateTo(LocalDate.now());
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setCar(carModel1);
+        reservationModel2.setDateFrom(dateTo);
+        reservationModel2.setDateTo(LocalDate.now().plusDays(4));
+
+        when(reservationService.getReservationListByCarId(carId))
+                .thenReturn(List.of(reservationModel1, reservationModel2));
+
+        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void testIsCarAvailableInGivenDateRange_CarUnavailableDatesDuringOtherReservationPeriod() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        Long carId = carModel1.getId();
+
+        LocalDate dateFrom = LocalDate.now().plusDays(2);
+        LocalDate dateTo = LocalDate.now().plusDays(3);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setDateFrom(LocalDate.now().plusDays(1));
+        reservationModel1.setDateTo(LocalDate.now().plusDays(4));
+
+        when(reservationService.getReservationListByCarId(carId))
+                .thenReturn(List.of(reservationModel1));
+
+        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
+
+        assertThat(result).isFalse();
+    }
 }
