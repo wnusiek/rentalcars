@@ -481,4 +481,26 @@ public class ReservationServiceTests {
 
         assertThat(result).isFalse();
     }
+
+    @Test
+    public void testIsCarAvailableInGivenDateRange_CarUnavailableEqualsDatesOfOtherReservations() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        Long carId = carModel1.getId();
+
+        LocalDate dateFrom = LocalDate.now().plusDays(2);
+        LocalDate dateTo = LocalDate.now().plusDays(3);
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setDateFrom(dateFrom);
+        reservationModel1.setDateTo(dateTo);
+
+        when(reservationService.getReservationListByCarId(carId))
+                .thenReturn(List.of(reservationModel1));
+
+        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
+
+        assertThat(result).isFalse();
+    }
 }
