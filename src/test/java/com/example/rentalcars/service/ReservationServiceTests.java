@@ -337,4 +337,46 @@ public class ReservationServiceTests {
         List<ReservationModel> reservationModelList = reservationService.getReservationListWithFilters(null, null, null, null);
         assertThat(reservationModelList.size()).isEqualTo(2);
     }
+
+    @Test
+    public void testCancelOutdatedReservationOfNotRentedCar_OutdatedReservationCancelled() {
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel1.setDateFrom(LocalDate.now().plusDays(1));
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel2.setDateFrom(LocalDate.now().minusDays(1));
+
+        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2));
+
+        reservationService.cancelOutdatedReservationOfNotRentedCar();
+
+        verify(reservationRepository, times(1)).save(reservationModel2);
+    }
+
+    @Test
+    public void testCancelOutdatedReservationOfNotRentedCar_NoOutdatedReservations() {
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel1.setDateFrom(LocalDate.now().plusDays(1));
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel2.setDateFrom(LocalDate.now());
+
+        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2));
+
+        reservationService.cancelOutdatedReservationOfNotRentedCar();
+
+        verify(reservationRepository, times(0)).save(any(ReservationModel.class));
+    }
+
+    @Test
+    public void testCancelOutdatedReservationOfNotRentedCar_NoReservations() {
+        when(reservationRepository.findAll()).thenReturn(List.of());
+
+        reservationService.cancelOutdatedReservationOfNotRentedCar();
+
+        verify(reservationRepository, times(0)).save(any(ReservationModel.class));
+    }
+
 }
