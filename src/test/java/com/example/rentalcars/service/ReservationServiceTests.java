@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -502,5 +503,84 @@ public class ReservationServiceTests {
         Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
 
         assertThat(result).isFalse();
+    }
+
+    @Test
+    public void testGetAvailableCarsByDateRange_EmptyCarList() {
+        LocalDate dateFrom = LocalDate.now();
+        LocalDate dateTo = LocalDate.now().plusDays(2);
+
+        List<CarModel> carModelList = reservationService.getAvailableCarsByDateRange(new ArrayList<>(), dateFrom, dateTo);
+
+        assertThat(carModelList).isEmpty();
+    }
+
+    @Test
+    public void testCalculateRentalCost_DifferentVenues() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        carModel1.setPrice(BigDecimal.valueOf(100));
+
+        DepartmentModel receptionVenue = new DepartmentModel();
+        DepartmentModel returnVenue = new DepartmentModel();
+        receptionVenue.setCity("Lublin");
+        returnVenue.setCity("Kraków");
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setReceptionVenue(receptionVenue);
+        reservationModel1.setReturnVenue(returnVenue);
+        reservationModel1.setDateFrom(LocalDate.of(2024,5,1));
+        reservationModel1.setDateTo(LocalDate.of(2024, 5, 5));
+
+        BigDecimal totalCost = reservationService.calculateRentalCost(reservationModel1);
+
+        assertThat(totalCost).isEqualByComparingTo(new BigDecimal("600"));
+    }
+
+    @Test
+    public void testCalculateRentalCost_SameVenue() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        carModel1.setPrice(BigDecimal.valueOf(100));
+
+        DepartmentModel receptionVenue = new DepartmentModel();
+        DepartmentModel returnVenue = new DepartmentModel();
+        receptionVenue.setCity("Lublin");
+        returnVenue.setCity("Lublin");
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setReceptionVenue(receptionVenue);
+        reservationModel1.setReturnVenue(returnVenue);
+        reservationModel1.setDateFrom(LocalDate.of(2024,5,1));
+        reservationModel1.setDateTo(LocalDate.of(2024, 5, 5));
+
+        BigDecimal totalCost = reservationService.calculateRentalCost(reservationModel1);
+
+        assertThat(totalCost).isEqualByComparingTo(new BigDecimal("500"));
+    }
+
+    @Test
+    public void testCalculateRentalCost_OneDayRental() {
+        CarModel carModel1 = new CarModel();
+        carModel1.setId(1L);
+        carModel1.setPrice(BigDecimal.valueOf(100));
+
+        DepartmentModel receptionVenue = new DepartmentModel();
+        DepartmentModel returnVenue = new DepartmentModel();
+        receptionVenue.setCity("Lublin");
+        returnVenue.setCity("Lublin");
+
+        ReservationModel reservationModel1 = new ReservationModel();
+        reservationModel1.setCar(carModel1);
+        reservationModel1.setReceptionVenue(receptionVenue);
+        reservationModel1.setReturnVenue(returnVenue);
+        reservationModel1.setDateFrom(LocalDate.of(2024,5,1));
+        reservationModel1.setDateTo(LocalDate.of(2024, 5, 1));
+
+        BigDecimal totalCost = reservationService.calculateRentalCost(reservationModel1);
+
+        assertThat(totalCost).isEqualByComparingTo(new BigDecimal("100"));
     }
 }
