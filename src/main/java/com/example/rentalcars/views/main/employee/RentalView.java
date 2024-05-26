@@ -1,5 +1,6 @@
 package com.example.rentalcars.views.main.employee;
 
+import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.RentalModel;
@@ -34,6 +35,7 @@ public class RentalView extends VerticalLayout {
     private final RentalService rentalService;
     private final UserService userService;
     private final DepartmentService departmentService;
+    private final CarService carService;
     Grid<ReservationModel> grid = new Grid<>(ReservationModel.class, false);
     DatePicker dateOfRental = new DatePicker("Data wypożyczenia");
     Button rentACarButton = new Button("Wypożycz");
@@ -42,12 +44,13 @@ public class RentalView extends VerticalLayout {
     RentalForm form;
     ReservationModel employeeChoice;
 
-    public RentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService, UserService userService, DepartmentService departmentService) {
+    public RentalView(ReservationService reservationService, EmployeeService employeeService, RentalService rentalService, UserService userService, DepartmentService departmentService, CarService carService) {
         this.rentalService = rentalService;
         this.reservationService = reservationService;
         this.employeeService = employeeService;
         this.userService = userService;
         this.departmentService = departmentService;
+        this.carService = carService;
         addClassName("rental-view");
         setSizeFull();
         configureGrid();
@@ -156,7 +159,12 @@ public class RentalView extends VerticalLayout {
     private void saveRental(RentalForm.SaveEvent event){
         RentalModel rentalModel = event.getRental();
         rentalService.addRental(rentalModel);
-        Long reservationId = rentalModel.getReservation().getId();
+        var reservation = rentalModel.getReservation();
+        var carId = reservation.getCar().getId();
+        var receptionId = reservation.getReceptionVenue().getId();
+        departmentService.removeCarFromDepartment(carId, receptionId);
+        carService.setCarStatus(carId, CarStatus.HIRED);
+        var reservationId = reservation.getId();
         reservationService.setReservationStatus(reservationId, ReservationStatus.RENTED);
         closeEditor();
         updateReservationList();
