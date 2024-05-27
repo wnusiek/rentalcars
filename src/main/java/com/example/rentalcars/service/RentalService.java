@@ -50,15 +50,19 @@ public class RentalService {
     }
 
     public List<RentalModel> getRentalListOfNotReturnedCarsAllDepartments() {
+        return getRentalList()
+                .stream()
+                .filter(rentalModel -> rentalModel.getReservation().getReservationStatus().equals(ReservationStatus.RENTED))
+                .filter(rentalModel -> !getCarsReservationsIds().contains(rentalModel.getId()))
+                .toList();
+    }
+
+    private List<Long> getCarsReservationsIds() {
         List<Long> returnedCarsReservationsIds = returnService.getReturnModelList()
                 .stream()
                 .map(returnModel -> returnModel.getReservation().getId())
                 .toList();
-        return getRentalList()
-                .stream()
-                .filter(rentalModel -> rentalModel.getReservation().getReservationStatus().equals(ReservationStatus.RENTED))
-                .filter(rentalModel -> !returnedCarsReservationsIds.contains(rentalModel.getId()))
-                .toList();
+        return returnedCarsReservationsIds;
     }
 
     public RentalModel findByReservation(ReservationModel reservationModel) {
