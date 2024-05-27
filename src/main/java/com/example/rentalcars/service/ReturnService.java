@@ -1,5 +1,6 @@
 package com.example.rentalcars.service;
 
+import com.example.rentalcars.Exceptions.ReturnAdditionException;
 import com.example.rentalcars.enums.CarStatus;
 import com.example.rentalcars.enums.ReservationStatus;
 import com.example.rentalcars.model.CustomerModel;
@@ -7,6 +8,7 @@ import com.example.rentalcars.model.DepartmentModel;
 import com.example.rentalcars.model.ReservationModel;
 import com.example.rentalcars.model.ReturnModel;
 import com.example.rentalcars.repository.ReturnRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,15 @@ public class ReturnService {
     private final DepartmentService departmentService;
     private final CarService carService;
 
-    public void addReturn(ReturnModel returnModel) {
-        returnRepository.save(returnModel);
+    public ReturnModel addReturn(ReturnModel returnModel) {
+        try {
+            ReturnModel savedReturn = returnRepository.save(returnModel);
+            System.out.println("Zwrot został dodany pomyślnie");
+            return savedReturn;
+        } catch (Exception e) {
+            throw new ReturnAdditionException("Błąd podczas dodawania wypożyczenia", e);
+        }
+
     }
 
     public void addReturn(ReturnModel returnModel, BigDecimal supplement) {
@@ -47,7 +56,8 @@ public class ReturnService {
     }
 
     public ReturnModel findById(Long id) {
-        return returnRepository.findById(id).orElse(null);
+        var returnModel = returnRepository.findById(id);
+        return returnModel.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono zwrotu" + id));
     }
 
     public BigDecimal getIncome(List<ReturnModel> returnModelList) {
@@ -58,11 +68,7 @@ public class ReturnService {
 
     public ReturnModel findByReservation(ReservationModel reservationModel) {
         var ret = returnRepository.findByReservation(reservationModel);
-        if (ret.isPresent()) {
-            return ret.get();
-        } else {
-            return null;
-        }
+        return ret.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono zwrotu."));
     }
 
     public List<ReturnModel> getReturnListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
