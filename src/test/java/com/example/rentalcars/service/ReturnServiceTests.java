@@ -111,6 +111,22 @@ public class ReturnServiceTests {
     }
 
     @Test
+    public void testGetIncome() {
+        ReturnModel returnModel1 = new ReturnModel();
+        returnModel1.setTotalCost(BigDecimal.valueOf(400.2));
+        ReturnModel returnModel2 = new ReturnModel();
+        returnModel2.setTotalCost(BigDecimal.valueOf(500.3));
+        BigDecimal savedIncome = returnService.getIncome(List.of(returnModel0, returnModel1, returnModel2));
+        assertThat(savedIncome).isEqualTo(BigDecimal.valueOf(1000.5));
+    }
+
+    @Test
+    public void testGetIncome_EmptyList() {
+        BigDecimal savedIncome = returnService.getIncome(List.of());
+        assertThat(savedIncome).isEqualTo(BigDecimal.valueOf(0));
+    }
+
+    @Test
     public void testFindById_FindByReservation_ExceptionThrown() {
         when(returnRepository.findByReservation(reservationModel)).thenThrow(new EntityNotFoundException());
         assertThrows(EntityNotFoundException.class, () -> returnService.findByReservation(reservationModel));
