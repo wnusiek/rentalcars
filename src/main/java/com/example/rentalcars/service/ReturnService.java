@@ -61,9 +61,9 @@ public class ReturnService {
     }
 
     public BigDecimal getIncome(List<ReturnModel> returnModelList) {
-        BigDecimal income = null;
-        returnModelList.stream().forEach(e -> income.add(e.getTotalCost()));
-        return income;
+        return returnModelList.stream()
+                .map(ReturnModel::getTotalCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public ReturnModel findByReservation(ReservationModel reservationModel) {
