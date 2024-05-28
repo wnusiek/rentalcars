@@ -3,7 +3,6 @@ package com.example.rentalcars.service;
 import com.example.rentalcars.Exceptions.ReservationAdditionException;
 import com.example.rentalcars.enums.*;
 import com.example.rentalcars.model.*;
-import com.example.rentalcars.repository.RentalRepository;
 import com.example.rentalcars.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,13 +23,12 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ReservationServiceTests {
-//    @Mock
-//    RentalRepository rentalRepository;
     @Mock
     private RentalService rentalService;
     @Mock
@@ -39,548 +37,330 @@ public class ReservationServiceTests {
     private ReservationRepository reservationRepository;
     @InjectMocks
     private ReservationService reservationService;
-    private ReservationModel reservationModel0;
-    private CarModel carModel;
+    private ReservationModel reservationModel1;
+    private ReservationModel reservationModel2;
+    private ReservationModel reservationModel3;
+    private ReservationModel reservationModel4;
+    private ReservationModel reservationModel5;
+
+    private RentalModel rentalModel1;
+    private RentalModel rentalModel2;
+    private DepartmentModel receptionVenue1;
+    private DepartmentModel receptionVenue2;
+    private DepartmentModel returnVenue1;
+    private CarModel carModel1;
+    private UserModel userModel1;
+    private CustomerModel customerModel1;
+    private Long carId1;
+    private Long reservationId1;
+    private String loggedUserName1;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     @BeforeEach
     public void setup() {
-        reservationModel0 = new ReservationModel(1L, new CarModel(), LocalDate.of(2024, Month.JANUARY, 01), LocalDate.of(2024, Month.JANUARY, 03), BigDecimal.valueOf(100), new DepartmentModel(), new DepartmentModel(), new CustomerModel(), ReservationStatus.RESERVED);
+        dateFrom = LocalDate.of(2024, 5, 11);
+        dateTo = LocalDate.of(2024, 5, 15);
+
+        loggedUserName1 = "Franek";
+        userModel1 = new UserModel();
+        userModel1.setName(loggedUserName1);
+        customerModel1 = new CustomerModel();
+        customerModel1.setUser(userModel1);
+
+        carId1 = 1L;
+        carModel1 = new CarModel(carId1, "", "", BigDecimal.valueOf(100), BigDecimal.valueOf(100), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.GAS, "", CarStatus.AVAILABLE, "RED", 200, 2010);
+
+        receptionVenue1 = new DepartmentModel(1L, "Bytom");
+        receptionVenue2 = new DepartmentModel(3L, "Kraków");
+        returnVenue1 = new DepartmentModel(2L, "Gdańsk");
+
+        reservationId1 = 1L;
+        reservationModel1 = new ReservationModel(reservationId1, carModel1, dateFrom, dateTo, BigDecimal.valueOf(100), receptionVenue1, returnVenue1, customerModel1, ReservationStatus.RESERVED);
+        reservationModel2 = new ReservationModel();
+        reservationModel3 = new ReservationModel();
+        reservationModel4 = new ReservationModel();
+        reservationModel5 = new ReservationModel();
+        reservationModel2.setId(2L);
+        reservationModel3.setId(3L);
+        reservationModel4.setId(4L);
+        reservationModel5.setId(5L);
+
+        reservationModel2.setDateFrom(LocalDate.of(2024, 5, 16));
+        reservationModel2.setDateTo(LocalDate.of(2024, 5, 20));
+
+        reservationModel3.setDateFrom(LocalDate.of(2024, 5, 21));
+        reservationModel3.setDateTo(LocalDate.of(2024, 5, 25));
+
+        reservationModel2.setCar(carModel1);
+        reservationModel3.setCar(carModel1);
+
+        reservationModel2.setReceptionVenue(receptionVenue1);
+        reservationModel3.setReceptionVenue(receptionVenue2);
+
+        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel3.setReservationStatus(ReservationStatus.RENTED);
+        reservationModel4.setReservationStatus(ReservationStatus.RETURNED);
+        reservationModel5.setReservationStatus(ReservationStatus.CANCELLED);
+
+        rentalModel1 = new RentalModel();
+        rentalModel2 = new RentalModel();
+        rentalModel1.setReservation(reservationModel1);
+        rentalModel2.setReservation(reservationModel2);
     }
 
     @Test
     public void testAddReservation_ReservationSaved() {
-        when(reservationRepository.save(reservationModel0)).thenReturn(reservationModel0);
-        ReservationModel savedReservation = reservationService.addReservation(reservationModel0);
+        given(reservationRepository.save(reservationModel1)).willReturn(reservationModel1);
+        var savedReservation = reservationService.addReservation(reservationModel1);
         assertThat(savedReservation).isNotNull();
     }
 
     @Test
     public void testAddReservation_ExceptionThrown() {
-        when(reservationRepository.save(reservationModel0)).thenThrow(new RuntimeException());
-        assertThrows(ReservationAdditionException.class, () -> reservationService.addReservation(reservationModel0));
+        given(reservationRepository.save(reservationModel1)).willThrow(new RuntimeException());
+        assertThrows(ReservationAdditionException.class, () -> reservationService.addReservation(reservationModel1));
     }
 
     @Test
     public void testGetReservationList_ReturnReservationList() {
-        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel0, new ReservationModel(), new ReservationModel()));
-        List<ReservationModel> savedReservationList = reservationService.getReservationList();
+        given(reservationRepository.findAll()).willReturn(List.of(reservationModel1, reservationModel2, reservationModel3));
+        var savedReservationList = reservationService.getReservationList();
         assertThat(savedReservationList.size()).isEqualTo(3);
     }
 
     @Test
     public void testGetReservationList_ReturnEmptyList() {
-        when(reservationRepository.findAll()).thenReturn(List.of());
-        List<ReservationModel> savedReservationList = reservationService.getReservationList();
+        given(reservationRepository.findAll()).willReturn(List.of());
+        var savedReservationList = reservationService.getReservationList();
         assertThat(savedReservationList).isEmpty();
     }
 
     @Test
-    public void testEditReservation() {
-        when(reservationRepository.save(reservationModel0)).thenReturn(reservationModel0);
-        reservationService.editReservation(reservationModel0);
-        verify(reservationRepository, times(1)).save(reservationModel0);
+    public void testEditReservation_Success() {
+        given(reservationRepository.save(reservationModel1)).willReturn(reservationModel1);
+        reservationService.editReservation(reservationModel1);
+        verify(reservationRepository, times(1)).save(reservationModel1);
     }
 
     @Test
-    public void testRemoveReservation() {
-        Long id = 1L;
-        willDoNothing().given(reservationRepository).deleteById(id);
-        reservationService.removeReservation(id);
-        verify(reservationRepository, times(1)).deleteById(id);
+    public void testRemoveReservation_Success() {
+        willDoNothing().given(reservationRepository).deleteById(reservationId1);
+        reservationService.removeReservation(reservationId1);
+        verify(reservationRepository, times(1)).deleteById(reservationId1);
     }
 
     @Test
-    public void testSetReservationStatus_ReservationSaved() {
-        Long reservationId = 1L;
-        ReservationStatus reservationStatus = ReservationStatus.RENTED;
-        when(reservationRepository.findById(reservationId)).thenReturn(Optional.of(reservationModel0));
-        reservationService.setReservationStatus(reservationId, reservationStatus);
-        assertThat(reservationModel0.getReservationStatus()).isEqualTo(reservationStatus);
-        verify(reservationRepository, times(1)).save(reservationModel0);
+    public void testSetReservationStatus_Success() {
+        var reservationStatus = ReservationStatus.RENTED;
+        given(reservationRepository.findById(reservationId1)).willReturn(Optional.of(reservationModel1));
+        reservationService.setReservationStatus(reservationId1, reservationStatus);
+        assertThat(reservationModel1.getReservationStatus()).isEqualTo(reservationStatus);
+        verify(reservationRepository, times(1)).save(reservationModel1);
     }
 
     @Test
     public void testSetReservationStatus_ExceptionThrown() {
-        Long reservationId = 2L;
-        ReservationStatus reservationStatus = ReservationStatus.RENTED;
-        when(reservationRepository.findById(reservationId)).thenThrow(new RuntimeException());
-        assertThrows(EntityNotFoundException.class, () -> reservationService.setReservationStatus(reservationId, reservationStatus));
+        var reservationStatus = ReservationStatus.RENTED;
+        given(reservationRepository.findById(reservationId1)).willThrow(new RuntimeException());
+        assertThrows(EntityNotFoundException.class, () -> reservationService.setReservationStatus(reservationId1, reservationStatus));
     }
 
     @Test
-    public void testGetReservationListByCarId_ListReturned() {
-        Long carId = 2L;
-        CarModel carModel1 = new CarModel(2L, "", "", BigDecimal.valueOf(100), BigDecimal.valueOf(100), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.GAS, "", CarStatus.AVAILABLE, "RED", 200, 2010);
-        ReservationModel reservationModel1 = new ReservationModel();
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel2.setCar(carModel1);
-        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2));
-        List<ReservationModel> savedReservationList = reservationService.getReservationListByCarId(carId);
-        assertThat(savedReservationList.size()).isEqualTo(2);
-        assertThat(savedReservationList).contains(reservationModel1);
-        assertThat(savedReservationList).contains(reservationModel2);
+    public void testGetReservationListByCarId_ReturnList() {
+        given(reservationRepository.findAll()).willReturn(List.of(reservationModel2, reservationModel3));
+        var savedReservationList = reservationService.getReservationListByCarId(carId1);
+        assertThat(savedReservationList).containsExactlyInAnyOrder(reservationModel2, reservationModel3);
     }
 
     @Test
-    public void testGetReservationListByCarId_EmptyList() {
-        Long carId = 1L;
-        CarModel carModel1 = new CarModel(2L, "", "", BigDecimal.valueOf(100), BigDecimal.valueOf(100), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.GAS, "", CarStatus.AVAILABLE, "RED", 200, 2010);
-        ReservationModel reservationModel1 = new ReservationModel();
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel2.setCar(carModel1);
-        when(reservationRepository.findAll()).thenReturn(Collections.emptyList());
-        List<ReservationModel> savedReservationList = reservationService.getReservationListByCarId(carId);
+    public void testGetReservationListByCarId_ReturnEmptyList() {
+        given(reservationRepository.findAll()).willReturn(Collections.emptyList());
+        var savedReservationList = reservationService.getReservationListByCarId(carId1);
         assertThat(savedReservationList).isEmpty();
     }
 
     @Test
-    public void testGetRentedCarsReservationsIds() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel1.setId(1L);
-        reservationModel2.setId(2L);
-
-        RentalModel rentalModel1 = new RentalModel();
-        RentalModel rentalModel2 = new RentalModel();
-        rentalModel1.setReservation(reservationModel1);
-        rentalModel2.setReservation(reservationModel2);
-
-        when(rentalService.getRentalList()).thenReturn(List.of(rentalModel1, rentalModel2));
-
-        List<Long> rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
-
+    public void testGetRentedCarsReservationsIds_ReturnList() {
+        given(rentalService.getRentalList()).willReturn(List.of(rentalModel1, rentalModel2));
+        var rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
         assertThat(rentedCarsReservationsIds).containsExactlyInAnyOrder(1L, 2L);
     }
 
     @Test
-    public void testGetRentedCarsReservationsIds_NoRentals() {
-        when(rentalService.getRentalList()).thenReturn(List.of());
-
-        List<Long> rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
-
+    public void testGetRentedCarsReservationsIds_NoRentalsReturnEmptyList() {
+        given(rentalService.getRentalList()).willReturn(List.of());
+        var rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
         assertThat(rentedCarsReservationsIds).isEmpty();
     }
 
     @Test
-    public void testGetReservationListOfNotRentedCarsAllReceptionDepartments_NoReservations() {
-        when(reservationRepository.findAll()).thenReturn(List.of());
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments();
-
+    public void testGetReservationListOfNotRentedCarsAllReceptionDepartments_NoReservationsReturnEmptyList() {
+        given(reservationRepository.findAll()).willReturn(List.of());
+        var reservationModelList = reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments();
         assertThat(reservationModelList).isEmpty();
     }
 
-//    @Test
-//    public void testGetReservationListOfNotRentedCarsAllReceptionDepartments_ListReturned() {
-//        ReservationModel reservationModel1 = new ReservationModel();
-//        ReservationModel reservationModel2 = new ReservationModel();
-//        ReservationModel reservationModel3 = new ReservationModel();
-//        reservationModel1.setId(1L);
-//        reservationModel2.setId(2L);
-//        reservationModel3.setId(3L);
-//        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
-//        reservationModel2.setReservationStatus(ReservationStatus.RENTED);
-//        reservationModel3.setReservationStatus(ReservationStatus.RESERVED);
-//
-//        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2, reservationModel3));
-//        when(reservationService.getRentedCarsReservationsIds()).thenReturn(List.of(2L));
-//
-//        List<ReservationModel> savedReservationList = reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments();
-//
-//        assertThat(savedReservationList.size()).isEqualTo(2);
-//        assertThat(savedReservationList).containsExactlyInAnyOrder(reservationModel1, reservationModel3);
-//    }
-
     @Test
-    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_NullDepartment() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setId(1L);
-        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
-
-        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of(reservationModel1));
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(null);
-
-        assertThat(reservationModelList).containsExactly(reservationModel1);
+    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_NullDepartmentReturnAllReservations() {
+        given(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).willReturn(List.of(reservationModel1, reservationModel2));
+        var reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(null);
+        assertThat(reservationModelList).containsExactly(reservationModel1, reservationModel2);
     }
 
     @Test
     public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentNoReservationsEmptyListReturned() {
-        DepartmentModel departmentModel1 = new DepartmentModel();
-        departmentModel1.setId(1L);
-        departmentModel1.setCity("Bytom");
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setId(1L);
-        reservationModel1.setReservationStatus(ReservationStatus.RENTED);
-        reservationModel1.setReceptionVenue(departmentModel1);
-
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setId(2L);
-        reservationModel2.setReservationStatus(ReservationStatus.RETURNED);
-        reservationModel2.setReceptionVenue(departmentModel1);
-
-        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of());
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(departmentModel1);
-
+        given(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).willReturn(List.of());
+        var reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(receptionVenue1);
         assertThat(reservationModelList).isEmpty();
     }
 
     @Test
     public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentWithReservationsInDifferentDepartmentEmptyListReturned() {
-        DepartmentModel departmentModel1 = new DepartmentModel();
-        departmentModel1.setId(1L);
-        departmentModel1.setCity("Bytom");
-
-        DepartmentModel departmentModel2 = new DepartmentModel();
-        departmentModel2.setId(2L);
-        departmentModel2.setCity("Gdańsk");
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setId(1L);
-        reservationModel1.setReservationStatus(ReservationStatus.RENTED);
-        reservationModel1.setReceptionVenue(departmentModel1);
-
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setId(2L);
-        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
-        reservationModel2.setReceptionVenue(departmentModel2);
-
-        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of());
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(departmentModel1);
-
+        given(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).willReturn(List.of());
+        var reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(receptionVenue1);
         assertThat(reservationModelList).isEmpty();
     }
 
     @Test
-    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentListReturned() {
-        DepartmentModel departmentModel1 = new DepartmentModel();
-        departmentModel1.setId(1L);
-        departmentModel1.setCity("Bytom");
-        DepartmentModel departmentModel2 = new DepartmentModel();
-        departmentModel2.setId(2L);
-        departmentModel2.setCity("Gdańsk");
+    public void testGetReservationListOfNotRentedCarsByReceptionDepartments_SpecificDepartmentReturnList() {
+        given(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).willReturn(List.of(reservationModel1, reservationModel2));
+        var reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(receptionVenue1);
+        assertThat(reservationModelList).containsExactly(reservationModel1, reservationModel2);
+    }
 
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setId(1L);
-        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
-        reservationModel1.setReceptionVenue(departmentModel1);
-
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setId(2L);
-        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
-        reservationModel2.setReceptionVenue(departmentModel2);
-
-        when(reservationService.getReservationListOfNotRentedCarsAllReceptionDepartments()).thenReturn(List.of(reservationModel1, reservationModel2));
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListOfNotRentedCarsByReceptionDepartment(departmentModel1);
-
+    @Test
+    public void testGetReservationListLoggedUser_ReturnList() {
+        given(userService.getNameOfLoggedUser()).willReturn(loggedUserName1);
+        given(reservationRepository.findAll()).willReturn(List.of(reservationModel1));
+        var reservationModelList = reservationService.getReservationListLoggedUser();
         assertThat(reservationModelList).containsExactly(reservationModel1);
     }
 
     @Test
-    public void testGetReservationListLoggedUser_ListReturned() {
-        String loggedUserName = "Franek";
-        UserModel userModel1 = new UserModel();
-        userModel1.setName(loggedUserName);
-
-        CustomerModel customerModel1 = new CustomerModel();
-        customerModel1.setUser(userModel1);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCustomer(customerModel1);
-
-        when(userService.getNameOfLoggedUser()).thenReturn(loggedUserName);
-        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1));
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListLoggedUser();
-
-        assertThat(reservationModelList).containsExactly(reservationModel1);
-    }
-
-    @Test
-    public void testGetReservationListLoggedUser_NoReservationsEmptyListReturned() {
-        String loggedUserName = "Franek";
-        when(userService.getNameOfLoggedUser()).thenReturn(loggedUserName);
-        when(reservationRepository.findAll()).thenReturn(List.of());
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListLoggedUser();
-
+    public void testGetReservationListLoggedUser_NoReservationsReturnEmptyList() {
+        given(userService.getNameOfLoggedUser()).willReturn(loggedUserName1);
+        given(reservationRepository.findAll()).willReturn(List.of());
+        var reservationModelList = reservationService.getReservationListLoggedUser();
         assertThat(reservationModelList).isEmpty();
     }
 
     @Test
-    public void testGetReservationListLoggedUser_ReservationsOnDifferentUserEmptyListReturned() {
-        String loggedUserName = "Franek";
-        UserModel userModel1 = new UserModel();
+    public void testGetReservationListLoggedUser_ReservationsOnDifferentUserReturnEmptyList() {
         userModel1.setName("Zdzichu");
-
-        CustomerModel customerModel1 = new CustomerModel();
-        customerModel1.setUser(userModel1);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCustomer(customerModel1);
-
-        when(userService.getNameOfLoggedUser()).thenReturn(loggedUserName);
-        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1));
-
-        List<ReservationModel> reservationModelList = reservationService.getReservationListLoggedUser();
-
+        given(userService.getNameOfLoggedUser()).willReturn(loggedUserName1);
+        given(reservationRepository.findAll()).willReturn(List.of(reservationModel1));
+        var reservationModelList = reservationService.getReservationListLoggedUser();
         assertThat(reservationModelList).isEmpty();
     }
 
     @Test
     public void testGetReservationListWithFilters_NoCriteria_NoEmptyResult() {
-        when(reservationRepository.findWithFilters(null, null, null, null)).thenReturn(List.of(new ReservationModel(), new ReservationModel()));
-        List<ReservationModel> reservationModelList = reservationService.getReservationListWithFilters(null, null, null, null);
+        given(reservationRepository.findWithFilters(null, null, null, null)).willReturn(List.of(reservationModel1, reservationModel2));
+        var reservationModelList = reservationService.getReservationListWithFilters(null, null, null, null);
         assertThat(reservationModelList.size()).isEqualTo(2);
     }
 
     @Test
     public void testCancelOutdatedReservationOfNotRentedCar_OutdatedReservationCancelled() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
-        reservationModel1.setDateFrom(LocalDate.now().plusDays(1));
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
+        reservationModel1.setDateFrom(LocalDate.now());
         reservationModel2.setDateFrom(LocalDate.now().minusDays(1));
-
-        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2));
-
+        given(reservationRepository.findAll()).willReturn(List.of(reservationModel1, reservationModel2));
         reservationService.cancelOutdatedReservationOfNotRentedCar();
-
         verify(reservationRepository, times(1)).save(reservationModel2);
     }
 
     @Test
     public void testCancelOutdatedReservationOfNotRentedCar_NoOutdatedReservations() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setReservationStatus(ReservationStatus.RESERVED);
         reservationModel1.setDateFrom(LocalDate.now().plusDays(1));
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setReservationStatus(ReservationStatus.RESERVED);
         reservationModel2.setDateFrom(LocalDate.now());
-
-        when(reservationRepository.findAll()).thenReturn(List.of(reservationModel1, reservationModel2));
-
+        given(reservationRepository.findAll()).willReturn(List.of(reservationModel1, reservationModel2));
         reservationService.cancelOutdatedReservationOfNotRentedCar();
-
         verify(reservationRepository, times(0)).save(any(ReservationModel.class));
     }
 
     @Test
     public void testCancelOutdatedReservationOfNotRentedCar_NoReservations() {
-        when(reservationRepository.findAll()).thenReturn(List.of());
-
+        given(reservationRepository.findAll()).willReturn(List.of());
         reservationService.cancelOutdatedReservationOfNotRentedCar();
-
         verify(reservationRepository, times(0)).save(any(ReservationModel.class));
     }
 
     @Test
     public void testIsCarAvailableInGivenDateRange_CarAvailable() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        Long carId = carModel1.getId();
-
-        LocalDate dateFrom = LocalDate.now().plusDays(1);
-        LocalDate dateTo = LocalDate.now().plusDays(2);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setDateFrom(LocalDate.now().minusDays(1));
-        reservationModel1.setDateTo(LocalDate.now());
-
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setCar(carModel1);
-        reservationModel2.setDateFrom(LocalDate.now().plusDays(3));
-        reservationModel2.setDateTo(LocalDate.now().plusDays(4));
-
-        when(reservationService.getReservationListByCarId(carId))
-                .thenReturn(List.of(reservationModel1, reservationModel2));
-
-        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
-
+        given(reservationService.getReservationListByCarId(carId1))
+                .willReturn(List.of(reservationModel1, reservationModel3));
+        var result = reservationService.isCarAvailableInGivenDateRange(
+                carId1,
+                dateFrom.plusDays(5),
+                dateTo.plusDays(5));
         assertThat(result).isTrue();
     }
 
     @Test
     public void testIsCarAvailableInGivenDateRange_CarUnavailablePreviousReservationLasts() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        Long carId = carModel1.getId();
-
-        LocalDate dateFrom = LocalDate.now().plusDays(1);
-        LocalDate dateTo = LocalDate.now().plusDays(2);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setDateFrom(LocalDate.now().minusDays(1));
-        reservationModel1.setDateTo(dateFrom);
-
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setCar(carModel1);
-        reservationModel2.setDateFrom(LocalDate.now().plusDays(3));
-        reservationModel2.setDateTo(LocalDate.now().plusDays(4));
-
-        when(reservationService.getReservationListByCarId(carId))
-                .thenReturn(List.of(reservationModel1, reservationModel2));
-
-        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
-
+        given(reservationService.getReservationListByCarId(carId1))
+                .willReturn(List.of(reservationModel1, reservationModel2));
+        var result = reservationService.isCarAvailableInGivenDateRange(
+                carId1,
+                dateFrom.plusDays(9),
+                dateTo.plusDays(9));
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarAvailableInGivenDateRange_CarUnavailableNextReservationStarts() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        Long carId = carModel1.getId();
-
-        LocalDate dateFrom = LocalDate.now().plusDays(1);
-        LocalDate dateTo = LocalDate.now().plusDays(2);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setDateFrom(LocalDate.now().minusDays(1));
-        reservationModel1.setDateTo(LocalDate.now());
-
-        ReservationModel reservationModel2 = new ReservationModel();
-        reservationModel2.setCar(carModel1);
-        reservationModel2.setDateFrom(dateTo);
-        reservationModel2.setDateTo(LocalDate.now().plusDays(4));
-
-        when(reservationService.getReservationListByCarId(carId))
-                .thenReturn(List.of(reservationModel1, reservationModel2));
-
-        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
-
+        given(reservationService.getReservationListByCarId(carId1))
+                .willReturn(List.of(reservationModel1, reservationModel2));
+        var result = reservationService.isCarAvailableInGivenDateRange(
+                carId1,
+                dateFrom.minusDays(1),
+                dateTo.minusDays(1)
+        );
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarAvailableInGivenDateRange_CarUnavailableDatesDuringOtherReservationPeriod() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        Long carId = carModel1.getId();
-
-        LocalDate dateFrom = LocalDate.now().plusDays(2);
-        LocalDate dateTo = LocalDate.now().plusDays(3);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setDateFrom(LocalDate.now().plusDays(1));
-        reservationModel1.setDateTo(LocalDate.now().plusDays(4));
-
-        when(reservationService.getReservationListByCarId(carId))
-                .thenReturn(List.of(reservationModel1));
-
-        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
-
+        given(reservationService.getReservationListByCarId(carId1)).willReturn(List.of(reservationModel1));
+        var result = reservationService.isCarAvailableInGivenDateRange(
+                carId1,
+                dateFrom.plusDays(1),
+                dateTo.minusDays(1));
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarAvailableInGivenDateRange_CarUnavailableEqualsDatesOfOtherReservations() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        Long carId = carModel1.getId();
-
-        LocalDate dateFrom = LocalDate.now().plusDays(2);
-        LocalDate dateTo = LocalDate.now().plusDays(3);
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setDateFrom(dateFrom);
-        reservationModel1.setDateTo(dateTo);
-
-        when(reservationService.getReservationListByCarId(carId))
-                .thenReturn(List.of(reservationModel1));
-
-        Boolean result = reservationService.isCarAvailableInGivenDateRange(carId, dateFrom, dateTo);
-
+        given(reservationService.getReservationListByCarId(carId1))
+                .willReturn(List.of(reservationModel1));
+        var result = reservationService.isCarAvailableInGivenDateRange(carId1, dateFrom, dateTo);
         assertThat(result).isFalse();
     }
 
     @Test
-    public void testGetAvailableCarsByDateRange_EmptyCarList() {
-        LocalDate dateFrom = LocalDate.now();
-        LocalDate dateTo = LocalDate.now().plusDays(2);
-
-        List<CarModel> carModelList = reservationService.getAvailableCarsByDateRange(new ArrayList<>(), dateFrom, dateTo);
-
+    public void testGetAvailableCarsByDateRange_ReturnEmptyList() {
+        var carModelList = reservationService.getAvailableCarsByDateRange(new ArrayList<>(), dateFrom, dateTo);
         assertThat(carModelList).isEmpty();
     }
 
     @Test
     public void testCalculateRentalCost_DifferentVenues() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        carModel1.setPrice(BigDecimal.valueOf(100));
-
-        DepartmentModel receptionVenue = new DepartmentModel();
-        DepartmentModel returnVenue = new DepartmentModel();
-        receptionVenue.setCity("Lublin");
-        returnVenue.setCity("Kraków");
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setReceptionVenue(receptionVenue);
-        reservationModel1.setReturnVenue(returnVenue);
-        reservationModel1.setDateFrom(LocalDate.of(2024,5,1));
-        reservationModel1.setDateTo(LocalDate.of(2024, 5, 5));
-
-        BigDecimal totalCost = reservationService.calculateRentalCost(reservationModel1);
-
+        var totalCost = reservationService.calculateRentalCost(reservationModel1);
         assertThat(totalCost).isEqualByComparingTo(new BigDecimal("600"));
     }
 
     @Test
     public void testCalculateRentalCost_SameVenue() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        carModel1.setPrice(BigDecimal.valueOf(100));
-
-        DepartmentModel receptionVenue = new DepartmentModel();
-        DepartmentModel returnVenue = new DepartmentModel();
-        receptionVenue.setCity("Lublin");
-        returnVenue.setCity("Lublin");
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setReceptionVenue(receptionVenue);
-        reservationModel1.setReturnVenue(returnVenue);
-        reservationModel1.setDateFrom(LocalDate.of(2024,5,1));
-        reservationModel1.setDateTo(LocalDate.of(2024, 5, 5));
-
-        BigDecimal totalCost = reservationService.calculateRentalCost(reservationModel1);
-
+        reservationModel1.setReturnVenue(receptionVenue1);
+        var totalCost = reservationService.calculateRentalCost(reservationModel1);
         assertThat(totalCost).isEqualByComparingTo(new BigDecimal("500"));
     }
 
     @Test
     public void testCalculateRentalCost_OneDayRental() {
-        CarModel carModel1 = new CarModel();
-        carModel1.setId(1L);
-        carModel1.setPrice(BigDecimal.valueOf(100));
-
-        DepartmentModel receptionVenue = new DepartmentModel();
-        DepartmentModel returnVenue = new DepartmentModel();
-        receptionVenue.setCity("Lublin");
-        returnVenue.setCity("Lublin");
-
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setCar(carModel1);
-        reservationModel1.setReceptionVenue(receptionVenue);
-        reservationModel1.setReturnVenue(returnVenue);
-        reservationModel1.setDateFrom(LocalDate.of(2024,5,1));
-        reservationModel1.setDateTo(LocalDate.of(2024, 5, 1));
-
-        BigDecimal totalCost = reservationService.calculateRentalCost(reservationModel1);
-
+        reservationModel1.setReturnVenue(receptionVenue1);
+        reservationModel1.setDateTo(dateFrom);
+        var totalCost = reservationService.calculateRentalCost(reservationModel1);
         assertThat(totalCost).isEqualByComparingTo(new BigDecimal("100"));
     }
 }
