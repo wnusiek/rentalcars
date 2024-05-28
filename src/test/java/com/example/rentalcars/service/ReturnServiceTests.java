@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
@@ -51,34 +52,34 @@ public class ReturnServiceTests {
 
     @Test
     public void testAddReturn_Success(){
-        when(returnRepository.save(returnModel0)).thenReturn(returnModel0);
+        given(returnRepository.save(returnModel0)).willReturn(returnModel0);
         var savedReturn = returnService.addReturn(returnModel0);
         assertThat(savedReturn).isNotNull();
     }
 
     @Test
     public void testAddReturn_ExceptionThrown(){
-        when(returnRepository.save(returnModel0)).thenThrow(new RuntimeException());
+        given(returnRepository.save(returnModel0)).willThrow(new RuntimeException());
         assertThrows(ReturnAdditionException.class, () -> returnService.addReturn(returnModel0));
     }
 
     @Test
     public void testGetReturnModelList_ListReturned() {
-        when(returnRepository.findAll()).thenReturn(List.of(returnModel0, new ReturnModel(), new ReturnModel()));
+        given(returnRepository.findAll()).willReturn(List.of(returnModel0, new ReturnModel(), new ReturnModel()));
         var returnModelList = returnService.getReturnModelList();
         assertThat(returnModelList.size()).isEqualTo(3);
     }
 
     @Test
     public void testGetReturnModelList_EmptyListReturned() {
-        when(returnRepository.findAll()).thenReturn(List.of());
+        given(returnRepository.findAll()).willReturn(List.of());
         var returnModelList = returnService.getReturnModelList();
         assertThat(returnModelList).isEmpty();
     }
 
     @Test
     public void testUpdateReturn() {
-        when(returnRepository.save(returnModel0)).thenReturn(returnModel0);
+        given(returnRepository.save(returnModel0)).willReturn(returnModel0);
         returnService.updateReturn(returnModel0);
         verify(returnRepository, times(1)).save(returnModel0);
     }
@@ -92,49 +93,49 @@ public class ReturnServiceTests {
 
     @Test
     public void testFindById_Found() {
-        when(returnRepository.findById(returnId)).thenReturn(Optional.of(returnModel0));
+        given(returnRepository.findById(returnId)).willReturn(Optional.of(returnModel0));
         var savedReturn = returnService.findById(returnId);
         assertThat(savedReturn).isEqualTo(returnModel0);
     }
 
     @Test
     public void testFindById_ExceptionThrown() {
-        when(returnRepository.findById(returnId)).thenThrow(new EntityNotFoundException());
+        given(returnRepository.findById(returnId)).willThrow(new EntityNotFoundException());
         assertThrows(EntityNotFoundException.class, () -> returnService.findById(returnId));
     }
 
     @Test
     public void testFindById_FindByReservation_Found() {
-        when(returnRepository.findByReservation(reservationModel)).thenReturn(Optional.of(returnModel0));
+        given(returnRepository.findByReservation(reservationModel)).willReturn(Optional.of(returnModel0));
         var savedReturn = returnService.findByReservation(reservationModel);
         assertThat(savedReturn).isEqualTo(returnModel0);
     }
 
     @Test
     public void testGetIncome() {
-        ReturnModel returnModel1 = new ReturnModel();
+        var returnModel1 = new ReturnModel();
         returnModel1.setTotalCost(BigDecimal.valueOf(400.2));
-        ReturnModel returnModel2 = new ReturnModel();
+        var returnModel2 = new ReturnModel();
         returnModel2.setTotalCost(BigDecimal.valueOf(500.3));
-        BigDecimal savedIncome = returnService.getIncome(List.of(returnModel0, returnModel1, returnModel2));
+        var savedIncome = returnService.getIncome(List.of(returnModel0, returnModel1, returnModel2));
         assertThat(savedIncome).isEqualTo(BigDecimal.valueOf(1000.5));
     }
 
     @Test
     public void testGetIncome_EmptyList() {
-        BigDecimal savedIncome = returnService.getIncome(List.of());
+        var savedIncome = returnService.getIncome(List.of());
         assertThat(savedIncome).isEqualTo(BigDecimal.valueOf(0));
     }
 
     @Test
     public void testFindById_FindByReservation_ExceptionThrown() {
-        when(returnRepository.findByReservation(reservationModel)).thenThrow(new EntityNotFoundException());
+        given(returnRepository.findByReservation(reservationModel)).willThrow(new EntityNotFoundException());
         assertThrows(EntityNotFoundException.class, () -> returnService.findByReservation(reservationModel));
     }
 
     @Test
     public void testGetReturnListWithFilters_NoCriteria_NoEmptyResult() {
-        when(returnRepository.findWithFilters(null, null, null, null)).thenReturn(List.of(new ReturnModel(), new ReturnModel()));
+        given(returnRepository.findWithFilters(null, null, null, null)).willReturn(List.of(new ReturnModel(), new ReturnModel()));
         var savedReturn = returnService.getReturnListWithFilters(null, null, null, null);
         assertThat(savedReturn.size()).isEqualTo(2);
     }

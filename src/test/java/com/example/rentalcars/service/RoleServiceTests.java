@@ -28,44 +28,26 @@ public class RoleServiceTests {
     }
 
     @Test
-    public void givenRoleName_whenGetRoleByName_thenReturnRoleModel(){
-
-        // given
+    public void givenRoleName_whenGetRoleByName_thenReturnRole(){
         String name = "CUSTOMER";
         given(roleRepository.findByName(name)).willReturn(Optional.ofNullable(roleModel));
-
-        // when
-        RoleModel savedRole = roleService.getRoleByName(name);
-
-        // then
-        assertThat(savedRole).isNotNull();
+        var savedRole = roleService.getRoleByName(name);
+        assertThat(savedRole).isEqualTo(roleModel);
     }
 
     @Test
     public void givenRoleName_whenGetRoleByName_thenReturnNull(){
-
-        // given
         String name = "STANDARD";
         given(roleRepository.findByName(name)).willReturn(Optional.ofNullable(null));
-
-        // when
-        RoleModel savedRole = roleService.getRoleByName(name);
-
-        //then
+        var savedRole = roleService.getRoleByName(name);
         assertThat(savedRole).isNull();
     }
 
     @Test
     public void givenRoleEmptyName_whenGetRoleByName_thenReturnNull(){
-
-        // given
         String name = "";
         given(roleRepository.findByName(name)).willReturn(Optional.ofNullable(null));
-
-        // when
-        RoleModel savedRole = roleService.getRoleByName(name);
-
-        //then
+        var savedRole = roleService.getRoleByName(name);
         assertThat(savedRole).isNull();
     }
 }
