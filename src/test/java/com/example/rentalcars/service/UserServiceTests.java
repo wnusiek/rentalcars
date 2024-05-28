@@ -3,7 +3,6 @@ package com.example.rentalcars.service;
 import com.example.rentalcars.Exceptions.UserAdditionException;
 import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
-import com.example.rentalcars.repository.RoleRepository;
 import com.example.rentalcars.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,109 +32,87 @@ import static org.mockito.Mockito.*;
 public class UserServiceTests {
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private RoleRepository roleRepository;
     @InjectMocks
     private UserService userService;
     private UserModel userModel;
     private RoleModel roleModel;
     private String username;
+    private Long userId;
     @BeforeEach
     public void setup(){
         roleModel = new RoleModel(1L, "ADMIN");
         userModel = new UserModel(1L, "Bolek", "bolek123", "bolek@gmail.com", true, roleModel);
         username = "user1111";
+        userId = 1L;
+        userService = new UserService(userRepository);
     }
 
     @Test
-    public void testFindUserById_UserFound(){
-        Long id = userModel.getId();
-        given(userRepository.findById(id)).willReturn(Optional.of(userModel));
-
-        UserModel savedUser = userService.findById(id);
-
-        assertThat(savedUser).isNotNull();
+    public void testFindUserById_ReturnUser(){
+        given(userRepository.findById(userId)).willReturn(Optional.of(userModel));
+        var savedUser = userService.findById(userId);
         assertThat(savedUser).isEqualTo(userModel);
     }
 
     @Test
     public void testFindUserById_ExceptionThrown(){
-        Long id = userModel.getId();
-        when(userRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> userService.findById(id));
+        given(userRepository.findById(userId)).willReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> userService.findById(userId));
     }
 
     @Test
-    public void givenUsersList_whenGetAllUsers_thenReturnUsersList(){
-        UserModel userModel1 = new UserModel(2L, "JimiHendrix", "jimi123", "jhendrix@gmail.com", true, roleModel);
-        given(userRepository.findAll()).willReturn(List.of(userModel,userModel1));
-
-        List<UserModel> userModelList = userService.getAllUsers();
-
-        assertThat(userModelList).isNotNull();
-        assertThat(userModelList.size()).isEqualTo(2);
+    public void testGetAllUsers_ReturnList(){
+        given(userRepository.findAll()).willReturn(List.of(userModel, new UserModel()));
+        var savedUserList = userService.getAllUsers();
+        assertThat(savedUserList.size()).isEqualTo(2);
     }
 
     @Test
-    public void givenEmptyUsersList_whenGetAllUsers_thenReturnEmptyUsersList(){
+    public void testGetAllUsers_ReturnEmptyList(){
         given(userRepository.findAll()).willReturn(Collections.emptyList());
-
-        List<UserModel> userModelList = userService.getAllUsers();
-
-        assertThat(userModelList).isEmpty();
+        var savedUserList = userService.getAllUsers();
+        assertThat(savedUserList).isEmpty();
     }
 
     @Test
-    public void givenUserId_whenDeleteUser_thenNothing(){
-        long userId = 1L;
+    public void testDeleteUser(){
         willDoNothing().given(userRepository).deleteById(userId);
-
         userService.deleteUser(userId);
-
         verify(userRepository, times(1)).deleteById(userId);
     }
 
     @Test
-    public void givenUserObject_whenSaveUser_thenReturnUser(){
+    public void testSaveUser_ReturnUser(){
         given(userRepository.save(userModel)).willReturn(userModel);
-
-        UserModel savedUser = userService.saveUser(userModel);
-
+        var savedUser = userService.saveUser(userModel);
         assertThat(savedUser).isNotNull();
-
     }
 
     @Test
-    public void givenUserModel_whenSaveUser_thenExceptionThrown(){
-        when(userRepository.save(userModel)).thenThrow(new RuntimeException());
+    public void testSaveUser_ExceptionThrown(){
+        given(userRepository.save(userModel)).willThrow(new RuntimeException());
         assertThrows(UserAdditionException.class, () -> userService.saveUser(userModel));
     }
 
     @Test
     public void testCheckIfUserExists_UserExists(){
         given(userRepository.findByName("Bolek")).willReturn(Optional.of(userModel));
-
-        boolean userExists = userService.checkIfUserExists(userModel);
-
+        var userExists = userService.checkIfUserExists(userModel);
         assertThat(userExists).isTrue();
     }
 
     @Test
-    public void testCheckIfUserExists_UserDoesNotExists(){
+    public void testCheckIfUserExists_UserDoesNotExist(){
         given(userRepository.findByName("Bolek")).willReturn(Optional.empty());
-
-        boolean userExists = userService.checkIfUserExists(userModel);
-
+        var userExists = userService.checkIfUserExists(userModel);
         assertThat(userExists).isFalse();
     }
 
     @Test
-    public void testGetNameOfLoggedUser(){
+    public void testGetNameOfLoggedUser_ReturnUsername(){
         Authentication authentication = new TestingAuthenticationToken(username, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        userService = new UserService(userRepository);
-        String loggedUsername = userService.getNameOfLoggedUser();
-
+        var loggedUsername = userService.getNameOfLoggedUser();
         assertThat(username).isEqualTo(loggedUsername);
     }
 
@@ -143,23 +120,16 @@ public class UserServiceTests {
     public void testIsUserLogged_UserAuthenticated() {
         Authentication authentication = new TestingAuthenticationToken(username, "password", "ROLE_USER");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        userService = new UserService(userRepository);
-
-        boolean result = userService.isUserLogged();
-
+        var result = userService.isUserLogged();
         assertThat(result).isTrue();
     }
 
     @Test
     public void testIsUserLogged_UserNotAuthenticated() {
-        //
         Authentication authentication = new AnonymousAuthenticationToken("key", "anonymousUser",
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        userService = new UserService(userRepository);
-        //
-        boolean result = userService.isUserLogged();
-        //
+        var result = userService.isUserLogged();
         assertThat(result).isFalse();
     }
 }
