@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
@@ -30,115 +31,115 @@ public class RentalServiceTests {
     private ReturnService returnService;
     @InjectMocks
     private RentalService rentalService;
-    private RentalModel rentalModel0;
+    private RentalModel rentalModel1;
+    private RentalModel rentalModel2;
+    private ReservationModel reservationModel1;
+    private DepartmentModel departmentModel1;
+    private Long rentalId1;
     @BeforeEach
     public void setup() {
-        rentalModel0 = new RentalModel(
-                1L,
+        rentalId1 = 1L;
+        reservationModel1 = new ReservationModel();
+        reservationModel1.setReservationStatus(ReservationStatus.RENTED);
+        rentalModel1 = new RentalModel(
+                rentalId1,
                 new EmployeeModel(),
                 LocalDate.of(2024, 5, 1),
-                new ReservationModel(),
+                reservationModel1,
                 "Jakiś komentarz");
+        rentalModel2 = new RentalModel();
+        rentalModel2.setReservation(reservationModel1);
+        departmentModel1 = new DepartmentModel();
     }
 
     @Test
     public void testAddRental_ReturnRental() {
-        when(rentalRepository.save(rentalModel0)).thenReturn(rentalModel0);
-        var savedRental = rentalService.addRental(rentalModel0);
+        given(rentalRepository.save(rentalModel1)).willReturn(rentalModel1);
+        var savedRental = rentalService.addRental(rentalModel1);
         assertThat(savedRental).isNotNull();
     }
 
     @Test
     public void testAddRental_ExceptionThrown() {
-        when(rentalRepository.save(rentalModel0)).thenThrow(new RuntimeException());
-        assertThrows(RentalAdditionException.class, () -> rentalService.addRental(rentalModel0));
+        given(rentalRepository.save(rentalModel1)).willThrow(new RuntimeException());
+        assertThrows(RentalAdditionException.class, () -> rentalService.addRental(rentalModel1));
     }
 
     @Test
-    public void testGetRentalList() {
-        when(rentalRepository.findAll()).thenReturn(List.of(rentalModel0, new RentalModel(), new RentalModel()));
-        List<RentalModel> rentalModelList = rentalService.getRentalList();
+    public void testGetRentalList_ReturnList() {
+        given(rentalRepository.findAll()).willReturn(List.of(rentalModel1, rentalModel2, new RentalModel()));
+        var rentalModelList = rentalService.getRentalList();
         assertThat(rentalModelList.size()).isEqualTo(3);
     }
 
     @Test
-    public void testGetRentalList_EmptyList() {
-        when(rentalRepository.findAll()).thenReturn(List.of());
-        List<RentalModel> rentalModelList = rentalService.getRentalList();
+    public void testGetRentalList_ReturnEmptyList() {
+        given(rentalRepository.findAll()).willReturn(List.of());
+        var rentalModelList = rentalService.getRentalList();
         assertThat(rentalModelList).isEmpty();
     }
 
     @Test
-    public void testFindById_RentalFound() {
-        Long rentalId = 1L;
-        when(rentalRepository.findById(rentalId)).thenReturn(Optional.of(rentalModel0));
-        var savedRental = rentalService.findById(rentalId);
+    public void testFindById_ReturnRental() {
+        given(rentalRepository.findById(rentalId1)).willReturn(Optional.of(rentalModel1));
+        var savedRental = rentalService.findById(rentalId1);
         assertThat(savedRental).isNotNull();
     }
 
     @Test
     public void testFindById_ExceptionThrown() {
-        Long rentalId = 1L;
-        when(rentalRepository.findById(rentalId)).thenThrow(new EntityNotFoundException());
-        assertThrows(EntityNotFoundException.class, () -> rentalService.findById(rentalId));
+        given(rentalRepository.findById(rentalId1)).willThrow(new EntityNotFoundException());
+        assertThrows(EntityNotFoundException.class, () -> rentalService.findById(rentalId1));
     }
 
     @Test
     public void testUpdateRental_Success() {
-        when(rentalRepository.save(rentalModel0)).thenReturn(rentalModel0);
-        rentalService.updateRental(rentalModel0);
-        verify(rentalRepository, times(1)).save(rentalModel0);
+        given(rentalRepository.save(rentalModel1)).willReturn(rentalModel1);
+        rentalService.updateRental(rentalModel1);
+        verify(rentalRepository, times(1)).save(rentalModel1);
     }
 
     @Test
-    public void testRemoveRental() {
-        Long rentalId = 1L;
-        willDoNothing().given(rentalRepository).deleteById(rentalId);
-        rentalService.removeRental(rentalId);
-        verify(rentalRepository, times(1)).deleteById(rentalId);
+    public void testRemoveRental_Success() {
+        willDoNothing().given(rentalRepository).deleteById(rentalId1);
+        rentalService.removeRental(rentalId1);
+        verify(rentalRepository, times(1)).deleteById(rentalId1);
     }
 
     @Test
-    public void testFindByReservation_RentalReturned() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        RentalModel rentalModel1 = new RentalModel();
-        rentalModel1.setReservation(reservationModel1);
-        when(rentalRepository.findByReservation(reservationModel1)).thenReturn(Optional.of(rentalModel1));
+    public void testFindByReservation_ReturnRental() {
+        given(rentalRepository.findByReservation(reservationModel1))
+                .willReturn(Optional.of(rentalModel2));
         var savedRental = rentalService.findByReservation(reservationModel1);
-        assertThat(savedRental).isEqualTo(rentalModel1);
+        assertThat(savedRental).isEqualTo(rentalModel2);
     }
 
     @Test
     public void testFindByReservation_ExceptionThrown() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        RentalModel rentalModel1 = new RentalModel();
-        rentalModel1.setReservation(reservationModel1);
-        when(rentalRepository.findByReservation(reservationModel1)).thenThrow(new EntityNotFoundException());
+        given(rentalRepository.findByReservation(reservationModel1))
+                .willThrow(new EntityNotFoundException());
         assertThrows(EntityNotFoundException.class, () -> rentalService.findByReservation(reservationModel1));
     }
 
     @Test
     public void testGetRentalListWithFilters_NoCriteria_NoEmptyResult() {
-        when(rentalRepository.findWithFilters(null, null, null, null)).thenReturn(List.of(new RentalModel(), new RentalModel()));
+        given(rentalRepository.findWithFilters(null, null, null, null))
+                .willReturn(List.of(new RentalModel(), new RentalModel()));
         var savedRentals = rentalService.getRentalListWithFilters(null, null, null, null);
         assertThat(savedRentals.size()).isEqualTo(2);
     }
 
     @Test
-    public void testGetRentalListOfNotReturnedCarsByReturnDepartment_NullDepartment() {
-        ReservationModel reservationModel1 = new ReservationModel();
-        reservationModel1.setReservationStatus(ReservationStatus.RENTED);
-        rentalModel0.setReservation(reservationModel1);
-        when(returnService.getReturnModelList()).thenReturn(List.of());
-        when(rentalService.getRentalListOfNotReturnedCarsAllDepartments()).thenReturn(List.of(rentalModel0));
+    public void testGetRentalListOfNotReturnedCarsByReturnDepartment_NullDepartmentReturnAllRentals() {
+        given(returnService.getReturnModelList()).willReturn(List.of());
+        given(rentalService.getRentalListOfNotReturnedCarsAllDepartments()).willReturn(List.of(rentalModel1));
         var savedRentals = rentalService.getRentalListOfNotReturnedCarsByReturnDepartment(null);
-        assertThat(savedRentals).containsExactly(rentalModel0);
+        assertThat(savedRentals).containsExactly(rentalModel1);
     }
 
     @Test
     public void testGetRentalListOfNotReturnedCarsByReturnDepartment_SpecificDepartmentNoReservationsEmptyListReturned() {
-        DepartmentModel departmentModel1 = new DepartmentModel();
-        when(rentalRepository.findAll()).thenReturn(List.of());
+        given(rentalRepository.findAll()).willReturn(List.of());
         var savedRentals = rentalService.getRentalListOfNotReturnedCarsByReturnDepartment(departmentModel1);
         assertThat(savedRentals).isEmpty();
     }
