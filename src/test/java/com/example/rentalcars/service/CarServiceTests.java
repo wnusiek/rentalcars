@@ -18,196 +18,159 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CarServiceTests {
     private CarService carService;
     private CarRepository carRepository;
-    private CarModel carModel;
+    private CarModel carModel1;
+    private CarModel carModel2;
+    private CarModel carModel3;
+    private Long carId1;
     @BeforeEach
     public void setUp(){
         carRepository = mock(CarRepository.class);
         carService = new CarService(carRepository);
-        carModel = new CarModel(1L, "Opel", "Corsa", BigDecimal.valueOf(100), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004);
+        carId1 = 1L;
+        carModel1 = new CarModel(carId1, "Opel", "Corsa", BigDecimal.valueOf(100), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004);
+        carModel2 = new CarModel(2L, "Opel", "Astra", BigDecimal.valueOf(200), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019);
+        carModel3 = new CarModel();
+        carModel3.setAvailability(CarStatus.UNAVAILABLE);
     }
 
     @Test
     public void givenCarModel_whenSaveCar_thenReturnCarModel(){
-        when(carRepository.save(carModel)).thenReturn(carModel);
-        CarModel savedCar = carService.saveCar(carModel);
+        given(carRepository.save(carModel1)).willReturn(carModel1);
+        var savedCar = carService.saveCar(carModel1);
         assertThat(savedCar).isNotNull();
     }
 
     @Test
     public void givenCarModel_whenSaveCar_thenExceptionThrown(){
-        when(carRepository.save(carModel)).thenThrow(new RuntimeException());
-        assertThrows(CarAdditionException.class, () -> carService.saveCar(carModel));
+        given(carRepository.save(carModel1)).willThrow(new RuntimeException());
+        assertThrows(CarAdditionException.class, () -> carService.saveCar(carModel1));
     }
 
     @Test
     public void testPostAddCar() {
-        when(carRepository.save(carModel)).thenReturn(carModel);
-        carService.postAddCar(carModel);
-        verify(carRepository, times(1)).save(carModel);
+        given(carRepository.save(carModel1)).willReturn(carModel1);
+        carService.postAddCar(carModel1);
+        verify(carRepository, times(1)).save(carModel1);
     }
 
     @Test
     public void givenCarList_whenGetCarList_thenReturnCarList(){
-        CarModel carModel1 = new CarModel(2L, "Opel", "Astra", BigDecimal.valueOf(200), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019);
-        given(carRepository.findAll()).willReturn(List.of(carModel, carModel1));
-
-        List<CarModel> carModelList = carService.getCarList1();
-
-        assertThat(carModelList).isNotNull();
-        assertThat(carModelList.size()).isEqualTo(2);
+        given(carRepository.findAll()).willReturn(List.of(carModel1, carModel2));
+        var carModelList = carService.getCarList1();
+        assertThat(carModelList).containsExactlyInAnyOrder(carModel1, carModel2);
     }
 
     @Test
     public void givenEmptyCarList_whenGetCarList_thenReturnEmptyList(){
         given(carRepository.findAll()).willReturn(Collections.emptyList());
-
-        List<CarModel> carModelList = carService.getCarList1();
-
+        var carModelList = carService.getCarList1();
         assertThat(carModelList).isEmpty();
     }
 
     @Test
     public void testDeleteCar_Successfully(){
-        carService.deleteCar(carModel);
-        verify(carRepository, times(1)).delete(carModel);
+        carService.deleteCar(carModel1);
+        verify(carRepository, times(1)).delete(carModel1);
     }
 
     @Test
     public void testDeleteCar_VerifyDeleted(){
-        carService.deleteCar(carModel);
-
-        Optional<CarModel> deletedCar = carRepository.findById(carModel.getId());
-
-        assertTrue(deletedCar.isEmpty());
+        willDoNothing().given(carRepository).delete(carModel1);
+        carService.deleteCar(carModel1);
+        verify(carRepository, times(1)).delete(carModel1);
     }
 
     @Test
     public void testFindCarById_CarFound(){
-        given(carRepository.findById(carModel.getId())).willReturn(Optional.of(carModel));
-
-        CarModel car = carService.findById(carModel.getId());
-
-        assertThat(car).isNotNull();
-        assertThat(car).isEqualTo(carModel);
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        var car = carService.findById(carId1);
+        assertThat(car).isEqualTo(carModel1);
     }
 
     @Test
     public void testFindCarById_ExceptionThrown(){
-        Long id = 1L;
-        when(carRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> carService.findById(id));
+        given(carRepository.findById(carId1)).willThrow(new EntityNotFoundException());
+        assertThrows(EntityNotFoundException.class, () -> carService.findById(carId1));
     }
 
     @Test
     public void testGetAvailableCars_SomeAvailableCars(){
-        List<CarModel> cars = new ArrayList<>();
-        cars.add(new CarModel(1l, "Opel", "Corsa", BigDecimal.valueOf(100), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004));
-        cars.add(new CarModel(2l, "Opel", "Astra", BigDecimal.valueOf(200), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019));
-        cars.add(new CarModel(3l, "BMW", "E3śmieć", BigDecimal.valueOf(400), BigDecimal.valueOf(500), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.HIRED, "Black", 45000, 2019));
-        cars.add(new CarModel(4l, "AUDI", "80", BigDecimal.valueOf(300), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.UNAVAILABLE, "Black", 45000, 2019));
-
-        List<CarModel> availableCars = carService.getAvailableCars(cars);
-
-        assertThat(availableCars.size()).isEqualTo(2);
+        var availableCars = carService.getAvailableCars(List.of(carModel1, carModel2, carModel3));
+        assertThat(availableCars).containsExactlyInAnyOrder(carModel1, carModel2);
     }
 
     @Test
     public void testGetAvailableCars_NoAvailableCars(){
-        List<CarModel> cars = new ArrayList<>();
-        cars.add(new CarModel(3l, "BMW", "E3śmieć", BigDecimal.valueOf(400), BigDecimal.valueOf(500), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.HIRED, "Black", 45000, 2019));
-        cars.add(new CarModel(4l, "AUDI", "80", BigDecimal.valueOf(300), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.UNAVAILABLE, "Black", 45000, 2019));
-
-        List<CarModel> availableCars = carService.getAvailableCars(cars);
-
+        var availableCars = carService.getAvailableCars(List.of(carModel3));
         assertThat(availableCars).isEmpty();
     }
 
     @Test
     public void testGetAvailableCars_NoCars(){
-        List<CarModel> cars = new ArrayList<>();
-
-        List<CarModel> availableCars = carService.getAvailableCars(cars);
-
+        var availableCars = carService.getAvailableCars(List.of());
         assertThat(availableCars).isEmpty();
     }
 
     @Test
     public void testSetCarStatus_CarExists(){
-        Long id = carModel.getId();
-        CarStatus newStatus = CarStatus.UNAVAILABLE;
-        when(carRepository.findById(id)).thenReturn(Optional.of(carModel));
-
-        carService.setCarStatus(id, newStatus);
-
-        assertThat(carModel.getAvailability()).isEqualTo(newStatus);
-        verify(carRepository, times(1)).save(carModel);
+        var newStatus = CarStatus.UNAVAILABLE;
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        carService.setCarStatus(carId1, newStatus);
+        assertThat(carModel1.getAvailability()).isEqualTo(newStatus);
+        verify(carRepository, times(1)).save(carModel1);
     }
 
     @Test
     public void testSetCarStatus_CarDoesNotExist(){
-        Long id = 1L;
-        CarStatus newStatus = CarStatus.HIRED;
-        when(carRepository.findById(id)).thenReturn(Optional.empty());
-
-        assertDoesNotThrow(() -> carService.setCarStatus(id, newStatus));
-
-        verify(carRepository, never()).save(any());
+        var newStatus = CarStatus.HIRED;
+        given(carRepository.findById(carId1)).willReturn(Optional.empty());
+        assertDoesNotThrow(() -> carService.setCarStatus(carId1, newStatus));
+        verify(carRepository, never()).save(any(CarModel.class));
     }
 
     @Test
     public void testSetMileage_CarExists(){
-        Long id = carModel.getId();
-        Integer newMileage = 1;
-        when(carRepository.findById(id)).thenReturn(Optional.of(carModel));
-
-        carService.setMileageByCarId(id, newMileage);
-
-        assertThat(carModel.getMileage()).isEqualTo(newMileage);
-        verify(carRepository, times(1)).save(carModel);
+        var newMileage = 1;
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        carService.setMileageByCarId(carId1, newMileage);
+        assertThat(carModel1.getMileage()).isEqualTo(newMileage);
+        verify(carRepository, times(1)).save(carModel1);
     }
 
     @Test
     public void testSetMileage_CarDoesNotExist(){
-        Long id = 1L;
-        Integer newMileage = 1;
-        when(carRepository.findById(id)).thenReturn(Optional.empty());
-
-        assertDoesNotThrow(() -> carService.setMileageByCarId(id, newMileage));
-
-        verify(carRepository, never()).save(any());
+        var newMileage = 1;
+        given(carRepository.findById(carId1)).willReturn(Optional.empty());
+        assertDoesNotThrow(() -> carService.setMileageByCarId(carId1, newMileage));
+        verify(carRepository, never()).save(any(CarModel.class));
     }
 
     @Test
     public void testFindWithFilter_NoCriteria_NoEmptyResult(){
-        when(carRepository.search(null, null, null, null)).thenReturn(Arrays.asList(new CarModel(), new CarModel()));
-
-        List<CarModel> carModelList = carService.findWithFilter(null, null, null, null);
-
+        given(carRepository.search(null, null, null, null)).willReturn(List.of(carModel1, carModel2, carModel3));
+        var carModelList = carService.findWithFilter(null, null, null, null);
         assertFalse(carModelList.isEmpty());
     }
 
     @Test
     public void testUpdateCar_Success() {
-        when(carRepository.save(carModel)).thenReturn(carModel);
-        carModel.setMileage(1000);
-        carService.updateCar(carModel);
-        verify(carRepository, times(1)).save(carModel);
-        assertThat(carModel.getMileage()).isEqualTo(1000);
+        given(carRepository.save(carModel1)).willReturn(carModel1);
+        carModel1.setMileage(1000);
+        carService.updateCar(carModel1);
+        verify(carRepository, times(1)).save(carModel1);
+        assertThat(carModel1.getMileage()).isEqualTo(1000);
     }
 
     @Test
     public void testRemoveCar_Success() {
-        Long carId = 1L;
-        willDoNothing().given(carRepository).deleteById(carId);
-        carService.removeCar(carId);
-        verify(carRepository, times(1)).deleteById(carId);
+        willDoNothing().given(carRepository).deleteById(carId1);
+        carService.removeCar(carId1);
+        verify(carRepository, times(1)).deleteById(carId1);
     }
 }
