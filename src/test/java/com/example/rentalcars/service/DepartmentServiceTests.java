@@ -22,6 +22,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
@@ -35,457 +36,360 @@ public class DepartmentServiceTests {
     private EmployeeRepository employeeRepository;
     @InjectMocks
     private DepartmentService departmentService;
-    private DepartmentModel departmentModel0;
-    private EmployeeModel employeeModel0;
-    private CarModel carModel0;
+    private DepartmentModel departmentModel1;
+    private DepartmentModel departmentModel2;
+    private DepartmentModel departmentModel3;
+    private EmployeeModel employeeModel1;
+    private EmployeeModel employeeModel2;
+    private CarModel carModel1;
+    private Long departmentId1;
+    private Long employeeId1;
+    private Long carId1;
+
     @BeforeEach
     public void setup() {
+        carId1 = 1L;
+        employeeId1 = 1L;
+        departmentId1 = 1L;
+
+        employeeModel1 = new EmployeeModel(employeeId1, "Janusz", "Biznesu", EmployeePosition.MANAGER, new UserModel());
+        employeeModel2 = new EmployeeModel();
+        employeeModel2.setId(2L);
+
+        carModel1 = new CarModel(carId1, "", "", BigDecimal.ONE, BigDecimal.ONE, BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "", CarStatus.AVAILABLE, "", 100, 2000);
+
         Set<EmployeeModel> employeeModelSet = new HashSet<>();
+        employeeModelSet.add(employeeModel1);
         List<CarModel> carModelList = new ArrayList<>();
-        employeeModel0 = new EmployeeModel(1L, "Janusz", "Biznesu", EmployeePosition.MANAGER, new UserModel());
-        carModel0 = new CarModel(1L, "", "", BigDecimal.ONE, BigDecimal.ONE, BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "", CarStatus.AVAILABLE, "", 100, 2000);
-        departmentModel0 = new DepartmentModel(1L, "Lublin", "Krakowskie Przedmieście 1", "123456789", employeeModelSet, carModelList);
+        carModelList.add(carModel1);
+
+        departmentModel1 = new DepartmentModel(departmentId1, "Lublin", "Krakowskie Przedmieście 1", "123456789", employeeModelSet, carModelList);
+        departmentModel2 = new DepartmentModel();
+        departmentModel3 = new DepartmentModel();
+        departmentModel2.setId(2L);
+        departmentModel3.setId(3L);
+        departmentModel2.setEmployees(new HashSet<>());
+        departmentModel3.setEmployees(new HashSet<>());
     }
 
     @Test
     public void testAddDepartment_Added() {
-        when(departmentRepository.save(departmentModel0)).thenReturn(departmentModel0);
-        DepartmentModel savedDepartment = departmentService.addDepartment(departmentModel0);
-        assertThat(savedDepartment).isNotNull().isEqualTo(departmentModel0);
+        given(departmentRepository.save(departmentModel1)).willReturn(departmentModel1);
+        var savedDepartment = departmentService.addDepartment(departmentModel1);
+        assertThat(savedDepartment).isNotNull().isEqualTo(departmentModel1);
     }
 
     @Test
     public void testAddDepartment_ExceptionThrown() {
-        when(departmentRepository.save(departmentModel0)).thenThrow(new RuntimeException());
-        assertThrows(DepartmentAdditionException.class, () -> departmentService.addDepartment(departmentModel0));
+        given(departmentRepository.save(departmentModel1)).willThrow(new RuntimeException());
+        assertThrows(DepartmentAdditionException.class, () -> departmentService.addDepartment(departmentModel1));
     }
 
     @Test
     public void testGetDepartmentList_ReturnDepartmentList() {
-        DepartmentModel departmentModel1 = new DepartmentModel();
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0, departmentModel1));
-        List<DepartmentModel> savedDepartmentList = departmentService.getDepartmentList();
-        assertThat(savedDepartmentList.size()).isEqualTo(2);
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel1, departmentModel2, departmentModel3));
+        var savedDepartmentList = departmentService.getDepartmentList();
+        assertThat(savedDepartmentList.size()).isEqualTo(3);
     }
 
     @Test
     public void testGetDepartmentList_ReturnEmptyList() {
-        when(departmentRepository.findAll()).thenReturn(Collections.emptyList());
-        List<DepartmentModel> savedDepartmentList = departmentService.getDepartmentList();
+        given(departmentRepository.findAll()).willReturn(Collections.emptyList());
+        var savedDepartmentList = departmentService.getDepartmentList();
         assertThat(savedDepartmentList).isEmpty();
     }
 
     @Test
     public void testFindById_ReturnDepartmentModel() {
-        Long id = 1L;
-        when(departmentRepository.findById(id)).thenReturn(Optional.of(departmentModel0));
-        DepartmentModel savedDepartment = departmentService.findById(id);
-        assertThat(savedDepartment).isEqualTo(departmentModel0);
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        var savedDepartment = departmentService.findById(departmentId1);
+        assertThat(savedDepartment).isEqualTo(departmentModel1);
     }
 
     @Test
     public void testFindById_ExceptionThrown() {
-        Long id = 1L;
-        when(departmentRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> departmentService.findById(id));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> departmentService.findById(departmentId1));
     }
 
     @Test
     public void testUpdateDepartment_Success() {
-        when(departmentRepository.save(departmentModel0)).thenReturn(departmentModel0);
-        departmentService.updateDepartment(departmentModel0);
-        verify(departmentRepository, times(1)).save(departmentModel0);
+        given(departmentRepository.save(departmentModel1)).willReturn(departmentModel1);
+        departmentService.updateDepartment(departmentModel1);
+        verify(departmentRepository, times(1)).save(departmentModel1);
     }
 
     @Test
-    public void testDeleteDepartmentById_thenNothing() {
-        Long id = 1L;
-        willDoNothing().given(departmentRepository).deleteById(id);
-        departmentService.deleteDepartmentById(id);
-        verify(departmentRepository, times(1)).deleteById(id);
+    public void testDeleteDepartmentById_Success() {
+        willDoNothing().given(departmentRepository).deleteById(departmentId1);
+        departmentService.deleteDepartmentById(departmentId1);
+        verify(departmentRepository, times(1)).deleteById(departmentId1);
     }
 
     @Test
-    public void testDeleteDepartment_thenNothing() {
-        willDoNothing().given(departmentRepository).delete(departmentModel0);
-        departmentService.deleteDepartment(departmentModel0);
-        verify(departmentRepository, times(1)).delete(departmentModel0);
+    public void testDeleteDepartment_Success() {
+        willDoNothing().given(departmentRepository).delete(departmentModel1);
+        departmentService.deleteDepartment(departmentModel1);
+        verify(departmentRepository, times(1)).delete(departmentModel1);
     }
 
     @Test
     public void testGetDepartmentEmployees_returnDepartmentEmployeeList() {
-        Long departmentId = 1L;
-        EmployeeModel employee1 = employeeModel0;
-        EmployeeModel employee2 = new EmployeeModel();
-        departmentModel0.getEmployees().add(employee1);
-        departmentModel0.getEmployees().add(employee2);
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0, new DepartmentModel(), new DepartmentModel()));
-
-        Set<EmployeeModel> savedDepartmentEmployeesSet = departmentService.getDepartmentEmployees(departmentId);
-
-        assertThat(savedDepartmentEmployeesSet.size()).isEqualTo(2);
-        assertThat(savedDepartmentEmployeesSet).contains(employee1);
-        assertThat(savedDepartmentEmployeesSet).contains(employee2);
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel1, departmentModel2, departmentModel3));
+        var savedDepartmentEmployeesSet = departmentService.getDepartmentEmployees(departmentId1);
+        assertThat(savedDepartmentEmployeesSet).containsExactly(employeeModel1);
     }
 
     @Test
     public void testGetDepartmentEmployees_whenWrongDepartmentId_returnEmptyList() {
-        Long id = 2L;
-        when(departmentRepository.findAll()).thenReturn(Collections.emptyList());
-        Set<EmployeeModel> savedDepartmentEmployeeList = departmentService.getDepartmentEmployees(id);
+        given(departmentRepository.findAll()).willReturn(Collections.emptyList());
+        var savedDepartmentEmployeeList = departmentService.getDepartmentEmployees(departmentId1);
         assertThat(savedDepartmentEmployeeList).isEmpty();
     }
 
     @Test
     public void testGetDepartmentByEmployee_ReturnDepartment() {
-        departmentModel0.getEmployees().add(employeeModel0);
-        departmentModel0.getEmployees().add(new EmployeeModel());
-        when(departmentService.getDepartmentList()).thenReturn(List.of(departmentModel0, new DepartmentModel()));
-        DepartmentModel savedDepartment = departmentService.getDepartmentByEmployee(employeeModel0);
-        assertThat(savedDepartment).isEqualTo(departmentModel0);
-        assertThat(savedDepartment.getEmployees()).contains(employeeModel0);
-        assertThat(savedDepartment.getEmployees().size()).isEqualTo(2);
+        given(departmentService.getDepartmentList()).willReturn(List.of(departmentModel1, departmentModel2));
+        var savedDepartment = departmentService.getDepartmentByEmployee(employeeModel1);
+        assertThat(savedDepartment).isEqualTo(departmentModel1);
+        assertThat(savedDepartment.getEmployees()).containsExactly(employeeModel1);
     }
 
     @Test
     public void testGetDepartmentByEmployee_ExceptionThrown() {
         when(departmentService.getDepartmentList()).thenThrow(new EntityNotFoundException());
-        assertThrows(EntityNotFoundException.class, () -> departmentService.getDepartmentByEmployee(employeeModel0));
+        assertThrows(EntityNotFoundException.class, () -> departmentService.getDepartmentByEmployee(employeeModel1));
     }
 
     @Test
     public void getAllCarsByDepartmentId_ReturnDepartmentCarList() {
-        departmentModel0.getCars().add(carModel0);
-        DepartmentModel departmentModel1 = new DepartmentModel(2L, "", "", "", Collections.emptySet(), List.of(new CarModel(), new CarModel()));
-        Long departmentId = 1L;
-        when(departmentService.getDepartmentList()).thenReturn(List.of(departmentModel0, departmentModel1));
-        List<CarModel> savedCarList = departmentService.getAllCarsByDepartment(departmentId);
-        assertThat(savedCarList.size()).isEqualTo(1);
-        assertThat(savedCarList).contains(carModel0);
+        given(departmentService.getDepartmentList()).willReturn(List.of(departmentModel1, departmentModel2));
+        var savedCarList = departmentService.getAllCarsByDepartment(departmentId1);
+        assertThat(savedCarList).containsExactly(carModel1);
     }
 
     @Test
     public void getAllCarsByDepartmentId_ReturnEmptyList() {
-        Long id = 1L;
-        when(departmentService.getDepartmentList()).thenReturn(Collections.emptyList());
-        List<CarModel> savedCarList = departmentService.getAllCarsByDepartment(id);
+        given(departmentService.getDepartmentList()).willReturn(Collections.emptyList());
+        var savedCarList = departmentService.getAllCarsByDepartment(departmentId1);
         assertThat(savedCarList).isEmpty();
     }
 
     @Test
     public void testAddCarToDepartment_Success() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        departmentService.addCarToDepartment(carId, departmentId);
-
-        verify(departmentRepository).save(departmentModel0);
-        assertThat(departmentModel0.getCars()).contains(carModel0);
+        Long departmentId2 = 2L;
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId2)).willReturn(Optional.of(departmentModel2));
+        departmentService.addCarToDepartment(carId1, departmentId2);
+        verify(departmentRepository).save(departmentModel2);
+        assertThat(departmentModel2.getCars()).contains(carModel1);
     }
 
     @Test
     public void testAddCarToDepartment_CarNotFound() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-
-        when(carRepository.findById(carId)).thenReturn(Optional.empty());
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        departmentService.addCarToDepartment(carId, departmentId);
-
+        given(carRepository.findById(carId1)).willReturn(Optional.empty());
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.addCarToDepartment(carId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testAddCarToDepartment_DepartmentNotFound() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
-
-        departmentService.addCarToDepartment(carId, departmentId);
-
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        departmentService.addCarToDepartment(carId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testRemoveCarFromDepartment_Success() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-        departmentService.removeCarFromDepartment(carId, departmentId);
-        verify(departmentRepository, times(1)).save(departmentModel0);
-        assertThat(departmentModel0.getCars().contains(carModel0)).isFalse();
-
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.removeCarFromDepartment(carId1, departmentId1);
+        verify(departmentRepository, times(1)).save(departmentModel1);
+        assertThat(departmentModel1.getCars().contains(carModel1)).isFalse();
     }
 
     @Test
     public void testRemoveCarFromDepartment_CarNotFound() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        when(carRepository.findById(carId)).thenReturn(Optional.empty());
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-        departmentService.removeCarFromDepartment(carId, departmentId);
+        given(carRepository.findById(carId1)).willReturn(Optional.empty());
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.removeCarFromDepartment(carId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testRemoveCarFromDepartment_DepartmentNotFound() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
-        departmentService.removeCarFromDepartment(carId, departmentId);
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        departmentService.removeCarFromDepartment(carId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testAddEmployeeToDepartment_Success() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        departmentService.addEmployeeToDepartment(employeeId, departmentId);
-
-        verify(departmentRepository).save(departmentModel0);
-        assertThat(departmentModel0.getEmployees()).contains(employeeModel0);
+        Long employeeId2 = 2L;
+        given(employeeRepository.findById(employeeId2)).willReturn(Optional.of(employeeModel2));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.addEmployeeToDepartment(employeeId2, departmentId1);
+        verify(departmentRepository).save(departmentModel1);
+        assertThat(departmentModel1.getEmployees()).contains(employeeModel1, employeeModel2);
     }
 
     @Test
     public void testAddEmployeeToDepartment_EmployeeNotFound() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        departmentService.addEmployeeToDepartment(employeeId, departmentId);
-
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.empty());
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.addEmployeeToDepartment(employeeId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testAddEmployeeToDepartment_DepartmentNotFound() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
-
-        departmentService.addEmployeeToDepartment(employeeId, departmentId);
-
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.of(employeeModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        departmentService.addEmployeeToDepartment(employeeId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testRemoveEmployeeFromDepartment_Success() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-        departmentService.removeEmployeeFromDepartment(employeeId, departmentId);
-        verify(departmentRepository, times(1)).save(departmentModel0);
-        assertThat(departmentModel0.getEmployees().contains(employeeModel0)).isFalse();
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.of(employeeModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.removeEmployeeFromDepartment(employeeId1, departmentId1);
+        verify(departmentRepository, times(1)).save(departmentModel1);
+        assertThat(departmentModel1.getEmployees().contains(employeeModel1)).isFalse();
     }
 
     @Test
     public void testRemoveEmployeeFromDepartment_EmployeeNotFound() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-        departmentService.removeEmployeeFromDepartment(employeeId, departmentId);
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.empty());
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        departmentService.removeEmployeeFromDepartment(employeeId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testRemoveEmployeeFromDepartment_DepartmentNotFound() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
-        departmentService.removeEmployeeFromDepartment(employeeId, departmentId);
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.of(employeeModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        departmentService.removeEmployeeFromDepartment(employeeId1, departmentId1);
         verify(departmentRepository, never()).save(any(DepartmentModel.class));
     }
 
     @Test
     public void testIsEmployeeInDepartment_ReturnTrue() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        departmentModel0.getEmployees().add(employeeModel0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        Boolean result = departmentService.isEmployeeInDepartment(employeeId, departmentId);
-
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.of(employeeModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        var result = departmentService.isEmployeeInDepartment(employeeId1, departmentId1);
         assertThat(result).isTrue();
     }
 
     @Test
     public void testIsEmployeeInDepartment_ReturnFalse() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        Boolean result = departmentService.isEmployeeInDepartment(employeeId, departmentId);
-
+        Long departmentId2 = 2L;
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.of(employeeModel1));
+        given(departmentRepository.findById(departmentId2)).willReturn(Optional.of(departmentModel2));
+        var result = departmentService.isEmployeeInDepartment(employeeId1, departmentId2);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsEmployeeInDepartment_EmployeeNotFound() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        departmentModel0.getEmployees().add(employeeModel0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        Boolean result = departmentService.isEmployeeInDepartment(employeeId, departmentId);
-
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.empty());
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        var result = departmentService.isEmployeeInDepartment(employeeId1, departmentId1);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsEmployeeInDepartment_DepartmentNotFound() {
-        Long employeeId = 1L;
-        Long departmentId = 1L;
-        departmentModel0.getEmployees().add(employeeModel0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
-
-        Boolean result = departmentService.isEmployeeInDepartment(employeeId, departmentId);
-
+        given(employeeRepository.findById(employeeId1)).willReturn(Optional.of(employeeModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        var result = departmentService.isEmployeeInDepartment(employeeId1, departmentId1);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarInDepartment_ReturnTrue() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        departmentModel0.getCars().add(carModel0);
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        Boolean result = departmentService.isCarInDepartment(carId, departmentId);
-
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        var result = departmentService.isCarInDepartment(carId1, departmentId1);
         assertThat(result).isTrue();
     }
 
     @Test
     public void testIsCarInDepartment_ReturnFalse() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        Boolean result = departmentService.isCarInDepartment(carId, departmentId);
-
+        Long departmentId2 = 2L;
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId2)).willReturn(Optional.of(departmentModel2));
+        var result = departmentService.isCarInDepartment(carId1, departmentId2);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarInDepartment_CarNotFound() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        departmentModel0.getCars().add(carModel0);
-        when(carRepository.findById(carId)).thenReturn(Optional.empty());
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(departmentModel0));
-
-        Boolean result = departmentService.isCarInDepartment(carId, departmentId);
-
+        given(carRepository.findById(carId1)).willReturn(Optional.empty());
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.of(departmentModel1));
+        var result = departmentService.isCarInDepartment(carId1, departmentId1);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarInDepartment_DepartmentNotFound() {
-        Long carId = 1L;
-        Long departmentId = 1L;
-        departmentModel0.getCars().add(carModel0);
-        when(carRepository.findById(carId)).thenReturn(Optional.of(carModel0));
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
-
-        Boolean result = departmentService.isCarInDepartment(carId, departmentId);
-
+        given(carRepository.findById(carId1)).willReturn(Optional.of(carModel1));
+        given(departmentRepository.findById(departmentId1)).willReturn(Optional.empty());
+        var result = departmentService.isCarInDepartment(carId1, departmentId1);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsEmployeeInAnyDepartment_ReturnTrue() {
-        Long employeeId = 1L;
-        departmentModel0.getEmployees().add(employeeModel0);
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0));
-
-        Boolean result = departmentService.isEmployeeInAnyDepartment(employeeId);
-
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel1, departmentModel2, departmentModel3));
+        var result = departmentService.isEmployeeInAnyDepartment(employeeId1);
         assertThat(result).isTrue();
     }
 
     @Test
     public void testIsEmployeeInAnyDepartment_ReturnFalse() {
-        Long employeeId = 1L;
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0));
-
-        Boolean result = departmentService.isEmployeeInAnyDepartment(employeeId);
-
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel2, departmentModel3));
+        var result = departmentService.isEmployeeInAnyDepartment(employeeId1);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testIsCarInAnyDepartment_ReturnTrue() {
-        Long carId = 1L;
-        departmentModel0.getCars().add(carModel0);
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0));
-
-        Boolean result = departmentService.isCarInAnyDepartment(carId);
-
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel1, departmentModel2, departmentModel3));
+        var result = departmentService.isCarInAnyDepartment(carId1);
         assertThat(result).isTrue();
     }
 
     @Test
     public void testIsCarInAnyDepartment_ReturnFalse() {
-        Long carId = 1L;
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0));
-
-        Boolean result = departmentService.isCarInAnyDepartment(carId);
-
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel2, departmentModel3));
+        var result = departmentService.isCarInAnyDepartment(carId1);
         assertThat(result).isFalse();
     }
 
     @Test
     public void testCountEmployeesInDepartmentWithEmployees() {
-        Long departmentId = 1L;
-        departmentModel0.getEmployees().add(employeeModel0);
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0));
-
-        Long result = departmentService.countEmployeesInDepartment(departmentId);
-
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel1, departmentModel2, departmentModel3));
+        var result = departmentService.countEmployeesInDepartment(departmentId1);
         assertThat(result).isEqualTo(1);
     }
 
     @Test
     public void testCountEmployeesInDepartmentWithoutEmployees() {
-        Long departmentId = 1L;
-        when(departmentRepository.findAll()).thenReturn(List.of(departmentModel0, new DepartmentModel()));
-
-        Long result = departmentService.countEmployeesInDepartment(departmentId);
-
+        Long departmentId2 = 2L;
+        given(departmentRepository.findAll()).willReturn(List.of(departmentModel2, departmentModel3));
+        var result = departmentService.countEmployeesInDepartment(departmentId2);
         assertThat(result).isEqualTo(0);
     }
 
     @Test
     public void testCountEmployeesInNonexistentDepartment() {
-        Long departmentId = 2L;
-        when(departmentRepository.findAll()).thenReturn(Collections.emptyList());
-
-        Long result = departmentService.countEmployeesInDepartment(departmentId);
-
+        given(departmentRepository.findAll()).willReturn(Collections.emptyList());
+        var result = departmentService.countEmployeesInDepartment(departmentId1);
         assertThat(result).isEqualTo(0);
     }
 }
