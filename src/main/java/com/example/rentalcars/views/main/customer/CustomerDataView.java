@@ -56,11 +56,9 @@ public class CustomerDataView extends VerticalLayout {
     }
 
     private Component getToolbar() {
-
         Button editCustomerButton = new Button("Edytuj swoje dane");
         CustomerModel customer = customerService.getCustomerByUserName(userService.getNameOfLoggedUser());
         editCustomerButton.addClickListener(e -> editCustomer(customer));
-
         HorizontalLayout toolbar = new HorizontalLayout(editCustomerButton);
         toolbar.addClassName("toolbar");
         return toolbar;

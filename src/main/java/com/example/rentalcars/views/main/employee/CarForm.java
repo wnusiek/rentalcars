@@ -25,8 +25,6 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class CarForm extends FormLayout {
     Binder<CarModel> binder = new Binder<>(CarModel.class);
-    Binder<CarModel> enumBinder = new Binder<>(CarModel.class);
-
     TextField mark = new TextField("Marka");
     TextField model = new TextField("Model");
     TextField price = new TextField("Cena");

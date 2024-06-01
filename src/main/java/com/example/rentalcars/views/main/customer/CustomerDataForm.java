@@ -30,10 +30,8 @@ public class CustomerDataForm extends FormLayout {
     TextField pesel = new TextField("Pesel");
     TextField city = new TextField("City");
     TextField zipCode = new TextField("Zip code");
-
     Button save = new Button("Save");
     Button cancel = new Button("Cancel");
-
     private CustomerModel customerModel;
 
     public CustomerDataForm() {
@@ -55,14 +53,11 @@ public class CustomerDataForm extends FormLayout {
 
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-
         save.addClickListener(event -> validateAndSave());
-        cancel.addClickListener(event -> fireEvent(new CustomerDataForm.CloseEvent(this)));
-
         save.addClickShortcut(Key.ENTER);
+        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        cancel.addClickListener(event -> fireEvent(new CustomerDataForm.CloseEvent(this)));
         cancel.addClickShortcut(Key.ESCAPE);
-
         return new HorizontalLayout(save, cancel);
     }
 
