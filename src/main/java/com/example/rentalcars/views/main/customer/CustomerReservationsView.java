@@ -87,7 +87,6 @@ public class CustomerReservationsView extends VerticalLayout {
         grid.addColumn("returnVenue.city").setHeader("Miejsce zwrotu");
         grid.addColumn("reservationStatus").setHeader("Status");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
         grid.asSingleSelect().addValueChangeListener(event -> setCancel(event.getValue()));
     }
 
