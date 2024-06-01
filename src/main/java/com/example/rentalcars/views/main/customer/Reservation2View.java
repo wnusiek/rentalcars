@@ -21,7 +21,6 @@ import java.util.List;
 @PageTitle("Rezerwowanie")
 @AnonymousAllowed
 public class Reservation2View extends Div {
-
     private final CarService carService;
 
     public Reservation2View(CarService carService) {
@@ -37,11 +36,9 @@ public class Reservation2View extends Div {
             car -> {
                 HorizontalLayout cardLayout = new HorizontalLayout();
                 cardLayout.setMargin(true);
-
                 Avatar avatar = new Avatar(car.getCarInfo());
                 avatar.setHeight("64px");
                 avatar.setWidth("64px");
-
                 VerticalLayout infoLayout = new VerticalLayout();
                 infoLayout.setSpacing(false);
                 infoLayout.setPadding(false);
@@ -51,9 +48,7 @@ public class Reservation2View extends Div {
                 infoLayout.add(new Div(new Text(car.getPrice().toString())));
                 infoLayout.add(new Div(new Text(car.getBody().toString())));
                 infoLayout.add(new Div(new Text(car.getAvailability().toString())));
-
                 cardLayout.add(infoLayout);
-
                 return cardLayout;
             });
 
