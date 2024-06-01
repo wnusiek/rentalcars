@@ -19,7 +19,6 @@ import org.springframework.security.access.annotation.Secured;
 @Secured("ROLE_CUSTOMER")
 @RolesAllowed("ROLE_CUSTOMER")
 public class DepartmentView extends VerticalLayout {
-
     private final DepartmentService departmentService;
     Grid<DepartmentModel> grid = new Grid<>(DepartmentModel.class, false);
 
