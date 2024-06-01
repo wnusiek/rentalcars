@@ -29,8 +29,6 @@ public class ReservationForm extends FormLayout {
     DatePicker dateTo = new DatePicker("Data do");
     ComboBox<DepartmentModel> receptionVenue = new ComboBox<>("Oddział wypożyczenia auta");
     ComboBox<DepartmentModel> returnVenue = new ComboBox<>("Oddział zwrotu auta");
-
-
     Button makeReservationButton = new Button("Zarezerwuj");
     Button deleteButton = new Button("Delete");
     Button cancelButton = new Button("Anuluj");
@@ -66,16 +64,13 @@ public class ReservationForm extends FormLayout {
 
     private Component createButtonLayout() {
         makeReservationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-
         makeReservationButton.addClickListener(event -> validateAndSave());
-        deleteButton.addClickListener(event ->  fireEvent(new ReservationForm.DeleteEvent(this, reservationModel)));
-        cancelButton.addClickListener(event -> fireEvent(new ReservationForm.CloseEvent(this)));
-
         makeReservationButton.addClickShortcut(Key.ENTER);
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        deleteButton.addClickListener(event ->  fireEvent(new ReservationForm.DeleteEvent(this, reservationModel)));
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        cancelButton.addClickListener(event -> fireEvent(new ReservationForm.CloseEvent(this)));
         cancelButton.addClickShortcut(Key.ESCAPE);
-
         return new HorizontalLayout(makeReservationButton, cancelButton);
     }
 
@@ -86,7 +81,6 @@ public class ReservationForm extends FormLayout {
         } catch (ValidationException e) {
             Notification.show("Samochód jest zarezerwowany w tym terminie. Rezerwacja nieudana ;(").setPosition(Notification.Position.MIDDLE);
             e.printStackTrace();
-
         }
     }
 
