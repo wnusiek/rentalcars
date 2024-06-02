@@ -22,7 +22,6 @@ public class EmployeeDataView extends VerticalLayout {
     private final UserService userService;
     EmployeeDataForm form = new EmployeeDataForm();
 
-
     public EmployeeDataView(EmployeeService employeeService, UserService userService) {
         this.employeeService = employeeService;
         this.userService = userService;
@@ -56,11 +55,9 @@ public class EmployeeDataView extends VerticalLayout {
     }
 
     private Component getToolbar() {
-
         Button editEmployeeButton = new Button("Edytuj swoje dane");
         EmployeeModel employee = employeeService.getEmployeeByUserName(userService.getNameOfLoggedUser());
         editEmployeeButton.addClickListener(e -> editEmployee(employee));
-
         HorizontalLayout toolbar = new HorizontalLayout(editEmployeeButton);
         toolbar.addClassName("toolbar");
         return toolbar;
