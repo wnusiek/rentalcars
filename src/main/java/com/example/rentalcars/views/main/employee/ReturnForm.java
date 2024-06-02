@@ -50,7 +50,6 @@ public class ReturnForm extends FormLayout {
         returnBinder.forField(mileage)
                 .withConverter(new StringToIntegerConverter("Tylko liczby"))
                 .bind(r -> r.getReservation().getCar().getMileage(), (r, mileage) -> r.getReservation().getCar().setMileage(mileage));
-
         add(
             employee,
             reservation,
@@ -67,11 +66,9 @@ public class ReturnForm extends FormLayout {
     }
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
         save.addClickListener(event -> validateAndSave());
+        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancel.addClickListener(event -> fireEvent(new ReturnForm.CloseEvent(this)));
-
         return new HorizontalLayout(save, cancel);
     }
 
