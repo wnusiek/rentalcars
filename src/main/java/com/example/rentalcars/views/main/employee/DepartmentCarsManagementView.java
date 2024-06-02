@@ -75,14 +75,12 @@ public class DepartmentCarsManagementView extends VerticalLayout {
     }
 
     private Component getToolbar(){
-
-        HorizontalLayout toolbar = new HorizontalLayout(departmentModelComboBox, carComboBox, addButton, removeButton);
-
         departmentModelComboBox.setPlaceholder("Oddziały");
         departmentModelComboBox.setItems(departmentService.getDepartmentList());
         departmentModelComboBox.setItemLabelGenerator(DepartmentModel::getCity);
         departmentModelComboBox.setClearButtonVisible(true);
         departmentModelComboBox.addValueChangeListener(e -> updateDepartmentCarList());
+
         carComboBox.setPlaceholder("Samochody");
         carComboBox.setItems(carService.getCarList1());
         carComboBox.setItemLabelGenerator(CarModel::getCarInfo);
@@ -90,12 +88,13 @@ public class DepartmentCarsManagementView extends VerticalLayout {
 
         addButton.setText("Dodaj do oddziału");
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addButton.addClickListener(event -> addToDepartment(carComboBox.getValue()));
+
         removeButton.setText("Usuń z oddziału");
         removeButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
-        addButton.addClickListener(event -> addToDepartment(carComboBox.getValue()));
         removeButton.addClickListener(event -> removeFromDepartment(carComboBox.getValue()));
 
+        HorizontalLayout toolbar = new HorizontalLayout(departmentModelComboBox, carComboBox, addButton, removeButton);
         toolbar.addClassName("toolbar");
         toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
