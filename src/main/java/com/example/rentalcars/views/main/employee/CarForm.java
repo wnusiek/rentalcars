@@ -39,18 +39,15 @@ public class CarForm extends FormLayout {
     TextField color = new TextField("Kolor");
     TextField mileage = new TextField("Przebieg");
     TextField productionDate = new TextField("Rok produkcji");
-
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
-
     private CarModel carModel;
 
     public CarForm() {
         String requiredFieldErrorMessage = "To pole jest wymagane!";
         String wrongValueErrorMessage = "Zła wartość";
         String onlyNumbersErrorMessage = "Tylko liczby!";
-
         body.setItems(BodyType.values());
         fuelType.setItems(FuelType.values());
         gearbox.setItems(GearboxType.values());
@@ -97,9 +94,7 @@ public class CarForm extends FormLayout {
                 .withNullRepresentation("")
                 .withConverter(new StringToIntegerConverter(onlyNumbersErrorMessage))
                 .bind(CarModel::getNumberOfSeats, CarModel::setNumberOfSeats);
-
         binder.bindInstanceFields(this);
-
         addClassName("car-form");
         add(
                 mark,
