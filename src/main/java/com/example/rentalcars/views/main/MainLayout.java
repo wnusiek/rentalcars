@@ -29,11 +29,10 @@ import java.util.List;
 
 @PermitAll
 public class MainLayout extends AppLayout {
-
     private final CompanyService companyService;
     private final SecurityService securityService;
     private final UserService userService;
-    private String loggedUserName;
+    private final String loggedUserName;
     private List<Class<? extends Component>> allowedViews;
 
     public MainLayout(CompanyService companyService, SecurityService securityService, UserService userService, EmployeeService employeeService) {
@@ -45,7 +44,6 @@ public class MainLayout extends AppLayout {
         createHeader();
         createDrawer();
         addAllowedViews();
-
     }
 
     private void addAllowedViews() {
@@ -118,7 +116,6 @@ public class MainLayout extends AppLayout {
         header.expand(companyName);
         header.setWidthFull();
         header.addClassNames("py-0", "px-m");
-
         addToNavbar(header);
     }
     private void createDrawer() {

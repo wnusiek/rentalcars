@@ -104,7 +104,6 @@ public class RentalView extends VerticalLayout {
     }
 
     private HorizontalLayout getToolbar() {
-
         dateOfRental.setPlaceholder("Wybierz datę");
         dateOfRental.setClearButtonVisible(true);
         LocalDate now = LocalDate.now();

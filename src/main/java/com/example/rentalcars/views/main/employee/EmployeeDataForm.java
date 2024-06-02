@@ -1,6 +1,5 @@
 package com.example.rentalcars.views.main.employee;
 
-import com.example.rentalcars.model.CustomerModel;
 import com.example.rentalcars.model.EmployeeModel;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -26,10 +25,8 @@ public class EmployeeDataForm extends FormLayout {
     TextField firstName = new TextField("First name");
     TextField lastName = new TextField("Last name");
     EmailField email = new EmailField("Email");
-
     Button save = new Button("Save");
     Button cancel = new Button("Cancel");
-
     private EmployeeModel employeeModel;
 
     public EmployeeDataForm() {

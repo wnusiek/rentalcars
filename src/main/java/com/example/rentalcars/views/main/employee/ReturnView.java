@@ -19,7 +19,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -168,7 +167,6 @@ public class ReturnView extends VerticalLayout {
     private void configureForm() {
         form = new ReturnForm(employeeService.getEmployeeList(), reservationService.getReservationList());
         form.setWidth("25em");
-
         form.addSaveListener(this::saveReturn);
         form.addCloseListener(cancelEvent -> closeEditor());
     }
@@ -190,7 +188,7 @@ public class ReturnView extends VerticalLayout {
         Long returnVenueId = reservationModel.getReturnVenue().getId();
         Long reservationId = reservationModel.getId();
         BigDecimal afterDeadlineFee = BigDecimal.valueOf(0);
-        Boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(reservationModel.getDateTo());
+        boolean carReturnedAfterDeadline = returnModel.getDateOfReturn().isAfter(reservationModel.getDateTo());
         if(carReturnedAfterDeadline){
             Duration difference = Duration.between(returnModel.getDateOfReturn(), reservationModel.getDateTo());
             afterDeadlineFee = BigDecimal.valueOf(100*difference.toDays());
@@ -213,7 +211,6 @@ public class ReturnView extends VerticalLayout {
         reservationService.setReservationStatus(reservationId, ReservationStatus.RETURNED);
         closeEditor();
         updateRentalList();
-
         comments.clear();
         dateOfReturn.clear();
         supplement.clear();

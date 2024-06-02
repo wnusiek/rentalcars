@@ -24,7 +24,6 @@ import org.springframework.security.access.annotation.Secured;
 @Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class CarView extends VerticalLayout {
-
     private final CarService carService;
     Grid<CarModel> carGrid = new Grid<>(CarModel.class, false);
     TextField filterText = new TextField("Marka lub model");
