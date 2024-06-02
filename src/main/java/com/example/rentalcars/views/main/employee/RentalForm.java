@@ -22,13 +22,11 @@ import jakarta.annotation.security.PermitAll;
 import java.util.List;
 @PermitAll
 public class RentalForm extends FormLayout {
-
     Binder<RentalModel> rentalBinder = new Binder<>(RentalModel.class);
     ComboBox<EmployeeModel> employee = new ComboBox<>("Employee");
     ComboBox<ReservationModel> reservation = new ComboBox<>("Reservation");
     DatePicker dateOfRental = new DatePicker("Date of rental");
     TextField comments = new TextField("Comments");
-
     Button save = new Button("Wypożycz auto");
     Button cancel = new Button("Anuluj");
     private RentalModel rentalModel;
@@ -36,12 +34,10 @@ public class RentalForm extends FormLayout {
     public RentalForm(List<EmployeeModel> employees, List<ReservationModel> reservations) {
         addClassName("rental-form");
         rentalBinder.bindInstanceFields(this);
-
         employee.setItems(employees);
         employee.setItemLabelGenerator(EmployeeModel::getName);
         reservation.setItems(reservations);
         reservation.setItemLabelGenerator(ReservationModel::getReservationInfo);
-
         rentalBinder.forField(employee).asRequired("To pole jest wymagane!").bind(RentalModel::getEmployee, RentalModel::setEmployee);
         rentalBinder.forField(reservation).asRequired("To pole jest wymagane!").bind(RentalModel::getReservation, RentalModel::setReservation);
         rentalBinder.forField(comments).bind(RentalModel::getComments, RentalModel::setComments);
@@ -63,10 +59,8 @@ public class RentalForm extends FormLayout {
     private Component createButtonLayout(){
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
         save.addClickListener(event -> validateAndSave());
         cancel.addClickListener(event -> fireEvent(new RentalForm.CloseEvent(this)));
-
         return new HorizontalLayout(save, cancel);
     }
 
