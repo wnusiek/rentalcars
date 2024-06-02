@@ -26,7 +26,6 @@ public class HistoryView extends VerticalLayout {
     private final CustomerService customerService;
     private final RentalService rentalService;
     private final ReturnService returnService;
-
     Grid<ReservationModel> reservationGrid = new Grid<>(ReservationModel.class, false);
     Grid<RentalModel> rentalGrid = new Grid<>(RentalModel.class, false);
     Grid<ReturnModel> returnGrid = new Grid<>(ReturnModel.class, false);
@@ -41,12 +40,10 @@ public class HistoryView extends VerticalLayout {
         this.customerService = customerService;
         this.rentalService = rentalService;
         this.returnService = returnService;
-
         setSizeFull();
         configureReservationGrid();
         configureRentalGrid();
         configureReturnGrid();
-
         add(
                 getToolbar(),
                 getGrids()
