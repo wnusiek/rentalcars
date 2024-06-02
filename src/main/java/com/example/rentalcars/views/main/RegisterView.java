@@ -27,26 +27,21 @@ public class RegisterView extends VerticalLayout {
     private final CustomerService customerService;
     private final CompanyService companyService;
     private final RoleService roleService;
-
     private TextField name;
     private EmailField email;
     private PasswordField password;
 
     Button registerButton = new Button("Zarejestruj");
 
-    // Inicjujemy pola i przycisk (tak jak wcześniej)
-
     public RegisterView(UserService userService, CustomerService customerService, CompanyService companyService, RoleService roleService) {
         this.userService = userService;
         this.customerService = customerService;
         this.companyService = companyService;
         this.roleService = roleService;
-
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         registerButton.addClickListener(e -> register());
- //       registerButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("")));
         add(
                 new H1("Wypożyczalnia samochodów " + this.companyService.getCompanyName()),
                 new H1("REJESTRACJA"),
@@ -54,12 +49,10 @@ public class RegisterView extends VerticalLayout {
                 email = new EmailField("E-mail"),
                 password = new PasswordField("Hasło"),
                 registerButton
-
         );
     }
 
     public void register() {
-
         if (checkIfFieldEmpty()) {
             Notification.show("Wszystkie pola są wymagane!").setPosition(Notification.Position.BOTTOM_CENTER);
         } else {
@@ -67,7 +60,6 @@ public class RegisterView extends VerticalLayout {
             String userEmail = email.getValue();
             String userPassword = password.getValue();
             RoleModel roleModel = roleService.getRoleByName("CUSTOMER");
-
             UserModel newUser = new UserModel();
             newUser.setName(firstName);
             newUser.setEmail(userEmail);
@@ -89,10 +81,7 @@ public class RegisterView extends VerticalLayout {
     }
 
     public boolean checkIfFieldEmpty() {
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            return true;
-        }
-        return false;
+        return name.isEmpty() || email.isEmpty() || password.isEmpty();
     }
 }
 
