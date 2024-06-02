@@ -5,7 +5,6 @@ import com.example.rentalcars.service.CustomerService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.example.rentalcars.views.main.customer.CustomerDataForm;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,7 +20,6 @@ import org.springframework.security.access.annotation.Secured;
 @Secured({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 @RolesAllowed({"ROLE_EMPLOYEE", "ROLE_MANAGER", "ROLE_ADMIN"})
 public class CustomerManagementView extends VerticalLayout {
-
     private final CustomerService customerService;
     Grid<CustomerModel> grid = new Grid<>(CustomerModel.class, false);
     CustomerDataForm form = new CustomerDataForm();
@@ -61,7 +59,6 @@ public class CustomerManagementView extends VerticalLayout {
     private void configureForm() {
         form = new CustomerDataForm();
         form.setWidth("25em");
-
         form.addSaveListener(this::saveCustomer);
         form.addCloseListener(event -> closeEditor());
     }
