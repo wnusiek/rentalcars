@@ -28,6 +28,7 @@ import org.springframework.security.access.annotation.Secured;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Route(value = "returnView", layout = MainLayout.class)
 @PageTitle("Zwroty")
@@ -124,10 +125,11 @@ public class ReturnView extends VerticalLayout {
         returnVenue.setClearButtonVisible(true);
         returnVenue.setItems(departmentService.getDepartmentList());
         returnVenue.setItemLabelGenerator(DepartmentModel::getCity);
-        returnVenue.setValue(
+        Optional<DepartmentModel> loggedEmployeeDepartment =
                 departmentService.getDepartmentByEmployee(
                         employeeService.getEmployeeByUserName(
-                                userService.getNameOfLoggedUser())));
+                                userService.getNameOfLoggedUser()));
+        loggedEmployeeDepartment.ifPresent(departmentModel -> returnVenue.setValue(departmentModel));
         returnVenue.addValueChangeListener(e -> updateRentalList());
         supplement.setPlaceholder("Wprowadź koszty");
         supplement.setWidth("200px");
