@@ -63,11 +63,10 @@ public class DepartmentService {
                 .collect(Collectors.toSet());
     }
 
-    public DepartmentModel getDepartmentByEmployee(EmployeeModel employeeModel){
-        Optional<DepartmentModel> department = getDepartmentList().stream()
+    public Optional<DepartmentModel> getDepartmentByEmployee(EmployeeModel employeeModel) {
+        return getDepartmentList().stream()
             .filter(d -> d.getEmployees().contains(employeeModel))
             .findFirst();
-        return department.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono oddziału"));
     }
 
     public Long countEmployeesInDepartment(Long departmentId){

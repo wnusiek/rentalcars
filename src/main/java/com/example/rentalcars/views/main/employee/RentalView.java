@@ -23,6 +23,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Route(value = "rentalView", layout = MainLayout.class)
 @PageTitle("Wypożyczanie")
@@ -115,10 +116,11 @@ public class RentalView extends VerticalLayout {
         receptionVenue.setClearButtonVisible(true);
         receptionVenue.setItems(departmentService.getDepartmentList());
         receptionVenue.setItemLabelGenerator(DepartmentModel::getCity);
-        receptionVenue.setValue(
+        Optional<DepartmentModel> loggedEmployeeDepartment =
                 departmentService.getDepartmentByEmployee(
                         employeeService.getEmployeeByUserName(
-                                userService.getNameOfLoggedUser())));
+                                userService.getNameOfLoggedUser()));
+        loggedEmployeeDepartment.ifPresent(departmentModel -> receptionVenue.setValue(departmentModel));
         receptionVenue.addValueChangeListener(e -> updateReservationList());
         HorizontalLayout toolbar = new HorizontalLayout();
         toolbar.add(dateOfRental, comments, rentACarButton);

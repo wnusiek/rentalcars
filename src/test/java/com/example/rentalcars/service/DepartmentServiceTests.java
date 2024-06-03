@@ -151,8 +151,9 @@ public class DepartmentServiceTests {
     public void testGetDepartmentByEmployee_ReturnDepartment() {
         given(departmentService.getDepartmentList()).willReturn(List.of(departmentModel1, departmentModel2));
         var savedDepartment = departmentService.getDepartmentByEmployee(employeeModel1);
-        assertThat(savedDepartment).isEqualTo(departmentModel1);
-        assertThat(savedDepartment.getEmployees()).containsExactly(employeeModel1);
+        assertThat(savedDepartment).isPresent();
+        assertThat(savedDepartment.get()).isEqualTo(departmentModel1);
+        assertThat(savedDepartment.get().getEmployees()).containsExactly(employeeModel1);
     }
 
     @Test
