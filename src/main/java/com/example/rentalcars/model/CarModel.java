@@ -63,6 +63,9 @@ public class CarModel {
     @Column(name = "production_date")
     private Integer productionDate;
 
+    @Column(name = "picture_url")
+    private String pictureUrl;
+
     public String getCarInfo(){
         return mark + " " + model + " " + productionDate.toString();
     }
