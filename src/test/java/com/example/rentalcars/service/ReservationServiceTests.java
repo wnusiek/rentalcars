@@ -68,7 +68,7 @@ public class ReservationServiceTests {
         customerModel1.setUser(userModel1);
 
         carId1 = 1L;
-        carModel1 = new CarModel(carId1, "", "", BigDecimal.valueOf(100), BigDecimal.valueOf(100), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.GAS, "", CarStatus.AVAILABLE, "RED", 200, 2010);
+        carModel1 = new CarModel(carId1, "", "", BigDecimal.valueOf(100), BigDecimal.valueOf(100), BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.GAS, "", CarStatus.AVAILABLE, "RED", 200, 2010, "");
 
         receptionVenue1 = new DepartmentModel(1L, "Bytom");
         receptionVenue2 = new DepartmentModel(3L, "Kraków");

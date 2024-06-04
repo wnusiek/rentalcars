@@ -56,7 +56,7 @@ public class DepartmentServiceTests {
         employeeModel2 = new EmployeeModel();
         employeeModel2.setId(2L);
 
-        carModel1 = new CarModel(carId1, "", "", BigDecimal.ONE, BigDecimal.ONE, BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "", CarStatus.AVAILABLE, "", 100, 2000);
+        carModel1 = new CarModel(carId1, "", "", BigDecimal.ONE, BigDecimal.ONE, BodyType.COUPE, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "", CarStatus.AVAILABLE, "", 100, 2000, "");
 
         Set<EmployeeModel> employeeModelSet = new HashSet<>();
         employeeModelSet.add(employeeModel1);
