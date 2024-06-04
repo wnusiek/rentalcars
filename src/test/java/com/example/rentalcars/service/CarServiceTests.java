@@ -33,8 +33,8 @@ public class CarServiceTests {
         carRepository = mock(CarRepository.class);
         carService = new CarService(carRepository);
         carId1 = 1L;
-        carModel1 = new CarModel(carId1, "Opel", "Corsa", BigDecimal.valueOf(100), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004);
-        carModel2 = new CarModel(2L, "Opel", "Astra", BigDecimal.valueOf(200), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019);
+        carModel1 = new CarModel(carId1, "Opel", "Corsa", BigDecimal.valueOf(100), BigDecimal.valueOf(500), BodyType.HATCHBACK, GearboxType.AUTOMATIC, 5, 4, FuelType.PETROL, "aaa", CarStatus.AVAILABLE, "Red", 128000, 2004, "");
+        carModel2 = new CarModel(2L, "Opel", "Astra", BigDecimal.valueOf(200), BigDecimal.valueOf(500), BodyType.SEDAN, GearboxType.AUTOMATIC, 5, 4, FuelType.DIESEL, "aaa", CarStatus.AVAILABLE, "Black", 45000, 2019, "");
         carModel3 = new CarModel();
         carModel3.setAvailability(CarStatus.UNAVAILABLE);
     }
