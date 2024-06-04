@@ -13,3 +13,7 @@
     background-repeat: no-repeat;
     z-index: -1;
 }
+
+.large-text {
+    font-size: 30px;
+}
