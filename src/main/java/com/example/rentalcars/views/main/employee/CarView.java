@@ -155,6 +155,7 @@ public class CarView extends VerticalLayout {
         carGrid.addColumn("color").setHeader("Kolor");
         carGrid.addColumn("mileage").setHeader("Przebieg");
         carGrid.addColumn("productionDate").setHeader("Rok produkcji");
+        carGrid.addColumn("pictureUrl").setHeader("Ścieżka do zdjęcia");
         carGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         carGrid.asSingleSelect().addValueChangeListener(event -> editCar(event.getValue()));
     }

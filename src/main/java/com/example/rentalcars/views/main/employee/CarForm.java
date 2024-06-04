@@ -39,6 +39,7 @@ public class CarForm extends FormLayout {
     TextField color = new TextField("Kolor");
     TextField mileage = new TextField("Przebieg");
     TextField productionDate = new TextField("Rok produkcji");
+    TextField url = new TextField("Ścieżka do zdjęcia");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
@@ -94,6 +95,9 @@ public class CarForm extends FormLayout {
                 .withNullRepresentation("")
                 .withConverter(new StringToIntegerConverter(onlyNumbersErrorMessage))
                 .bind(CarModel::getNumberOfSeats, CarModel::setNumberOfSeats);
+        binder.forField(url)
+                .asRequired(requiredFieldErrorMessage)
+                .bind(CarModel::getPictureUrl, CarModel::setPictureUrl);
         binder.bindInstanceFields(this);
         addClassName("car-form");
         add(
@@ -111,6 +115,7 @@ public class CarForm extends FormLayout {
                 color,
                 mileage,
                 productionDate,
+                url,
                 createButtonLayout()
         );
     }
