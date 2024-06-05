@@ -119,6 +119,7 @@ public class ReturnView extends VerticalLayout {
         LocalDate now = LocalDate.now();
         dateOfReturn.setMin(now);
         dateOfReturn.setMax(now);
+        dateOfReturn.setValue(LocalDate.now());
         returnACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
         returnVenue.setPlaceholder("Wybierz oddział");
