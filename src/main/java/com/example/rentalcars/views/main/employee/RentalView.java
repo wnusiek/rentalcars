@@ -110,6 +110,7 @@ public class RentalView extends VerticalLayout {
         LocalDate now = LocalDate.now();
         dateOfRental.setMin(now);
         dateOfRental.setMax(now);
+        dateOfRental.setValue(LocalDate.now());
         rentACarButton.addClickListener(event -> validateFields());
         comments.setPlaceholder("Dodaj komentarz");
         receptionVenue.setPlaceholder("Wybierz oddział...");
