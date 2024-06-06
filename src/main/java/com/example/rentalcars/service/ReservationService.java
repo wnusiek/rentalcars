@@ -55,15 +55,7 @@ public class ReservationService {
         return getReservationList()
                 .stream()
                 .filter(reservationModel -> reservationModel.getReservationStatus().equals(ReservationStatus.RESERVED))
-                .filter(reservationModel -> !getRentedCarsReservationsIds().contains(reservationModel.getId()))
-                .toList();
-    }
-
-    // Przerzucić metodę do RentalService
-    List<Long> getRentedCarsReservationsIds() {
-        return rentalService.getRentalList()
-                .stream()
-                .map(rentalModel -> rentalModel.getReservation().getId())
+                .filter(reservationModel -> !rentalService.getRentedCarsReservationsIds().contains(reservationModel.getId()))
                 .toList();
     }
 
