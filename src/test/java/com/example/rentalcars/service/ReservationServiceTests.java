@@ -182,14 +182,14 @@ public class ReservationServiceTests {
     @Test
     public void testGetRentedCarsReservationsIds_ReturnList() {
         given(rentalService.getRentalList()).willReturn(List.of(rentalModel1, rentalModel2));
-        var rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
+        var rentedCarsReservationsIds = rentalService.getRentedCarsReservationsIds();
         assertThat(rentedCarsReservationsIds).containsExactlyInAnyOrder(1L, 2L);
     }
 
     @Test
     public void testGetRentedCarsReservationsIds_NoRentalsReturnEmptyList() {
         given(rentalService.getRentalList()).willReturn(List.of());
-        var rentedCarsReservationsIds = reservationService.getRentedCarsReservationsIds();
+        var rentedCarsReservationsIds = rentalService.getRentedCarsReservationsIds();
         assertThat(rentedCarsReservationsIds).isEmpty();
     }
 

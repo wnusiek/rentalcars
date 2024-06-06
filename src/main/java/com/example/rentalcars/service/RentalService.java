@@ -85,4 +85,11 @@ public class RentalService {
                     .toList();
         }
     }
+
+    List<Long> getRentedCarsReservationsIds() {
+        return getRentalList()
+                .stream()
+                .map(rentalModel -> rentalModel.getReservation().getId())
+                .toList();
+    }
 }
