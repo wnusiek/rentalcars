@@ -22,10 +22,10 @@ import java.util.List;
 @PageTitle("Rezerwowanie")
 @AnonymousAllowed
 @CssImport(value = "./styles/styles.css")
-public class Reservation2View extends Div {
+public class CarFleetView extends Div {
     private final CarService carService;
 
-    public Reservation2View(CarService carService) {
+    public CarFleetView(CarService carService) {
         this.carService = carService;
         List<CarModel> cars = carService.getCarList1();
         VirtualList<CarModel> list = new VirtualList<>();
