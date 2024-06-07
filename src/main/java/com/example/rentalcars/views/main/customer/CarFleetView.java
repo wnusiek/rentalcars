@@ -18,8 +18,8 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import java.util.List;
 
-@Route(value = "reservation2View", layout = MainLayout.class)
-@PageTitle("Rezerwowanie")
+@Route(value = "carFleetView", layout = MainLayout.class)
+@PageTitle("Flota")
 @AnonymousAllowed
 @CssImport(value = "./styles/styles.css")
 public class CarFleetView extends Div {
