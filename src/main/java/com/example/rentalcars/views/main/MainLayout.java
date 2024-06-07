@@ -5,10 +5,7 @@ import com.example.rentalcars.security.SecurityUtils;
 import com.example.rentalcars.service.CompanyService;
 import com.example.rentalcars.service.EmployeeService;
 import com.example.rentalcars.service.UserService;
-import com.example.rentalcars.views.main.customer.CustomerReservationsView;
-import com.example.rentalcars.views.main.customer.DepartmentView;
-import com.example.rentalcars.views.main.customer.ReservationView;
-import com.example.rentalcars.views.main.customer.CustomerDataView;
+import com.example.rentalcars.views.main.customer.*;
 import com.example.rentalcars.views.main.employee.*;
 import com.example.rentalcars.views.main.manager.*;
 import com.vaadin.flow.component.Component;
@@ -55,6 +52,7 @@ public class MainLayout extends AppLayout {
                 allowedViews.add(RentalView.class);
                 allowedViews.add(ReturnView.class);
                 allowedViews.add(CarView.class);
+                allowedViews.add(CarFleetView.class);
                 allowedViews.add(CompanyManagementView.class);
                 allowedViews.add(CustomerManagementView.class);
                 allowedViews.add(DepartmentCarsManagementView.class);
@@ -72,6 +70,7 @@ public class MainLayout extends AppLayout {
                 allowedViews.add(RentalView.class);
                 allowedViews.add(ReturnView.class);
                 allowedViews.add(CarView.class);
+                allowedViews.add(CarFleetView.class);
                 allowedViews.add(CustomerManagementView.class);
                 allowedViews.add(DepartmentCarsManagementView.class);
                 allowedViews.add(HistoryView.class);
@@ -81,6 +80,7 @@ public class MainLayout extends AppLayout {
         //Widoki dla Klienta
         if (SecurityUtils.isUserCustomer()){
             allowedViews.add(ReservationView.class);
+            allowedViews.add(CarFleetView.class);
             allowedViews.add(CustomerReservationsView.class);
             allowedViews.add(CustomerDataView.class);
             allowedViews.add(DepartmentView.class);
@@ -170,9 +170,13 @@ public class MainLayout extends AppLayout {
         RouterLink departmentView = new RouterLink("Oddziały", DepartmentView.class);
         departmentView.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink carFleetView = new RouterLink("Flota", CarFleetView.class);
+        carFleetView.setHighlightCondition(HighlightConditions.sameLocation());
+
         if (SecurityUtils.isUserAdmin() || SecurityUtils.isUserManager()){
             addToDrawer(new VerticalLayout(
                 carView,
+                carFleetView,
                 rentalView,
                 returnView,
                 employeeManagementView,
@@ -191,6 +195,7 @@ public class MainLayout extends AppLayout {
         if (SecurityUtils.isUserEmployee()){
             addToDrawer(new VerticalLayout(
                 carView,
+                carFleetView,
                 rentalView,
                 returnView,
                 customerManagementView,
@@ -202,6 +207,7 @@ public class MainLayout extends AppLayout {
 
         if (SecurityUtils.isUserCustomer()){
             addToDrawer(new VerticalLayout(
+                carFleetView,
                 reservationView,
                 customerReservationsView,
                 customerDataView,
