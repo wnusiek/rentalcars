@@ -31,7 +31,7 @@ public class CarFleetView extends Div {
         VirtualList<CarModel> list = new VirtualList<>();
         list.setItems(cars);
         list.setRenderer(carRenderer);
-        list.getElement().getStyle().set("height", "800px");
+        list.getElement().getStyle().set("height", "1200px");
         add(list);
     }
 
