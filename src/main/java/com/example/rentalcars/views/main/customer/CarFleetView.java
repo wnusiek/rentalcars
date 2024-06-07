@@ -18,20 +18,20 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import java.util.List;
 
-@Route(value = "reservation2View", layout = MainLayout.class)
-@PageTitle("Rezerwowanie")
+@Route(value = "carFleetView", layout = MainLayout.class)
+@PageTitle("Flota")
 @AnonymousAllowed
 @CssImport(value = "./styles/styles.css")
-public class Reservation2View extends Div {
+public class CarFleetView extends Div {
     private final CarService carService;
 
-    public Reservation2View(CarService carService) {
+    public CarFleetView(CarService carService) {
         this.carService = carService;
         List<CarModel> cars = carService.getCarList1();
         VirtualList<CarModel> list = new VirtualList<>();
         list.setItems(cars);
         list.setRenderer(carRenderer);
-        list.getElement().getStyle().set("height", "800px");
+        list.getElement().getStyle().set("height", "1200px");
         add(list);
     }
 
