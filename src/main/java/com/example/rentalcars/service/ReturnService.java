@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +67,13 @@ public class ReturnService {
         return returnModelList.stream()
                 .map(ReturnModel::getTotalCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Map<YearMonth, BigDecimal> getMonthlyIncome(List<ReturnModel> returnModelList){
+        return getReturnModelList().stream()
+                .collect(Collectors.groupingBy(
+                        returnModel -> YearMonth.from(returnModel.getDateOfReturn()), Collectors.reducing(BigDecimal.ZERO, ReturnModel::getTotalCost, BigDecimal::add)
+                ));
     }
 
     public ReturnModel findByReservation(ReservationModel reservationModel) {
