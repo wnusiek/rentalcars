@@ -15,6 +15,7 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -52,9 +53,24 @@ public class DashboardView extends VerticalLayout {
                 getDepartmentsStats(),
 //                getEmployeesInDepartmentsChart(),
 //                getCarsInDepartmentsChart(),
+                getTotalIncomeStats(),
+                getMonthlyIncome(),
                 getPopularReservations()
         );
     }
+
+    private Component getMonthlyIncome() {
+        Span stats = new Span("Przychód wg miesięcy: " + returnService.getMonthlyIncome(returnService.getReturnModelList()).toString());
+        stats.addClassNames("text-xl", "mt-m");
+        return stats;
+    }
+
+    private Component getTotalIncomeStats() {
+        Span stats = new Span("Całkowity przychód: " + returnService.getIncome(returnService.getReturnModelList()) + " PLN");
+        stats.addClassNames("text-xl", "mt-m");
+        return stats;
+    }
+
 
     private Component getCarStats() {
         Span stats = new Span("Liczba samochodów: " + crmService.countCars());
