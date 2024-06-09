@@ -111,6 +111,11 @@ public class ReturnView extends VerticalLayout {
 
     private void saveEmployeeChoice(RentalModel employeeChoice) {
         this.employeeChoice = employeeChoice;
+        if (employeeChoice == null) {
+            mileage.setValue("");
+        } else {
+            mileage.setValue(employeeChoice.getReservation().getCar().getMileage().toString());
+        }
     }
 
     private HorizontalLayout getToolbar(){
