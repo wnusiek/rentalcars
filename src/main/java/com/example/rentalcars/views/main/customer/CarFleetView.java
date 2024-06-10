@@ -4,8 +4,10 @@ import com.example.rentalcars.model.CarModel;
 import com.example.rentalcars.service.CarService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.charts.events.ClickEvent;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -31,7 +33,7 @@ public class CarFleetView extends Div {
         VirtualList<CarModel> list = new VirtualList<>();
         list.setItems(cars);
         list.setRenderer(carRenderer);
-        list.getElement().getStyle().set("height", "1200px");
+        list.getElement().getStyle().set("height", "800px");
         add(list);
     }
 
