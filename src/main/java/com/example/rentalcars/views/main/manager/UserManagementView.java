@@ -7,9 +7,12 @@ import com.example.rentalcars.service.UserService;
 import com.example.rentalcars.views.main.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
@@ -26,6 +29,8 @@ public class UserManagementView extends VerticalLayout {
     Grid<UserModel> grid = new Grid<>(UserModel.class, false);
     UserManagementForm form;
     List<RoleModel> roleModelList;
+    TextField filterText = new TextField("User");
+    ComboBox<RoleModel> roleType = new ComboBox<>("Rola");
 
     public UserManagementView(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
@@ -49,14 +54,26 @@ public class UserManagementView extends VerticalLayout {
     }
 
     private void updateUserList() {
-        grid.setItems(userService.getAllUsers());
+        grid.setItems(userService.findWithFilter(filterText.getValue(), roleType.getValue()));
     }
 
     private Component getToolbar(){
+        filterText.setPlaceholder("Wpisz nazwę usera...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateUserList());
+
+        roleType.setPlaceholder("Wybierz rolę...");
+        roleType.setClearButtonVisible(true);
+        roleType.setItems(roleModelList);
+        roleType.setItemLabelGenerator(RoleModel::getName);
+        roleType.addValueChangeListener(e -> updateUserList());
+
         Button addUserButton = new Button("Dodaj użytkownika");
         addUserButton.addClickListener(e->addUser());
-        HorizontalLayout toolbar = new HorizontalLayout(addUserButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, roleType, addUserButton);
         toolbar.addClassName("toolbar");
+        toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         return toolbar;
     }
 
