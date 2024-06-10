@@ -1,8 +1,11 @@
 package com.example.rentalcars.service;
 
 import com.example.rentalcars.Exceptions.UserAdditionException;
+import com.example.rentalcars.model.RoleModel;
 import com.example.rentalcars.model.UserModel;
 import com.example.rentalcars.repository.UserRepository;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.TextField;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -55,5 +58,8 @@ public class UserService {
         return authentication.getName();
     }
 
+    public List<UserModel> findWithFilter(String filterText, RoleModel role) {
+        return userRepository.search(filterText, role);
+    }
 }
 
