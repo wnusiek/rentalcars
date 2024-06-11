@@ -147,8 +147,8 @@ public class HistoryView extends VerticalLayout {
         rentalGrid.addColumn("dateOfRental").setHeader("Data wypożyczenia");
         rentalGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
         rentalGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
-        rentalGrid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
-        rentalGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
+//        rentalGrid.addColumn("reservation.customer.firstName").setHeader("Imię klienta");
+//        rentalGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
         rentalGrid.addColumn("comments").setHeader("Komentarz");
         rentalGrid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
@@ -161,8 +161,8 @@ public class HistoryView extends VerticalLayout {
         returnGrid.addColumn("dateOfReturn").setHeader("Data zwrotu");
         returnGrid.addColumn("employee.firstName").setHeader("Imię pracownika");
         returnGrid.addColumn("employee.lastName").setHeader("Nazwisko pracownika");
-        returnGrid.addColumn("reservation.customer.firstName").setHeader("Imię Klienta");
-        returnGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
+//        returnGrid.addColumn("reservation.customer.firstName").setHeader("Imię Klienta");
+//        returnGrid.addColumn("reservation.customer.lastName").setHeader("Nazwisko klienta");
         returnGrid.addColumn("reservation.price").setHeader("Cena");
         returnGrid.addColumn("supplement").setHeader("Dopłata");
         returnGrid.addColumn("totalCost").setHeader("Całkowity koszt");
