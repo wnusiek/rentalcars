@@ -137,6 +137,8 @@ public class RentalView extends VerticalLayout {
             Notification.show("Wybierz datę wypożyczenia").setPosition(Notification.Position.MIDDLE);
         } else if (grid.asSingleSelect().isEmpty()) {
             Notification.show("Wybierz rezerwację").setPosition(Notification.Position.MIDDLE);
+        } else if (dateOfRental.getValue().isBefore(grid.asSingleSelect().getValue().getDateFrom())) {
+            Notification.show("Nie można wypożyczyć przed czasem").setPosition(Notification.Position.MIDDLE);
         } else {
             addRental();
         }
