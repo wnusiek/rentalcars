@@ -48,3 +48,4 @@ vite.config.ts
 vite.generated.ts
 /frontend/generated
 *.js
+target/*
