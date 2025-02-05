@@ -67,7 +67,7 @@ public class RentalService {
 
     public RentalModel findByReservation(ReservationModel reservationModel) {
         var rental = rentalRepository.findByReservation(reservationModel);
-        return  rental.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono wypożyczenia."));
+        return rental.orElse(null);
     }
 
     public List<RentalModel> getRentalListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
