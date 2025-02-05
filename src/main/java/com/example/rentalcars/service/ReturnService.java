@@ -78,7 +78,7 @@ public class ReturnService {
 
     public ReturnModel findByReservation(ReservationModel reservationModel) {
         var ret = returnRepository.findByReservation(reservationModel);
-        return ret.orElseThrow(() -> new EntityNotFoundException("Nie znaleziono zwrotu."));
+        return ret.orElse(null);
     }
 
     public List<ReturnModel> getReturnListWithFilters(CustomerModel customer, LocalDate date, DepartmentModel receptionVenue, ReservationStatus reservationStatus) {
